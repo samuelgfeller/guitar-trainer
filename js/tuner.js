@@ -83,7 +83,7 @@ Tuner.prototype.processAudio = function (event) {
     const frequency = self.pitchDetector.do(event.inputBuffer.getChannelData(0));
     amplitude /= audioData.length;
 
-    if (frequency && amplitude > 0.05) {
+    if (frequency && amplitude > 0.07) {
         const note = self.getNote(frequency);
         const noteDetectedEvent = new CustomEvent("note-detected", {
             detail: {
@@ -96,15 +96,6 @@ Tuner.prototype.processAudio = function (event) {
             }
         });
         document.dispatchEvent(noteDetectedEvent);
-
-        // self.onNoteDetected({
-        //     name: self.noteStrings[note % 12],
-        //     value: note,
-        //     cents: self.getCents(frequency, note),
-        //     octave: parseInt(note / 12) - 1,
-        //     frequency: frequency,
-        //     amplitude: amplitude,
-        // });
     }
 };
 

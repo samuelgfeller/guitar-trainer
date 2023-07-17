@@ -1,22 +1,59 @@
 const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 const strings = ['D', 'E', 'G', 'A', 'B'];
 
-export const NoteGame = function () {
-}
+class NoteGame {
+  constructor() {
+    this.noteName = null;
+  }
 
-export function getRandomNote() {
+  start() {
+    // Event fired on each metronome beat
+    document.addEventListener('metronome-beat', this.displayRandomNotes.bind(this));
+    // Custom event when played note was detected
+    document.addEventListener('note-detected', this.highlightNoteIfCorrect.bind(this));
+  }
+
+  stop() {
+    document.removeEventListener('metronome-beat', this.displayRandomNotes.bind(this));
+    document.removeEventListener('note-detected', this.highlightNoteIfCorrect.bind(this));
+  }
+
+  displayRandomNotes() {
+    console.log('caught');
+    // Reset color of note span
+    document.querySelector('#note-span').style.color = null;
+
+    // Display random note and string
+    this.noteName = this.displayRandomNote();
+  }
+
+  highlightNoteIfCorrect(event) {
+    if (this.noteName === event.detail.name) {
+      document.querySelector('#note-span').style.color = 'green';
+    }
+  }
+
+  getRandomNote() {
     const randomIndex = Math.floor(Math.random() * notes.length);
     return notes[randomIndex];
-}
-export function getRandomString() {
+  }
+
+  getRandomString() {
     const randomIndex = Math.floor(Math.random() * strings.length);
     return strings[randomIndex];
-}
+  }
 
-export function displayRandomNote() {
-    const note = getRandomNote();
+    /**
+     * Displays random string and note returning the note
+     * @return {string}
+     */
+  displayRandomNote() {
+    const note = this.getRandomNote();
     const noteSpan = document.getElementById('note-span');
     noteSpan.innerHTML = note;
-    document.getElementById('string-span').innerHTML = getRandomString();
+    document.getElementById('string-span').innerHTML = this.getRandomString();
     return note;
+  }
 }
+
+export { NoteGame };

@@ -1,5 +1,3 @@
-import {displayRandomNote} from "./note-game.js";
-
 export const Metronome = function () {
     this.audioContext = null;
     this.startButton = document.getElementById('start-stop-btn');
@@ -22,6 +20,8 @@ Metronome.prototype.startMetronome = function () {
 
     const metronomeBeatEvent = new Event('metronome-beat');
     document.dispatchEvent(metronomeBeatEvent);
+    console.log('dispached');
+
     this.timerId = setInterval(() => {
         document.dispatchEvent(metronomeBeatEvent);
 
@@ -41,5 +41,15 @@ Metronome.prototype.playClickSound = function () {
         oscillator.frequency.value = 200; // Adjust the pitch of the click sound if needed
         oscillator.start();
         oscillator.stop(this.audioContext.currentTime + 0.1); // Adjust the duration of the click sound if needed
+    }
+}
+
+Metronome.prototype.toggleMetronomeSound = function (muteMetronomeSpan) {
+    if (muteMetronomeSpan.innerHTML === '🔊') {
+        muteMetronomeSpan.innerHTML = '🔇';
+        this.playSound = false;
+    } else {
+        muteMetronomeSpan.innerHTML = '🔊';
+        this.playSound = true;
     }
 }

@@ -13,7 +13,7 @@
 <header>
     <!--<label for="bpm-input">Metronome BPM</label>-->
     <span id="mute-metronome">🔊</span>
-    <input type="number" value="60" id="bpm-input">
+    <input type="number" value="20" id="bpm-input">
     <button id="start-stop-btn">Start</button>
 </header>
 <main>
