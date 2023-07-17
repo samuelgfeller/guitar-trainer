@@ -1,5 +1,5 @@
-import {MetronomeNoteDetector} from "./metronome-note-detector-main.js";
-import {NoteGame} from "./note-game.js";
+import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=2";
+import {NoteGame} from "./note-game.js?=2";
 
 // Get metronome and note detector app instance
 const metronomeNoteDetector = new MetronomeNoteDetector();

@@ -20,7 +20,6 @@ Metronome.prototype.startMetronome = function () {
 
     const metronomeBeatEvent = new Event('metronome-beat');
     document.dispatchEvent(metronomeBeatEvent);
-    console.log('dispached');
 
     this.timerId = setInterval(() => {
         document.dispatchEvent(metronomeBeatEvent);

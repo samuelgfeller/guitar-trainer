@@ -80,11 +80,11 @@ Tuner.prototype.processAudio = function (event) {
     for (let i = 0; i < audioData.length; i++) {
         amplitude += Math.abs(audioData[i]);
     }
-    const frequency = self.pitchDetector.do(event.inputBuffer.getChannelData(0));
+    const frequency = self.pitchDetector.do(audioData);
     amplitude /= audioData.length;
-
-    if (frequency && amplitude > 0.07) {
+    if (frequency && amplitude > 0.06) {
         const note = self.getNote(frequency);
+        // console.log(frequency,self.noteStrings[note % 12]);
         const noteDetectedEvent = new CustomEvent("note-detected", {
             detail: {
                 name: self.noteStrings[note % 12],
@@ -138,6 +138,7 @@ Tuner.prototype.init = function () {
     );
 
     const self = this;
+
 
     aubio().then(function (aubio) {
         self.pitchDetector = new aubio.Pitch(

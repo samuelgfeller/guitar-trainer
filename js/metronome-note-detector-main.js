@@ -1,5 +1,5 @@
 import {Metronome} from "./metronome.js";
-import {Tuner} from "./tuner.js";
+import {Tuner} from "./tuner.js?v=2";
 
 export const MetronomeNoteDetector = function () {
     // Uses ScriptProcessorNode which is deprecated. Couldn't make it work with chat gpt so this issue

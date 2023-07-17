@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="img/guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
+    <!--<script src="lib/aubio.js"></script>-->
     <title>Guitar trainer</title>
 </head>
 <body>
@@ -30,10 +31,18 @@
 
 </main>
 <script type="module" src="js/main.js?v=<?= mt_rand(1, 1000) ?>"></script>
-<!--<script type="module" src="js/metronome.js?v=--><?php //= mt_rand(1, 1000) ?><!--"></script>-->
-<!--<script type="module" src="js/tuner.js?v=--><?php //= mt_rand(1, 1000) ?><!--"></script>-->
-<!--<script type="module" src="js/tuner-app.js?v=--><?php //= mt_rand(1, 1000) ?><!--"></script>-->
-<!--<script type="module" src="js/note-recognition.js?v=--><?php //= mt_rand(1, 1000) ?><!--"></script>-->
 </body>
 </html>
 <?php
+$incorrectNotes = [];
+
+$previousIncorrectNote = 'A';
+$previousIncorrectString = 'A';
+
+if (isset($incorrectNotes[$previousIncorrectNote][$previousIncorrectString])){
+    $incorrectNotes[$previousIncorrectNote][$previousIncorrectString]++;
+}else{
+    $incorrectNotes[$previousIncorrectNote][$previousIncorrectString] = 1;
+}
+
+// var_dump($incorrectNotes);
