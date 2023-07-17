@@ -43,7 +43,7 @@
         width: 90px;
     }
 
-    #submit-btn {
+    #start-stop-btn {
         padding: 8px 14px;
         border: none;
         background: transparent;
@@ -54,7 +54,7 @@
         cursor: pointer;
     }
 
-    #submit-btn:hover {
+    #start-stop-btn:hover {
         /*border-bottom: 2px dotted #8a8a8a;*/
         background: rgba(255, 255, 255, .1);
     }
