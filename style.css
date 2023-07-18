@@ -112,14 +112,13 @@
     }
 
     #detected-note {
-        color: #8a8a8a;
         font-size: 45px;
         position: relative;
         display: inline-block;
         padding: 20px;
         /*width: 400px; !* Adjust the width as per your preference *!*/
         overflow: visible;
-        color: #d38b00;
+        color: #a96f00;
     }
     #detected-note::before,
     #detected-note::after {
@@ -128,7 +127,7 @@
         position: absolute;
         top: 50%;
         height: 8px; /* Maximum height of the bar */
-        background-color: rgba(0,0,0,.3); /* Set the color of the growing bar */
+        background-color: rgba(255, 255, 255,.3); /* Set the color of the growing bar */
         transition: width 0.3s ease; /* Adjust the transition duration as per your preference */
         border-radius: 99px;
     }
