@@ -11,38 +11,31 @@
     <title>Guitar trainer</title>
 </head>
 <body>
+    <input type="checkbox" class="start-stop-btn" id="challenging-notes-preset">
+<label for="challenging-notes-preset">Preset challenging notes</label>
 <header>
     <!--<label for="bpm-input">Metronome BPM</label>-->
-    <span id="mute-metronome">🔊</span>
-    <input type="number" value="20" id="bpm-input">
-    <button id="start-stop-btn">Start</button>
+    <span id="mute-metronome">🔇</span>
+    <input type="number" value="100" id="bpm-input">
+    <button class="btn" id="start-stop-btn">Start</button>
 </header>
 <main>
-    <div>
-        <span class="visible-when-game-on">String</span>
-        <span class="note-value-span visible-when-game-on" id="string-span"></span>
+    <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
+    <div id="game-start-instruction">Click start or double click anywhere to begin the game</div>
+    <div class="visible-when-game-on">
+        <span >String</span>
+        <span class="note-value-span" id="string-span"></span>
     </div>
-    <div>
-        <span class="visible-when-game-on">Note</span>
-        <span class="note-value-span visible-when-game-on" id="note-span"></span>
+    <div class="visible-when-game-on">
+        <span>Note</span>
+        <span class="note-value-span" id="note-span"></span>
     </div>
-
-    <p id="noteOutput"></p>
-
+    <div class="visible-when-game-on" id="detected-note-div">
+        <!--<span id="left-cents-bar"></span>-->
+        <p id="detected-note"></p>
+        <!--<span id="right-cents-bar"></span>-->
+    </div>
 </main>
 <script type="module" src="js/main.js?v=<?= mt_rand(1, 1000) ?>"></script>
 </body>
 </html>
-<?php
-$incorrectNotes = [];
-
-$previousIncorrectNote = 'A';
-$previousIncorrectString = 'A';
-
-if (isset($incorrectNotes[$previousIncorrectNote][$previousIncorrectString])){
-    $incorrectNotes[$previousIncorrectNote][$previousIncorrectString]++;
-}else{
-    $incorrectNotes[$previousIncorrectNote][$previousIncorrectString] = 1;
-}
-
-// var_dump($incorrectNotes);

@@ -1,10 +1,8 @@
 export const Metronome = function () {
     this.audioContext = null;
-    this.startButton = document.getElementById('start-stop-btn');
     this.bpmInput = document.getElementById('bpm-input');
     this.timerId = null;
     this.playSound = true;
-
 }
 
 Metronome.prototype.init = function () {
@@ -26,8 +24,6 @@ Metronome.prototype.startMetronome = function () {
 
         this.playClickSound();
     }, interval); // Start the metronome
-
-    // startButton.disabled =  true;
 }
 Metronome.prototype.stopMetronome = function () {
     clearInterval(this.timerId);
@@ -36,10 +32,27 @@ Metronome.prototype.stopMetronome = function () {
 Metronome.prototype.playClickSound = function () {
     if (this.playSound === true) {
         const oscillator = this.audioContext.createOscillator();
-        oscillator.connect(this.audioContext.destination);
-        oscillator.frequency.value = 200; // Adjust the pitch of the click sound if needed
+        const gainNode = this.audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        // Set the oscillator type to 'square' for a sharper sound
+        oscillator.type = 'square';
+
+        // Set a lower frequency for a duller tone
+        oscillator.frequency.value = 500;
+
+        // Set the envelope of the sound
+        const attackTime = 0.0001; // Time for the sound to reach its peak volume
+        const releaseTime = 0.01; // Time for the sound to fade out
+
+        gainNode.gain.setValueAtTime(1, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(attackTime, this.audioContext.currentTime + releaseTime);
+
+        // Start the oscillator and stop after a short duration
         oscillator.start();
-        oscillator.stop(this.audioContext.currentTime + 0.1); // Adjust the duration of the click sound if needed
+        oscillator.stop(this.audioContext.currentTime + releaseTime);
     }
 }
 

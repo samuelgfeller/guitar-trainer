@@ -36,27 +36,36 @@
         font-size: 20px;
         text-align: center;
         background: transparent;
-        color: whitesmoke;
+        color: #c0c0c0;
         border: none;
         border-bottom: 2px dashed #8a8a8a;
         padding: 5px 10px;
         width: 90px;
     }
 
-    #start-stop-btn {
+    .btn {
         padding: 8px 14px;
         border: none;
         background: transparent;
         border-radius: 10px;
-        color: whitesmoke;
+        color: #c0c0c0;
         font-size: 17px;
         box-sizing: border-box;
         cursor: pointer;
     }
 
-    #start-stop-btn:hover {
+    .btn:hover {
         /*border-bottom: 2px dotted #8a8a8a;*/
         background: rgba(255, 255, 255, .1);
+    }
+    label[for="challenging-notes-preset"]{
+        color: #919191;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #game-start-instruction{
+        color: #c0c0c0;
     }
 
     #mute-metronome {
@@ -67,7 +76,7 @@
         display: flex;
         align-items: center;
         justify-content: space-evenly;
-        /*flex-wrap: wrap;*/
+        flex-wrap: wrap;
         width: 100%;
         height: 100%;
         text-align: center;
@@ -82,16 +91,64 @@
 
     main div span {
         width: 100%;
+        /*So that they are on top of each other inside div*/
+        display: block;
     }
 
     .note-value-span {
         font-size: 100px;
         font-weight: bold;
-        color: #919191;
+        color: #bcbcbc;
     }
 
-    .visible-when-game-on{
+    .visible-when-game-on {
         display: none;
+    }
+
+    #detected-note-div {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    #detected-note {
+        color: #8a8a8a;
+        font-size: 45px;
+        position: relative;
+        display: inline-block;
+        padding: 20px;
+        /*width: 400px; !* Adjust the width as per your preference *!*/
+        overflow: visible;
+        color: #d38b00;
+    }
+    #detected-note::before,
+    #detected-note::after {
+        color: #a96f00;
+        content: '';
+        position: absolute;
+        top: 50%;
+        height: 8px; /* Maximum height of the bar */
+        background-color: rgba(0,0,0,.3); /* Set the color of the growing bar */
+        transition: width 0.3s ease; /* Adjust the transition duration as per your preference */
+        border-radius: 99px;
+    }
+
+    /* Left and right bar width set by javascript depending on the length oft bar (cent amount) */
+    #detected-note::before {
+        left: 0;
+        width: var(--left-bar-width, 0%);
+        transform: translate(-100%, -50%);
+    }
+
+    #detected-note::after {
+        right: 0;
+        transform: translate(100%, -50%);
+        width: var(--right-bar-width, 0%);
+    }
+
+    #frequency-bars {
+        position: fixed;
+        bottom: 0;
     }
 }
 
@@ -100,6 +157,7 @@
         justify-content: center;
         column-gap: 60px;
     }
+
     main {
         justify-content: center;
         gap: 10vw;

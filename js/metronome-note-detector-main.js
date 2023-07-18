@@ -1,11 +1,14 @@
-import {Metronome} from "./metronome.js";
-import {Tuner} from "./tuner.js?v=2";
+import {Metronome} from "./metronome.js?v=3";
+import {Tuner} from "./tuner.js?v=3";
+import {FrequencyBars} from "./frequency-bars.js?v=3";
 
 export const MetronomeNoteDetector = function () {
     // Uses ScriptProcessorNode which is deprecated. Couldn't make it work with chat gpt so this issue
     // https://github.com/qiuxiang/tuner/issues/18 is ignored for now as long as it works
     this.tuner = new Tuner();
     this.metronome = new Metronome();
+    this.frequencyBars = new FrequencyBars("#frequency-bars");
+    this.frequencyData;
 }
 
 MetronomeNoteDetector.prototype.start = function () {
@@ -14,13 +17,10 @@ MetronomeNoteDetector.prototype.start = function () {
     this.metronome.startMetronome();
     // Start tuner
     this.tuner.init();
-    this.tuner.frequencyData = new Uint8Array(this.tuner.analyser.frequencyBinCount);
+    // Set frequencyData instance variable
+    this.frequencyData = new Uint8Array(this.tuner.analyser.frequencyBinCount);
 
-    // Mute metronome
-    const muteMetronomeSpan = document.querySelector('#mute-metronome');
-    muteMetronomeSpan.addEventListener('click', () => {
-        this.metronome.toggleMetronomeSound(muteMetronomeSpan);
-    });
+    this.updateFrequencyBars();
 }
 
 MetronomeNoteDetector.prototype.stop = function () {
@@ -28,3 +28,11 @@ MetronomeNoteDetector.prototype.stop = function () {
     this.metronome.stopMetronome();
     this.tuner.stop();
 }
+
+MetronomeNoteDetector.prototype.updateFrequencyBars = function () {
+  if (this.tuner.analyser) {
+    this.tuner.analyser.getByteFrequencyData(this.frequencyData);
+    this.frequencyBars.update(this.frequencyData);
+  }
+  requestAnimationFrame(this.updateFrequencyBars.bind(this));
+};
