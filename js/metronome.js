@@ -2,7 +2,7 @@ export const Metronome = function () {
     this.audioContext = null;
     this.bpmInput = document.getElementById('bpm-input');
     this.timerId = null;
-    this.playSound = true;
+    this.playSound = false;
 }
 
 Metronome.prototype.init = function () {
