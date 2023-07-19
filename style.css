@@ -99,8 +99,8 @@
         width: 100%;
         height: 100%;
         text-align: center;
-        margin-top: 10vh;
         column-gap: 20vw;
+        margin-top: 40px;
     }
 
     main div {
@@ -127,7 +127,27 @@
     .visible-when-game-on {
         display: none;
     }
-
+    /*Score*/
+    #score{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 10vh;
+    }
+    #score span{
+        width: fit-content;
+        padding: 20px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    #incorrect-count {
+        color: darkred;
+    }
+    #correct-count {
+        color: green;
+    }
+    /* Detected note */
     #detected-note-div {
         width: 100%;
         text-align: center;
@@ -174,6 +194,7 @@
         bottom: 0;
         z-index: -1;
     }
+
 }
 
 @media (min-width: 641px) {

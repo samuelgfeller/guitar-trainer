@@ -27,8 +27,10 @@ function startGame() {
     noteGame.start();
     // Start metronome and note detector
     metronomeNoteDetector.start();
+    // Set the frequencyBars var in noteGame to change their color
     noteGame.frequencyBars = metronomeNoteDetector.frequencyBars;
-    if(document.querySelector('#challenging-notes-preset').checked){
+    // If preset checkbox is set, add those notes to the challenging combination
+    if (document.querySelector('#challenging-notes-preset').checked) {
         presetChallengingNotes();
     }
 }
@@ -44,22 +46,28 @@ function startStopGame() {
     const gameStartInstructions = document.querySelector('#game-start-instruction');
 
     // Start game
-    if (startStopButton.innerText === 'Start') {
-        startGame();
+    if (startStopButton.innerText === 'Start' || startStopButton.innerText === 'Resume') {
+        // Start only metronome if sound is on
+        if (metronomeNoteDetector.metronome.playSound === true) {
+            metronomeNoteDetector.metronome.init();
+            metronomeNoteDetector.metronome.startMetronome();
+        } else {
+            startGame();
+            // Show elements that are visible during the game
+            gameElements.forEach(element => {
+                element.style.display = 'block';
+            });
+            // Hide game start instructions
+            gameStartInstructions.style.display = 'none';
+            // Replace begin with resume as game is only paused when clicking "Pause"
+            gameStartInstructions.innerText = gameStartInstructions.innerText.replace('begin', 'resume');
+        }
         // Replace start button with stop button
         startStopButton.innerText = 'Pause';
-        // Show elements that are visible during the game
-        gameElements.forEach(element => {
-            element.style.display = 'block';
-        });
-        // Hide game start instructions
-        gameStartInstructions.style.display = 'none';
-        // Replace begin with resume as game is only paused when clicking "Pause"
-        gameStartInstructions.innerText = gameStartInstructions.innerText.replace('begin', 'resume');
     } else {
         stopGame();
         // Replace stop button with start button
-        startStopButton.innerText = 'Start';
+        startStopButton.innerText = 'Resume';
         gameElements.forEach(element => {
             element.style.display = 'none';
         });

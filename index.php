@@ -22,6 +22,14 @@
     </div>
 </header>
 <main>
+    <div id="challenging-count-div">
+        <span id="challenging-count"></span>
+        <span>
+        </span>
+    </div>
+    <div id="score">
+        <span id="incorrect-count"></span><span id="correct-count"></span>
+    </div>
     <div id="game-start-instruction">Click start or double click anywhere to begin the game</div>
     <div class="visible-when-game-on">
         <span class="label">String</span>
@@ -39,5 +47,6 @@
     <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>
 <script type="module" src="js/main.js?v=<?= mt_rand(1, 1000) ?>"></script>
+<!--<script type="module" src="js/test/tests-main.js?v=--><?php //= mt_rand(1, 1000) ?><!--"></script>-->
 </body>
 </html>

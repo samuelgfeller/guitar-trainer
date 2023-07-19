@@ -1,3 +1,6 @@
+import {GameUI} from "./game-ui.js";
+import {NotesProvider} from "./notes-provider.js";
+
 const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 const strings = ['D', 'E', 'G', 'A', 'B'];
 
@@ -8,11 +11,18 @@ class NoteGame {
     // Challenging note combinations
     combinations = new Map();
     noteToPlay = null;
+    correctCount = 0;
+    incorrectCount = 0;
+    // When a correct note is played, it should only be accounted once. The note-detected event may fire multiple
+    // times for the same correct note
+    correctNoteAccounted = false;
 
     constructor() {
         // Create class-level arrow function properties for event listeners so that they can be removed
         this.displayRandomNotesHandler = this.displayRandomNotes.bind(this);
         this.checkIfNoteCorrectHandler = this.checkIfNoteCorrect.bind(this);
+        this.notesProvider = new NotesProvider();
+        this.gameUI = new GameUI(this);
     }
 
     start() {
@@ -31,6 +41,7 @@ class NoteGame {
     adjustIncorrectPreviousCombinationCount() {
         // If combination was wrong last time
         if (this.previousCombinationWasIncorrect) {
+            this.incorrectCount++;
             let combinationStats = this.combinations.get(this.previousCombination);
             if (combinationStats) {
                 combinationStats.incorrect += 1;
@@ -59,6 +70,8 @@ class NoteGame {
 
     displayRandomNotes() {
         this.adjustIncorrectPreviousCombinationCount();
+        this.gameUI.updateGameProgress();
+        this.correctNoteAccounted = false;
         console.log(this.combinations);
         // Reset color of note span
         document.querySelector('#note-span').style.color = null;
@@ -81,39 +94,24 @@ class NoteGame {
             document.querySelector('#detected-note').style.color = 'green';
             // document.body.style.borderRight = '30px solid green';
             this.frequencyBars.canvasContext.fillStyle = 'green';
-            // Combination was correct meaning that its count should be adjusted or removed if over 3 times correct
-            this.adjustCombinationCorrectCount(this.previousCombination);
-            // Mark that it was correct by setting value to false
-            this.previousCombinationWasIncorrect = false;
+            // A correct note should only be accounted once but event listener catches same note multiple times
+            if (!this.correctNoteAccounted) {
+                // Combination was correct meaning that its count should be adjusted or removed if over 3 times correct
+                this.adjustCombinationCorrectCount(this.previousCombination);
+                // Mark that it was correct by setting value to false
+                this.previousCombinationWasIncorrect = false;
+                this.correctCount++;
+                this.correctNoteAccounted = true;
+                // Update game progress right when correct note was played
+                this.gameUI.updateGameProgress();
+            }
         } else {
             // If incorrect note is played, remove green color from frequency canvas and detected note
             document.querySelector('#detected-note').style.color = null;
             this.frequencyBars.canvasContext.fillStyle = 'grey';
         }
         // Display the detected note in the GUI
-        this.updateDetectedNoteAndCents(event.detail);
-    }
-
-    updateDetectedNoteAndCents(noteInfos) {
-        const detectedNote = document.querySelector('#detected-note');
-        detectedNote.innerHTML = noteInfos.name;
-        // Convert the cent value to a percentage for the bar width
-        const percentage = Math.abs(noteInfos.cents) / 2;
-
-        if (noteInfos.cents < 0) {
-            detectedNote.style.setProperty('--left-bar-width', `${percentage}vw`);
-            detectedNote.style.setProperty('--right-bar-width', '0');
-        } else if (noteInfos.cents > 0) {
-            detectedNote.style.setProperty('--left-bar-width', '0');
-            detectedNote.style.setProperty('--right-bar-width', `${percentage}vw`);
-        } else {
-            detectedNote.style.setProperty('--left-bar-width', '0');
-            detectedNote.style.setProperty('--right-bar-width', '0');
-        }
-
-        // Set the width of the bar based on the cent value and its sign
-        detectedNote.setAttribute('data-cent', noteInfos.cents); // Set the cent value as a data attribute
-
+        this.gameUI.updateDetectedNoteAndCents(event.detail);
     }
 
     getRandomElement(array) {
@@ -143,19 +141,7 @@ class NoteGame {
             // Display frequency bars in orange when challenging
             this.frequencyBars.canvasContext.fillStyle = '#a96f00';
         } else {
-            // Select a fully random note and string
-            noteName = this.getRandomElement(notes);
-            stringName = this.getRandomElement(strings);
-        }
-
-        // If the same note was played previously, display another combination as the tuner may detect the
-        // correct note even if it wasn't played this time.
-        if (this.previousCombination) {
-            const [previousStringName, previousNoteName] = this.previousCombination.split('|');
-            if (previousNoteName === noteName) {
-                // Call itself to show another note
-                return this.displayRandomNote();
-            }
+            [stringName, noteName] = this.notesProvider.getNextNoteCombination().split('|');
         }
 
         document.getElementById('note-span').innerHTML = noteName;
