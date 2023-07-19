@@ -77,8 +77,8 @@ class NoteGame {
     checkIfNoteCorrect(event) {
         // Check if detected note is the correct one
         if (this.noteToPlay === event.detail.name) {
-            document.querySelector('#note-span').style.color = '#056c05';
-            document.querySelector('#detected-note').style.color = '#056c05';
+            document.querySelector('#note-span').style.color = 'green';
+            document.querySelector('#detected-note').style.color = 'green';
             // document.body.style.borderRight = '30px solid green';
             this.frequencyBars.canvasContext.fillStyle = 'green';
             // Combination was correct meaning that its count should be adjusted or removed if over 3 times correct

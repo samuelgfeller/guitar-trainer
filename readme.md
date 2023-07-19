@@ -1,6 +1,6 @@
 # Welcome to the Fretboard Practice Game for Guitar!
 
-This game is designed to help you improve your fretboard skills and enhance your 
+This game is designed to help improve your fretboard skills and enhance your 
 ability to locate and play notes on the guitar.  
 
 It provides a fun and interactive way to practice navigating the fretboard and 
@@ -8,6 +8,7 @@ playing the correct notes on different strings.
 
 Here's how it works:
 
+1. Visit [guitar.samuel-gfeller.ch](https://guitar.samuel-gfeller.ch).
 1. Set the desired beats per minute (BPM) on the metronome.
 1. Click "Start" to begin the game.
 1. The game will display a random combination of a note and string on the graphical user interface (GUI).

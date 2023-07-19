@@ -16,10 +16,10 @@ document.querySelector('#bpm-input').addEventListener('keydown', (event) => {
 });
 
 // Mute / enable sound of metronome
-const muteMetronomeSpan = document.querySelector('#mute-metronome');
-muteMetronomeSpan.addEventListener('click', () => {
+const muteMetronomeImg = document.querySelector('#mute-metronome');
+muteMetronomeImg.addEventListener('click', () => {
     // Has to be called in an anonymous function as "this" context in toggleMetronomeSound is important
-    metronomeNoteDetector.metronome.toggleMetronomeSound(muteMetronomeSpan);
+    metronomeNoteDetector.metronome.toggleMetronomeSound(muteMetronomeImg);
 });
 
 function startGame() {

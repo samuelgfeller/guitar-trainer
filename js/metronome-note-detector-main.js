@@ -8,7 +8,7 @@ export const MetronomeNoteDetector = function () {
     this.tuner = new Tuner();
     this.metronome = new Metronome();
     this.frequencyBars = new FrequencyBars("#frequency-bars");
-    this.frequencyData;
+    this.frequencyData = null;
 }
 
 MetronomeNoteDetector.prototype.start = function () {

@@ -56,12 +56,12 @@ Metronome.prototype.playClickSound = function () {
     }
 }
 
-Metronome.prototype.toggleMetronomeSound = function (muteMetronomeSpan) {
-    if (muteMetronomeSpan.innerHTML === '🔊') {
-        muteMetronomeSpan.innerHTML = '🔇';
+Metronome.prototype.toggleMetronomeSound = function (muteMetronomeIcon) {
+    if (muteMetronomeIcon.src.includes('sound-on-icon.svg')) {
+        muteMetronomeIcon.src = 'img/mute-icon.svg';
         this.playSound = false;
     } else {
-        muteMetronomeSpan.innerHTML = '🔊';
+        muteMetronomeIcon.src = 'img/sound-on-icon.svg';
         this.playSound = true;
     }
 }
