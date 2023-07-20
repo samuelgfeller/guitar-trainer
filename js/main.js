@@ -25,14 +25,14 @@ muteMetronomeImg.addEventListener('click', () => {
 function startGame() {
     // Start game (has to be started before metronome and note detection as it contains beat event listeners fired there)
     noteGame.start();
+    // If preset checkbox is set, add those notes to the challenging combination
+    if (document.querySelector('#challenging-notes-preset').checked) {
+        noteGame.presetChallengingNotes();
+    }
     // Start metronome and note detector
     metronomeNoteDetector.start();
     // Set the frequencyBars var in noteGame to change their color
     noteGame.frequencyBars = metronomeNoteDetector.frequencyBars;
-    // If preset checkbox is set, add those notes to the challenging combination
-    if (document.querySelector('#challenging-notes-preset').checked) {
-        presetChallengingNotes();
-    }
 }
 
 function stopGame() {
@@ -76,11 +76,3 @@ function startStopGame() {
     }
 }
 
-function presetChallengingNotes() {
-    // Challenging combinations string|note
-    let challengingCombinations = ['E|C♯', 'E|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',
-        'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
-    challengingCombinations.forEach((combination) => {
-        noteGame.combinations.set(combination, {incorrect: 1, correct: 0});
-    });
-}

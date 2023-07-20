@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/progress-bar.css?v=1">
     <link rel="icon" type="image/x-icon" href="img/guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <!--<script src="lib/aubio.js"></script>-->
@@ -22,10 +23,12 @@
     </div>
 </header>
 <main>
-    <div id="challenging-count-div">
-        <span id="challenging-count"></span>
-        <span>
-        </span>
+    <div id="game-progress-div">
+        <span id="max-errors">0</span>
+        <div class="meter">
+          <span style="width: 0"></span>
+        </div>
+        <span id="min-errors">0</span>
     </div>
     <div id="score">
         <span id="incorrect-count"></span><span id="correct-count"></span>

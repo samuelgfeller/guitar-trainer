@@ -16,6 +16,7 @@ class NoteGame {
     // When a correct note is played, it should only be accounted once. The note-detected event may fire multiple
     // times for the same correct note
     correctNoteAccounted = false;
+    currentCombinationIsChallenging = false;
 
     constructor() {
         // Create class-level arrow function properties for event listeners so that they can be removed
@@ -26,15 +27,15 @@ class NoteGame {
     }
 
     start() {
-      // Event fired on each metronome beat
-      document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
-      // Custom event when played note was detected
-      document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
+        // Event fired on each metronome beat
+        document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
+        // Custom event when played note was detected
+        document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
     }
 
     stop() {
-      document.removeEventListener('metronome-beat', this.displayRandomNotesHandler);
-      document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
+        document.removeEventListener('metronome-beat', this.displayRandomNotesHandler);
+        document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
     }
 
     // Adjust the count of the previous combination that was incorrect
@@ -42,6 +43,8 @@ class NoteGame {
         // If combination was wrong last time
         if (this.previousCombinationWasIncorrect) {
             this.incorrectCount++;
+            // Reset last correct notes in a row to 0 when there was an error
+            this.gameUI.lastNotesCorrectCount = 0;
             let combinationStats = this.combinations.get(this.previousCombination);
             if (combinationStats) {
                 combinationStats.incorrect += 1;
@@ -103,21 +106,22 @@ class NoteGame {
                 this.correctCount++;
                 this.correctNoteAccounted = true;
                 // Update game progress right when correct note was played
+                if (this.combinations.size === 0){
+                    this.gameUI.lastNotesCorrectCount++;
+                }
                 this.gameUI.updateGameProgress();
             }
         } else {
             // If incorrect note is played, remove green color from frequency canvas and detected note
             document.querySelector('#detected-note').style.color = null;
-            this.frequencyBars.canvasContext.fillStyle = 'grey';
+            if (this.currentCombinationIsChallenging) {
+                this.frequencyBars.canvasContext.fillStyle = '#a96f00';
+            } else {
+                this.frequencyBars.canvasContext.fillStyle = 'grey';
+            }
         }
         // Display the detected note in the GUI
         this.gameUI.updateDetectedNoteAndCents(event.detail);
-    }
-
-    getRandomElement(array) {
-        // Helper function to get a random element from an array
-        const randomIndex = Math.floor(Math.random() * array.length);
-        return array[randomIndex];
     }
 
     /**
@@ -140,13 +144,23 @@ class NoteGame {
             [stringName, noteName] = combinationKey.split('|');
             // Display frequency bars in orange when challenging
             this.frequencyBars.canvasContext.fillStyle = '#a96f00';
+            this.currentCombinationIsChallenging = true;
         } else {
+            this.currentCombinationIsChallenging = false;
             [stringName, noteName] = this.notesProvider.getNextNoteCombination().split('|');
         }
 
         document.getElementById('note-span').innerHTML = noteName;
         document.getElementById('string-span').innerHTML = stringName;
         return {stringName: stringName, noteName: noteName};
+    }
+    presetChallengingNotes() {
+        // Challenging combinations string|note
+        let challengingCombinations = ['E|C♯', 'E|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',
+            'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
+        challengingCombinations.forEach((combination) => {
+            this.combinations.set(combination, {incorrect: 1, correct: 0});
+        });
     }
 }
 
