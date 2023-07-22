@@ -1,8 +1,11 @@
+import {GameProgress} from "./game-progress.js";
+
 class GameUI {
     noteGame;
 
     constructor(noteGameInstance) {
         this.noteGame = noteGameInstance;
+        this.gameProgress = new GameProgress(this);
         // The far left (0%) is always the max wrong combinations
         this.maxWrongCombinations = 0;
         // At the end of the progress bar, when there is no challenging notes left, the user has to do 10 correct
@@ -10,6 +13,7 @@ class GameUI {
         this.lastNotesCorrectCount = 0;
         // Amount of required notes to be played correctly in a row
         this.requiredCorrectLastNotes = 10;
+        this.requiredCorrectNotesBeginning = 2;
     }
 
     updateGameProgress() {
@@ -28,20 +32,38 @@ class GameUI {
         let percentage = 0;
         // If there are no more challenging notes, calculate percentage with last correct notes count
         if (challengingCombinationsCount === 0) {
+            let requiredCorrectNotesAmount = this.requiredCorrectLastNotes;
+            if (this.maxWrongCombinations === 0) {
+                // If there were no wrong combination it's the beginning of the level. For it to be not too
+                // easy, the required correct notes is increased to 20 instead of 10
+                requiredCorrectNotesAmount = this.requiredCorrectNotesBeginning;
+            }
             // percentage = this.lastNotesCorrectCount / this.requiredCorrectLastNotes * 100;
-            percentage = this.lastNotesCorrectCount / this.requiredCorrectLastNotes * 100;
+            percentage = this.lastNotesCorrectCount / requiredCorrectNotesAmount * 100;
             progressBar.innerText = this.lastNotesCorrectCount;
+            // Set the right side of the progress bar to the amount or required correct notes
+            document.querySelector('#min-errors').innerHTML = requiredCorrectNotesAmount;
         } else {
-            percentage =  ((this.maxWrongCombinations - challengingCombinationsCount) / this.maxWrongCombinations) * 100;
-            progressBar.innerText = challengingCombinationsCount;
+            // If there are challenging notes, the percentage is max wrongs minus
+            percentage = ((this.maxWrongCombinations - challengingCombinationsCount) / this.maxWrongCombinations) * 100;
+            // Display actual challenging combinations in progress bar span when not currently max
+            if (challengingCombinationsCount !== this.maxWrongCombinations) {
+                progressBar.innerText = challengingCombinationsCount;
+            }
+            // Set the right side of the progress bar to 0 to indicate that the first goal is to get to 0 challenging notes
+            document.querySelector('#min-errors').innerHTML = '0';
         }
-        if (percentage === 100) {
+
+        progressBar.style.width = `${percentage}%`;
+        if (percentage >= 100) {
             progressBar.style.borderRadius = '20px';
+            this.gameProgress.leveledUp();
         } else {
             progressBar.style.borderRadius = null;
         }
-        progressBar.style.width = `${percentage}%`;
     }
+
+
 
     updateDetectedNoteAndCents(noteInfos) {
         const detectedNote = document.querySelector('#detected-note');

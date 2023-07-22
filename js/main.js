@@ -1,78 +1,85 @@
-import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=3";
-import {NoteGame} from "./note-game.js?=3";
+import {MetronomeNoteDetector} from "./metronome-note-detector-main.js";
+import {NoteGame} from "./note-game.js";
 
-// Get metronome and note detector app instance
-const metronomeNoteDetector = new MetronomeNoteDetector();
-const noteGame = new NoteGame();
-
-const startStopButton = document.querySelector('#start-stop-btn');
-// Start metronome and note detection
-startStopButton.addEventListener('click', startStopGame);
-document.body.addEventListener('dblclick', startStopGame);
-document.querySelector('#bpm-input').addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        startStopGame();
+class GameStarter {
+    constructor() {
+        this.metronomeNoteDetector = new MetronomeNoteDetector();
+        this.noteGame = new NoteGame(this);
+        this.startStopButton = document.querySelector('#start-stop-btn');
+        this.muteMetronomeImg = document.querySelector('#mute-metronome');
     }
-});
 
-// Mute / enable sound of metronome
-const muteMetronomeImg = document.querySelector('#mute-metronome');
-muteMetronomeImg.addEventListener('click', () => {
-    // Has to be called in an anonymous function as "this" context in toggleMetronomeSound is important
-    metronomeNoteDetector.metronome.toggleMetronomeSound(muteMetronomeImg);
-});
-
-function startGame() {
-    // Start game (has to be started before metronome and note detection as it contains beat event listeners fired there)
-    noteGame.start();
-    // If preset checkbox is set, add those notes to the challenging combination
-    if (document.querySelector('#challenging-notes-preset').checked) {
-        noteGame.presetChallengingNotes();
-    }
-    // Start metronome and note detector
-    metronomeNoteDetector.start();
-    // Set the frequencyBars var in noteGame to change their color
-    noteGame.frequencyBars = metronomeNoteDetector.frequencyBars;
-}
-
-function stopGame() {
-    metronomeNoteDetector.stop();
-    noteGame.stop();
-}
-
-function startStopGame() {
-    // Toggle hide / show these elements
-    let gameElements = document.querySelectorAll('.visible-when-game-on');
-    const gameStartInstructions = document.querySelector('#game-start-instruction');
-
-    // Start game
-    if (startStopButton.innerText === 'Start' || startStopButton.innerText === 'Resume') {
-        // Start only metronome if sound is on
-        if (metronomeNoteDetector.metronome.playSound === true) {
-            metronomeNoteDetector.metronome.init();
-            metronomeNoteDetector.metronome.startMetronome();
-        } else {
-            startGame();
-            // Show elements that are visible during the game
-            gameElements.forEach(element => {
-                element.style.display = 'block';
-            });
-            // Hide game start instructions
-            gameStartInstructions.style.display = 'none';
-            // Replace begin with resume as game is only paused when clicking "Pause"
-            gameStartInstructions.innerText = gameStartInstructions.innerText.replace('begin', 'resume');
-        }
-        // Replace start button with stop button
-        startStopButton.innerText = 'Pause';
-    } else {
-        stopGame();
-        // Replace stop button with start button
-        startStopButton.innerText = 'Resume';
-        gameElements.forEach(element => {
-            element.style.display = 'none';
+    init() {
+        this.startStopButton.addEventListener('click', this.startStopGame.bind(this));
+        document.body.addEventListener('dblclick', this.startStopGame.bind(this));
+        const bpmInput = document.querySelector('#bpm-input');
+        bpmInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                this.startStopGame();
+            }
         });
-        // Show game start instructions
-        gameStartInstructions.style.display = 'block';
+        this.updateIsLevelAccomplishedColor(bpmInput);
+        bpmInput.addEventListener('change', (e) => {
+            this.updateIsLevelAccomplishedColor(bpmInput);
+        });
+
+        this.muteMetronomeImg.addEventListener('click', () => {
+            this.metronomeNoteDetector.metronome.toggleMetronomeSound(this.muteMetronomeImg);
+        });
+    }
+
+    updateIsLevelAccomplishedColor(bpmInput){
+        if (this.noteGame.gameUI.gameProgress.isLevelAccomplished(bpmInput.value)){
+            document.querySelector('header div').style.borderBottomColor = 'green';
+        }else{
+            document.querySelector('header div').style.borderBottomColor = null;
+        }
+    }
+
+    startGame() {
+        this.noteGame.init();
+        this.metronomeNoteDetector.init();
+        this.noteGame.frequencyBars = this.metronomeNoteDetector.frequencyBars;
+        if (document.querySelector('#challenging-notes-preset').checked) {
+            this.noteGame.presetChallengingNotes();
+        }
+        this.metronomeNoteDetector.start();
+        document.querySelector('#game-progress-div').style.display = null;
+        document.querySelector('#game-start-instruction details').open = false;
+    }
+
+    stopGame() {
+        this.metronomeNoteDetector.stop();
+        this.noteGame.stop();
+    }
+
+    startStopGame() {
+        let gameElements = document.querySelectorAll('.visible-when-game-on');
+        const gameStartInstructions = document.querySelector('#game-start-instruction');
+
+        if (this.startStopButton.innerText === 'Start' || this.startStopButton.innerText === 'Resume') {
+            if (this.metronomeNoteDetector.metronome.playSound === true) {
+                this.metronomeNoteDetector.metronome.init();
+                this.metronomeNoteDetector.metronome.startMetronome();
+            } else {
+                this.startGame();
+                gameElements.forEach(element => {
+                    element.style.display = 'block';
+                });
+                gameStartInstructions.style.display = 'none';
+                gameStartInstructions.innerHTML = gameStartInstructions.innerHTML.replace('begin', 'resume');
+            }
+            this.startStopButton.innerText = 'Pause';
+        } else {
+            this.stopGame();
+            this.startStopButton.innerText = 'Resume';
+            gameElements.forEach(element => {
+                element.style.display = 'none';
+            });
+            gameStartInstructions.style.display = 'block';
+        }
     }
 }
 
+const game = new GameStarter();
+game.init();

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/modal.css?v=1">
     <link rel="stylesheet" href="css/style.css?v=4">
     <link rel="stylesheet" href="css/progress-bar.css?v=1">
     <link rel="icon" type="image/x-icon" href="img/guitar.ico">
@@ -23,17 +24,34 @@
     </div>
 </header>
 <main>
-    <div id="game-progress-div">
+    <!--<div id="progress-bar-title-div">-->
+    <!--    <span>Challenging notes count</span>-->
+    <!--</div>-->
+    <div id="game-progress-div" style="display: none">
         <span id="max-errors">0</span>
         <div class="meter">
-          <span style="width: 0"></span>
+            <span style="width: 0"></span>
         </div>
         <span id="min-errors">0</span>
     </div>
     <div id="score">
         <span id="incorrect-count"></span><span id="correct-count"></span>
     </div>
-    <div id="game-start-instruction">Click start or double click anywhere to begin the game</div>
+    <div id="game-start-instruction">
+        <details open>
+            <summary><h3>Game instructions</h3></summary>
+            <p>Click "Start" to begin the game, or simply double-click anywhere on the screen.</p>
+            <p>When you fail to play a note correctly, it gets added to the challenging notes list.</p>
+            <p>The challenging notes have a higher chance of reappearing in the game to help you focus on learning
+                them.</p>
+            <p>The progress bar represents the number of challenging notes that still need to be "learned"
+                correctly.</p>
+            <p>Each time you play a challenging note correctly when it appears 3 times in a row, the progress bar
+                advances.</p>
+            <p>After mastering all challenging notes, 10 additional notes have to be played correctly to fill the
+                progress bar to 100% and complete the level.</p>
+        </details>
+    </div>
     <div class="visible-when-game-on">
         <span class="label">String</span>
         <span class="note-value-span" id="string-span"></span>
@@ -50,6 +68,7 @@
     <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>
 <script type="module" src="js/main.js?v=<?= mt_rand(1, 1000) ?>"></script>
-<!--<script type="module" src="js/test/tests-main.js?v=--><?php //= mt_rand(1, 1000) ?><!--"></script>-->
+<!--<script type="module" src="js/test/tests-main.js?v=--><?php
+//= mt_rand(1, 1000) ?><!--"></script>-->
 </body>
 </html>

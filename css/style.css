@@ -8,8 +8,9 @@
     * {
         box-sizing: border-box;
         font-family: VarelaRound, sans-serif, serif;
+    }
+    *:not(h1):not(h2):not(h3):not(h4){
         font-size: 20px;
-        /*color: whitesmoke;*/
     }
 
     body, html {
@@ -20,6 +21,7 @@
 
     body {
         background: #0e0e0e;
+        color: #919191;
     }
 
     header {
@@ -83,7 +85,29 @@
     }
 
     #game-start-instruction {
+        width: 100%;
+        justify-content: center;
         color: #c0c0c0;
+        text-align: center;
+        gap: 0;
+        max-width: 975px;
+    }
+    #game-start-instruction p{
+        margin: 14px;
+    }
+    #game-start-instruction details{
+        width: 100%;
+        margin-top: 20px;
+    }
+    details summary{
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+    details summary > * {
+      display: inline;
+    }
+    details summary h3{
+        margin-left: 10px;
     }
 
     #mute-metronome {
@@ -103,7 +127,7 @@
         margin-top: 40px;
     }
 
-    main div {
+    main > div {
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
@@ -133,7 +157,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 10vh;
     }
     #score span{
         width: fit-content;
@@ -194,7 +217,10 @@
         bottom: 0;
         z-index: -1;
     }
-
+    #progress-bar-title-div{
+        width: 100%;
+        margin-bottom: 10px;
+    }
     #game-progress-div{
         width: 90%;
         align-items: center;
@@ -212,6 +238,22 @@
         text-align: right;
         padding-right: 5px;
     }
+    /*summary::marker{*/
+    /*    content: none;*/
+    /*}*/
+    /*details>summary {*/
+    /*  list-style: none;*/
+    /*}*/
+    /*summary::-webkit-details-marker {*/
+    /*  display: none*/
+    /*}*/
+
+    /*summary::after {*/
+    /*  content: ' ►';*/
+    /*}*/
+    /*details[open] summary:after {*/
+    /*  content: " ▼";*/
+    /*}*/
 }
 
 @media (min-width: 641px) {
@@ -237,4 +279,5 @@
     #game-progress-div {
         width: 50%;
     }
+
 }

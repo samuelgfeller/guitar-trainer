@@ -18,15 +18,16 @@ class NoteGame {
     correctNoteAccounted = false;
     currentCombinationIsChallenging = false;
 
-    constructor() {
+    constructor(gameStarter) {
         // Create class-level arrow function properties for event listeners so that they can be removed
-        this.displayRandomNotesHandler = this.displayRandomNotes.bind(this);
+        this.displayRandomNotesHandler = this.displayNotes.bind(this);
         this.checkIfNoteCorrectHandler = this.checkIfNoteCorrect.bind(this);
         this.notesProvider = new NotesProvider();
         this.gameUI = new GameUI(this);
+        this.gameStarter = gameStarter;
     }
 
-    start() {
+    init() {
         // Event fired on each metronome beat
         document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
         // Custom event when played note was detected
@@ -71,18 +72,18 @@ class NoteGame {
         }
     }
 
-    displayRandomNotes() {
+    displayNotes() {
         this.adjustIncorrectPreviousCombinationCount();
         this.gameUI.updateGameProgress();
         this.correctNoteAccounted = false;
-        console.log(this.combinations);
+        console.debug(`Previous combination: ${this.previousCombination}`);
         // Reset color of note span
         document.querySelector('#note-span').style.color = null;
         document.querySelector('#detected-note').style.color = null;
         this.frequencyBars ? this.frequencyBars.canvasContext.fillStyle = 'grey' : null;
 
-        // Display random note and string
-        let {noteName, stringName} = this.displayRandomNote();
+        // Display next note and string
+        let {noteName, stringName} = this.displayNextCombination();
         this.noteToPlay = noteName;
 
         // Set incorrect by default, changed to false if correct note was played (in highlightNoteIfCorrect)
@@ -106,7 +107,7 @@ class NoteGame {
                 this.correctCount++;
                 this.correctNoteAccounted = true;
                 // Update game progress right when correct note was played
-                if (this.combinations.size === 0){
+                if (this.combinations.size === 0) {
                     this.gameUI.lastNotesCorrectCount++;
                 }
                 this.gameUI.updateGameProgress();
@@ -124,14 +125,26 @@ class NoteGame {
         this.gameUI.updateDetectedNoteAndCents(event.detail);
     }
 
+
     /**
      * Displays random string and note returning the note
      * @return {{stringName: string, noteName: string}}
      */
-    displayRandomNote() {
-        let noteName, stringName;
+    attemptToDisplayNextCombinationCount = 0;
 
-        let combinationsAmount = this.combinations.size
+    displayNextCombination() {
+        // If this function was already called more than 500 times, it is assumed, that it'd be stuck
+        // in an infinite loop caused by the challenging note and next combination being the same or
+        // other reasons that I may not have predicted yet.
+        if (this.attemptToDisplayNextCombinationCount > 500) {
+            this.notesProvider.incrementShuffledNotesIndex();
+            console.debug(`There were over 500 failed attempts to display next combination.`
+            + `The shuffled notes index was incremented.`)
+            return this.displayNextCombination();
+        }
+        let noteName, stringName, combination;
+
+        let combinationsAmount = this.combinations.size;
 
         // Check if there are any combinations and increase likelihood of picking an element from the
         // combinations list as the number of elements increases
@@ -140,20 +153,40 @@ class NoteGame {
         if (combinationsAmount > 0 && Math.random() < combinationsAmount / (combinationsAmount + 3)) {
             // Select a random combination note from the combinations list
             const combinationIndex = Math.floor(Math.random() * this.combinations.size);
-            const combinationKey = [...this.combinations.keys()][combinationIndex];
-            [stringName, noteName] = combinationKey.split('|');
+            combination = [...this.combinations.keys()][combinationIndex];
+            [stringName, noteName] = combination.split('|');
             // Display frequency bars in orange when challenging
             this.frequencyBars.canvasContext.fillStyle = '#a96f00';
             this.currentCombinationIsChallenging = true;
         } else {
             this.currentCombinationIsChallenging = false;
-            [stringName, noteName] = this.notesProvider.getNextNoteCombination().split('|');
+            combination = this.notesProvider.getNextNoteCombination();
+            [stringName, noteName] = combination.split('|');
+        }
+
+        // Since we are mixing combinations from notesProvider and challenging combinations, there may be
+        // same consecutive notes or half a tone appart on the same string, so it's tested here and
+        // if it's the case the function is called again.
+        if (this.previousCombination && this.notesProvider.isHalfToneDifference(this.previousCombination, combination)) {
+            console.debug(`Previous combination ${this.previousCombination} and current ${this.previousCombination}` +
+                ` not over half a tone difference so a new combination is displayed.`);
+            // To prevent infinite loops when e.g. the next note combination from note provider is A|D and the
+            // only challenging note is also A|D, there is a count on how many times this function is called;
+            this.attemptToDisplayNextCombinationCount++;
+            return this.displayNextCombination();
+        } else if (this.currentCombinationIsChallenging === false) {
+            // Otherwise and if combination stems from notesProvider, the index is incremented
+            // or wrap around if necessary
+            this.notesProvider.incrementShuffledNotesIndex();
+            // Reset the attempts to display next combination counter
+            this.attemptToDisplayNextCombinationCount = 0;
         }
 
         document.getElementById('note-span').innerHTML = noteName;
         document.getElementById('string-span').innerHTML = stringName;
         return {stringName: stringName, noteName: noteName};
     }
+
     presetChallengingNotes() {
         // Challenging combinations string|note
         let challengingCombinations = ['E|C♯', 'E|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',

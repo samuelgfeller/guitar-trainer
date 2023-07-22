@@ -11,16 +11,18 @@ export const MetronomeNoteDetector = function () {
     this.frequencyData = null;
 }
 
-MetronomeNoteDetector.prototype.start = function () {
+MetronomeNoteDetector.prototype.init = function () {
     // Start metronome audioContext can only be set after a user action
     this.metronome.init();
-    this.metronome.startMetronome();
     // Start tuner
     this.tuner.init();
+
     // Set frequencyData instance variable
     this.frequencyData = new Uint8Array(this.tuner.analyser.frequencyBinCount);
-
     this.updateFrequencyBars();
+}
+MetronomeNoteDetector.prototype.start = function () {
+    this.metronome.startMetronome();
 }
 
 MetronomeNoteDetector.prototype.stop = function () {
@@ -30,9 +32,9 @@ MetronomeNoteDetector.prototype.stop = function () {
 }
 
 MetronomeNoteDetector.prototype.updateFrequencyBars = function () {
-  if (this.tuner.analyser) {
-    this.tuner.analyser.getByteFrequencyData(this.frequencyData);
-    this.frequencyBars.update(this.frequencyData);
-  }
-  requestAnimationFrame(this.updateFrequencyBars.bind(this));
+    if (this.tuner.analyser) {
+        this.tuner.analyser.getByteFrequencyData(this.frequencyData);
+        this.frequencyBars.update(this.frequencyData);
+    }
+    requestAnimationFrame(this.updateFrequencyBars.bind(this));
 };
