@@ -1,4 +1,4 @@
-import {GameProgress} from "./game-progress.js";
+import {GameProgress} from "./game-progress.js?v=2";
 
 class GameUI {
     noteGame;
@@ -14,11 +14,11 @@ class GameUI {
         // Amount of required notes to be played correctly in a row
         this.requiredCorrectLastNotes = 10;
         this.requiredCorrectNotesBeginning = 20;
+        // If user wants to continue playing after 100% reached
+        this.alreadyLeveledUp = false;
     }
 
     updateGameProgress() {
-        document.querySelector('#correct-count').innerText = this.noteGame.correctCount;
-        document.querySelector('#incorrect-count').innerText = this.noteGame.incorrectCount;
         // document.querySelector('#challenging-count').innerText = this.noteGame.combinations.size;
         const progressBar = document.querySelector('.meter span');
         const challengingCombinationsCount = this.noteGame.combinations.size;
@@ -26,8 +26,10 @@ class GameUI {
         // Update max wrong combinations to the actual value if it's greater than the previous max.
         if (challengingCombinationsCount > this.maxWrongCombinations) {
             this.maxWrongCombinations = challengingCombinationsCount;
-            document.querySelector('#max-errors').innerHTML = this.maxWrongCombinations;
         }
+        // Update game stats after setting the actual maxWrongCombinations
+        this.updateGameStatsDisplay();
+
         // Set percentage
         let percentage = 0;
         // If there are no more challenging notes, calculate percentage with last correct notes count
@@ -54,16 +56,35 @@ class GameUI {
             document.querySelector('#min-errors').innerHTML = '0';
         }
 
-        progressBar.style.width = `${percentage}%`;
+        let progressBarWidth = percentage > 100 ? 100 : percentage;
+        progressBar.style.width = `${progressBarWidth}%`;
         if (percentage >= 100) {
             progressBar.style.borderRadius = '20px';
-            this.gameProgress.leveledUp();
+            if (!this.alreadyLeveledUp) {
+                this.gameProgress.leveledUp();
+            }
         } else {
             progressBar.style.borderRadius = null;
+            this.alreadyLeveledUp = false;
         }
     }
 
+    clearStats(){
+        this.noteGame.combinations = new Map();
+        this.maxWrongCombinations = 0;
+        this.noteGame.incorrectCount = 0;
+        this.noteGame.correctCount = 0;
+        this.lastNotesCorrectCount = 0;
+        document.querySelector('#game-progress-div').style.display = 'none';
+        document.querySelector('#score').style.display = 'none';
+        this.updateGameStatsDisplay();
+    }
 
+    updateGameStatsDisplay(){
+        document.querySelector('#correct-count').innerText = this.noteGame.correctCount;
+        document.querySelector('#incorrect-count').innerText = this.noteGame.incorrectCount;
+        document.querySelector('#max-errors').innerHTML = this.maxWrongCombinations;
+    }
 
     updateDetectedNoteAndCents(noteInfos) {
         const detectedNote = document.querySelector('#detected-note');

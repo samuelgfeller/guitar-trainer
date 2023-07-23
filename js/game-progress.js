@@ -3,12 +3,14 @@ export class GameProgress {
         this.gameUI = gameUI;
         this.closeModalEventHandler = this.closeModalEvent.bind(this);
         this.nextLevelEventHandler = this.nextLevelEvent.bind(this);
+        this.defaultStartingLevel = 13;
     }
 
     leveledUp() {
         this.gameUI.noteGame.gameStarter.stopGame();
         document.querySelector('header div').style.borderBottomColor = 'green';
         this.addAccomplishedLevel(document.getElementById('bpm-input').value);
+        this.gameUI.alreadyLeveledUp = true;
 
         let header = `<h2>Congratulations 🎉</h2>`;
         let body = `<div>Level completed!</div>`;
@@ -26,6 +28,7 @@ export class GameProgress {
         // Add event listeners
         document.getElementById('close-modal-btn').addEventListener('click', this.closeModalEventHandler);
         document.getElementById('next-lvl-modal-btn').addEventListener('click', this.nextLevelEventHandler);
+        document.getElementById('modal').addEventListener('click', this.closeModalEventHandler);
     }
 
     closeModalEvent() {
@@ -36,11 +39,18 @@ export class GameProgress {
         let modal = document.getElementById('modal');
         document.getElementById('close-modal-btn').removeEventListener('click', this.closeModalEventHandler);
         document.getElementById('next-lvl-modal-btn').removeEventListener('click', this.nextLevelEventHandler);
+        document.getElementById('modal').removeEventListener('click', this.closeModalEventHandler);
         modal.remove();
     }
 
     nextLevelEvent() {
-
+        this.gameUI.clearStats();
+        let bpmInput = document.getElementById('bpm-input');
+        bpmInput.stepUp();
+        // stepUp on input type number doesn't automatically fire the "change" event
+        const changeEvent = new Event('change');
+        bpmInput.dispatchEvent(changeEvent);
+        this.gameUI.noteGame.gameStarter.hideGameElementsAndDisplayInstructions();
     }
 
     // Store the accomplished levels in localStorage
@@ -71,6 +81,15 @@ export class GameProgress {
     isLevelAccomplished(level) {
         let levels = this.getAccomplishedLevels();
         return levels.includes(level);
+    }
+
+    getCurrentLevel(){
+        let levels = this.getAccomplishedLevels();
+        if (Array.isArray(levels) && levels.length > 0) {
+            return parseInt(levels[levels.length - 1]) + 1;
+        }
+        // Return default level
+        return this.defaultStartingLevel;
     }
 
 }

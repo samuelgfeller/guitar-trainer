@@ -19,7 +19,11 @@
     <div>
         <!--<label for="bpm-input">Metronome BPM</label>-->
         <img src="img/mute-icon.svg" id="mute-metronome" class="icon">
-        <input type="number" min="0" value="17" id="bpm-input">
+        <div class="center-flexbox">
+            <img src="img/next-level.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
+            <input type="number" min="0" value="17" id="bpm-input">
+            <img src="img/next-level.svg" alt=">" id="next-lvl-btn" class="icon lvl-icon">
+        </div>
         <button class="btn" id="start-stop-btn">Start</button>
     </div>
 </header>
@@ -34,7 +38,7 @@
         </div>
         <span id="min-errors">0</span>
     </div>
-    <div id="score">
+    <div id="score" style="display:none;">
         <span id="incorrect-count"></span><span id="correct-count"></span>
     </div>
     <div id="game-start-instruction">

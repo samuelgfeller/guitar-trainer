@@ -44,6 +44,7 @@ class NoteGame {
         // If combination was wrong last time
         if (this.previousCombinationWasIncorrect) {
             this.incorrectCount++;
+            console.debug(`Combination ${this.previousCombination} not played.`)
             // Reset last correct notes in a row to 0 when there was an error
             this.gameUI.lastNotesCorrectCount = 0;
             let combinationStats = this.combinations.get(this.previousCombination);
@@ -76,9 +77,10 @@ class NoteGame {
         this.adjustIncorrectPreviousCombinationCount();
         this.gameUI.updateGameProgress();
         this.correctNoteAccounted = false;
-        console.debug(`Previous combination: ${this.previousCombination}`);
+        // console.debug(`Previous combination: ${this.previousCombination}`);
         // Reset color of note span
         document.querySelector('#note-span').style.color = null;
+        document.querySelector('#string-span').style.color = null;
         document.querySelector('#detected-note').style.color = null;
         this.frequencyBars ? this.frequencyBars.canvasContext.fillStyle = 'grey' : null;
 
@@ -95,6 +97,7 @@ class NoteGame {
         // Check if detected note is the correct one
         if (this.noteToPlay === event.detail.name) {
             document.querySelector('#note-span').style.color = 'green';
+            document.querySelector('#string-span').style.color = null;
             document.querySelector('#detected-note').style.color = 'green';
             // document.body.style.borderRight = '30px solid green';
             this.frequencyBars.canvasContext.fillStyle = 'green';
@@ -115,11 +118,11 @@ class NoteGame {
         } else {
             // If incorrect note is played, remove green color from frequency canvas and detected note
             document.querySelector('#detected-note').style.color = null;
-            if (this.currentCombinationIsChallenging) {
-                this.frequencyBars.canvasContext.fillStyle = '#a96f00';
-            } else {
-                this.frequencyBars.canvasContext.fillStyle = 'grey';
-            }
+            // if (this.currentCombinationIsChallenging) {
+            //     this.frequencyBars.canvasContext.fillStyle = '#a96f00';
+            // } else {
+            //     this.frequencyBars.canvasContext.fillStyle = 'grey';
+            // }
         }
         // Display the detected note in the GUI
         this.gameUI.updateDetectedNoteAndCents(event.detail);
@@ -131,15 +134,16 @@ class NoteGame {
      * @return {{stringName: string, noteName: string}}
      */
     attemptToDisplayNextCombinationCount = 0;
+    displayNotesEvenIfNotHalfToneAppart = false;
 
     displayNextCombination() {
         // If this function was already called more than 500 times, it is assumed, that it'd be stuck
         // in an infinite loop caused by the challenging note and next combination being the same or
         // other reasons that I may not have predicted yet.
-        if (this.attemptToDisplayNextCombinationCount > 500) {
+        if (this.attemptToDisplayNextCombinationCount > 200) {
             this.notesProvider.incrementShuffledNotesIndex();
-            console.debug(`There were over 500 failed attempts to display next combination.`
-            + `The shuffled notes index was incremented.`)
+            console.debug(`There were over 200 failed attempts to display next combination. \n`
+                + `The shuffled notes index was incremented.`);
             return this.displayNextCombination();
         }
         let noteName, stringName, combination;
@@ -156,7 +160,10 @@ class NoteGame {
             combination = [...this.combinations.keys()][combinationIndex];
             [stringName, noteName] = combination.split('|');
             // Display frequency bars in orange when challenging
-            this.frequencyBars.canvasContext.fillStyle = '#a96f00';
+            // this.frequencyBars.canvasContext.fillStyle = '#a96f00';
+            // Display combination in orange
+            document.getElementById('string-span').style.color = '#a96f00';
+            document.getElementById('note-span').style.color = '#a96f00';
             this.currentCombinationIsChallenging = true;
         } else {
             this.currentCombinationIsChallenging = false;
@@ -168,22 +175,33 @@ class NoteGame {
         // same consecutive notes or half a tone appart on the same string, so it's tested here and
         // if it's the case the function is called again.
         if (this.previousCombination && this.notesProvider.isHalfToneDifference(this.previousCombination, combination)) {
-            console.debug(`Previous combination ${this.previousCombination} and current ${this.previousCombination}` +
-                ` not over half a tone difference so a new combination is displayed.`);
+            console.debug(`Previous combination ${this.previousCombination} and current ${combination}` +
+                ` not over half a tone difference so a new combination is displayed. Challenging count: ${combinationsAmount}`);
+
             // To prevent infinite loops when e.g. the next note combination from note provider is A|D and the
             // only challenging note is also A|D, there is a count on how many times this function is called;
+            // Once this count exceeds the given limit, the current combination is displayed regardless
+            // if it's the same note on a different string or not half a tone appart
             this.attemptToDisplayNextCombinationCount++;
-            return this.displayNextCombination();
-        } else if (this.currentCombinationIsChallenging === false) {
+            if (this.attemptToDisplayNextCombinationCount > 200) {
+                console.debug(`Next combination displayed even if not half tone appart or same note. Attempts over 200.`)
+            } else {
+                // Call function again to try to find a combination that is half a tone appart (in challenging or vice versa)
+                return this.displayNextCombination();
+            }
+        }
+        if (this.currentCombinationIsChallenging === false) {
             // Otherwise and if combination stems from notesProvider, the index is incremented
             // or wrap around if necessary
             this.notesProvider.incrementShuffledNotesIndex();
-            // Reset the attempts to display next combination counter
-            this.attemptToDisplayNextCombinationCount = 0;
         }
+
+        // Reset the attempts to display next combination counter
+        this.attemptToDisplayNextCombinationCount = 0;
 
         document.getElementById('note-span').innerHTML = noteName;
         document.getElementById('string-span').innerHTML = stringName;
+        console.debug(`Displaying ${this.currentCombinationIsChallenging ? `challenging ` : ``}combination ${combination}`);
         return {stringName: stringName, noteName: noteName};
     }
 
