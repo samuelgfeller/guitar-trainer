@@ -13,7 +13,7 @@ class GameUI {
         this.lastNotesCorrectCount = 0;
         // Amount of required notes to be played correctly in a row
         this.requiredCorrectLastNotes = 10;
-        this.requiredCorrectNotesBeginning = 2;
+        this.requiredCorrectNotesBeginning = 20;
     }
 
     updateGameProgress() {
