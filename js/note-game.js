@@ -1,5 +1,5 @@
-import {GameUI} from "./game-ui.js";
-import {NotesProvider} from "./notes-provider.js";
+import {GameUI} from "./game-ui.js?v=4";
+import {NotesProvider} from "./notes-provider.js?v=4";
 
 const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 const strings = ['D', 'E', 'G', 'A', 'B'];

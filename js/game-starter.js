@@ -1,7 +1,7 @@
-import {MetronomeNoteDetector} from "./metronome-note-detector-main.js";
-import {NoteGame} from "./note-game.js";
-import {GameInitializer} from "./game-initializer.js";
-import {ScreenWakeLockManager} from "./screen-wake-lock-manager.js";
+import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=4";
+import {NoteGame} from "./note-game.js?v=4";
+import {GameInitializer} from "./game-initializer.js?v=4";
+import {ScreenWakeLockManager} from "./screen-wake-lock-manager.js?v=4";
 
 class GameStarter {
     constructor() {

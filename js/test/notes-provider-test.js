@@ -1,4 +1,4 @@
-import {NotesProvider} from "../notes-provider.js?v=2";
+import {NotesProvider} from "../notes-provider.js?v=4";
 
 class TestNotesProvider {
     constructor() {

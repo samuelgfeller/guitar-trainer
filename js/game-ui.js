@@ -1,4 +1,4 @@
-import {GameProgress} from "./game-progress.js?v=2";
+import {GameProgress} from "./game-progress.js?v=4";
 
 class GameUI {
     noteGame;
