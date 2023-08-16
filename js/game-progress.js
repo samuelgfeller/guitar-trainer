@@ -50,7 +50,7 @@ export class GameProgress {
         // stepUp on input type number doesn't automatically fire the "change" event
         const changeEvent = new Event('change');
         bpmInput.dispatchEvent(changeEvent);
-        this.gameUI.noteGame.gameStarter.hideGameElementsAndDisplayInstructions();
+        this.gameUI.noteGame.gameStarter.gameInitializer.hideGameElementsAndDisplayInstructions();
     }
 
     // Store the accomplished levels in localStorage
@@ -83,6 +83,10 @@ export class GameProgress {
         return levels.includes(level);
     }
 
+    /**
+     * Get the current level which is always one higher than the last completed or the default value
+     * @return {number}
+     */
     getCurrentLevel(){
         let levels = this.getAccomplishedLevels();
         if (Array.isArray(levels) && levels.length > 0) {

@@ -71,7 +71,7 @@
     </div>
     <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>
-<script type="module" src="js/main.js?v=<?= mt_rand(1, 1000) ?>"></script>
+<script type="module" src="js/game-starter.js?v=<?= mt_rand(1, 1000) ?>"></script>
 <!--<script type="module" src="js/test/tests-main.js?v=--><?php
 //= mt_rand(1, 1000) ?><!--"></script>-->
 </body>
