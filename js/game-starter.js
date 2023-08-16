@@ -46,6 +46,7 @@ class GameStarter {
                 this.gameInitializer.onlyMetronome = false;
             }
         } else {
+            this.gameInitializer.gameManuallyPaused = true;
             this.stopGame();
             // Hide game elements and display instructions (not inside stopGame() for when level is accomplished)
             this.gameInitializer.hideGameElementsAndDisplayInstructions();
@@ -80,6 +81,8 @@ class GameStarter {
         gameStartInstructions.innerHTML = gameStartInstructions.innerHTML.replace('begin', 'resume');
         // Prevent screen from getting dark on mobile
         void this.wakeLock.requestWakeLock();
+        // To know if game should start automatically after visibility change event, keep manually paused in var
+        this.gameInitializer.gameManuallyPaused = false;
     }
 
     /**

@@ -97,7 +97,7 @@ class NoteGame {
         // Check if detected note is the correct one
         if (this.noteToPlay === event.detail.name) {
             document.querySelector('#note-span').style.color = 'green';
-            document.querySelector('#string-span').style.color = null;
+            // document.querySelector('#string-span').style.color = null;
             document.querySelector('#detected-note').style.color = 'green';
             // document.body.style.borderRight = '30px solid green';
             this.frequencyBars.canvasContext.fillStyle = 'green';
@@ -134,7 +134,6 @@ class NoteGame {
      * @return {{stringName: string, noteName: string}}
      */
     attemptToDisplayNextCombinationCount = 0;
-    displayNotesEvenIfNotHalfToneAppart = false;
 
     displayNextCombination() {
         // If this function was already called more than 500 times, it is assumed, that it'd be stuck
@@ -155,15 +154,10 @@ class NoteGame {
         // For one element, the likelihood is approximately 50%, and it approaches 100% as the number
         // of elements grows
         if (combinationsAmount > 0 && Math.random() < combinationsAmount / (combinationsAmount + 3)) {
-            // Select a random combination note from the combinations list
+            // Select a random combination note from the challenging combinations list
             const combinationIndex = Math.floor(Math.random() * this.combinations.size);
             combination = [...this.combinations.keys()][combinationIndex];
             [stringName, noteName] = combination.split('|');
-            // Display frequency bars in orange when challenging
-            // this.frequencyBars.canvasContext.fillStyle = '#a96f00';
-            // Display combination in orange
-            document.getElementById('string-span').style.color = '#a96f00';
-            document.getElementById('note-span').style.color = '#a96f00';
             this.currentCombinationIsChallenging = true;
         } else {
             this.currentCombinationIsChallenging = false;
@@ -194,11 +188,16 @@ class NoteGame {
             // Otherwise and if combination stems from notesProvider, the index is incremented
             // or wrap around if necessary
             this.notesProvider.incrementShuffledNotesIndex();
+        } else {
+            // If challenging, display frequency bars in orange when challenging
+            // this.frequencyBars.canvasContext.fillStyle = '#a96f00';
+            // Display combination in orange when challenging
+            document.getElementById('string-span').style.color = '#a96f00';
+            document.getElementById('note-span').style.color = '#a96f00';
         }
 
         // Reset the attempts to display next combination counter
         this.attemptToDisplayNextCombinationCount = 0;
-
         document.getElementById('note-span').innerHTML = noteName;
         document.getElementById('string-span').innerHTML = stringName;
         console.debug(`Displaying ${this.currentCombinationIsChallenging ? `challenging ` : ``}combination ${combination}`);

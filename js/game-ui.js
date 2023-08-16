@@ -67,6 +67,10 @@ class GameUI {
             progressBar.style.borderRadius = null;
             this.alreadyLeveledUp = false;
         }
+        // Remove span content of progress bar if its 0
+        if (progressBarWidth === 0){
+            progressBar.innerText = '';
+        }
     }
 
     clearStats(){

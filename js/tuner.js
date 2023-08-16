@@ -18,7 +18,6 @@ export const Tuner = function (a4 = 440) {
         "A♯",
         "B",
     ];
-
     this.initGetUserMedia();
 };
 
@@ -61,6 +60,7 @@ Tuner.prototype.startRecord = function () {
     navigator.mediaDevices
         .getUserMedia({audio: true})
         .then(function (stream) {
+            self.stream = stream; // Keep stream to remove mic access later
             self.audioContext.createMediaStreamSource(stream).connect(self.analyser);
             self.analyser.connect(self.scriptProcessor);
             self.scriptProcessor.connect(self.audioContext.destination);
@@ -82,6 +82,7 @@ Tuner.prototype.processAudio = function (event) {
     }
     const frequency = self.pitchDetector.do(audioData);
     amplitude /= audioData.length;
+    // If amplitude is not high enough (above 0.06), don't try to figure out note as its probably only background noise
     if (frequency && amplitude > 0.06) {
         const note = self.getNote(frequency);
         // console.log(frequency,self.noteStrings[note % 12]);
@@ -110,7 +111,7 @@ Tuner.prototype.stopRecord = function () {
         this.analyser = null;
     }
     if (this.audioContext) {
-        this.audioContext.close();
+        void this.audioContext.close();
         this.audioContext = null;
     }
 

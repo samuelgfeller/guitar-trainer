@@ -4,6 +4,7 @@ export class GameInitializer {
         this.startStopButton = document.querySelector('#start-stop-btn');
         // When only metronome should be played and not the whole game (when sound on before pressing start)
         this.onlyMetronome = false;
+        this.gameManuallyPaused = false;
     }
 
     initGameStartStopEventListeners() {
@@ -48,8 +49,8 @@ export class GameInitializer {
          * Change color of the bottom line to indicated level is accomplished
          * @param bpmInput
          */
-        function updateIsLevelAccomplishedColor(bpmInput) {
-            if (this.noteGame.gameUI.gameProgress.isLevelAccomplished(bpmInput.value)) {
+        const updateIsLevelAccomplishedColor = (bpmInput) => {
+            if (this.gameStarter.noteGame.gameUI.gameProgress.isLevelAccomplished(bpmInput.value)) {
                 document.querySelector('header div').style.borderBottomColor = 'green';
             } else {
                 document.querySelector('header div').style.borderBottomColor = null;
@@ -59,17 +60,17 @@ export class GameInitializer {
 
     /**
      * When user quits the website (visibility change) the game should be stopped
-     * and screen wake lock released. On return, game should be started resumed
+     * and screen wake lock released. On return, game should be resumed (after countdown)
      * and wake lock requested.
      */
     initPauseAndResumeGameOnVisibilityChange() {
         let countdownInterval;
         document.addEventListener('visibilitychange', (e) => {
-            // In case visibility change event was fired multiple times before 3s countodown
+            // In case visibility change event was fired multiple times before 3s countdown
             clearInterval(countdownInterval);
             document.getElementById('modal')?.remove();
             // If not only metronome is playing (meaning the normal game)
-            if (this.onlyMetronome !== true) {
+            if (this.onlyMetronome !== true && this.gameManuallyPaused === false) {
                 // When visible after a visibility change event, start game after 3s and request wake lock
                 if (document.visibilityState === 'visible') {
                     // Display time before restart modal box
