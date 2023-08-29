@@ -5,7 +5,7 @@ export class NotesProvider {
         this.shuffledNotes = [];
         this.currentIndex = 0;
         this.shuffledAmount = 0;
-        this.strings = ['^E', 'B', 'G', 'D', 'A', 'E'];
+        this.strings = ['Ê', 'B', 'G', 'D', 'A', 'E'];
         this.notes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'];
         // const notes = ['C', 'C♯', 'D', 'D♯',];
 

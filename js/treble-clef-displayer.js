@@ -120,7 +120,7 @@ export class TrebleClefDisplayer {
                 // After C, octave is 5
                 return 5;
             // High E
-            case '^E':
+            case 'Ê':
                 // If string is high E and note is E or higher, it's the 5th octave after C it's the 6th
                 if (semitonesFromC >= semitonesFromCMapping['E']) {
                     return 5;
