@@ -1,8 +1,9 @@
-import {GameUI} from "./game-ui.js?v=4";
-import {NotesProvider} from "./notes-provider.js?v=4";
+import {GameUI} from "./game-ui.js?v=5";
+import {NotesProvider} from "./notes-provider.js?v=5";
+import {TrebleClefDisplayer} from "./treble-clef-displayer.js?v=5";
 
-const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
-const strings = ['D', 'E', 'G', 'A', 'B'];
+// const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+// const strings = ['D', 'E', 'G', 'A', 'B'];
 
 class NoteGame {
     frequencyBars;
@@ -17,6 +18,7 @@ class NoteGame {
     // times for the same correct note
     correctNoteAccounted = false;
     currentCombinationIsChallenging = false;
+    displayInTrebleClef;
 
     constructor(gameStarter) {
         // Create class-level arrow function properties for event listeners so that they can be removed
@@ -25,6 +27,7 @@ class NoteGame {
         this.notesProvider = new NotesProvider();
         this.gameUI = new GameUI(this);
         this.gameStarter = gameStarter;
+        this.trebleClefDisplayer = new TrebleClefDisplayer(this);
     }
 
     init() {
@@ -85,7 +88,7 @@ class NoteGame {
         this.frequencyBars ? this.frequencyBars.canvasContext.fillStyle = 'grey' : null;
 
         // Display next note and string
-        let {noteName, stringName} = this.displayNextCombination();
+        let {noteName, stringName} = this.prepareNextCombination();
         this.noteToPlay = noteName;
 
         // Set incorrect by default, changed to false if correct note was played (in highlightNoteIfCorrect)
@@ -94,8 +97,11 @@ class NoteGame {
     }
 
     checkIfNoteCorrect(event) {
-        // Check if detected note is the correct one
-        if (this.noteToPlay === event.detail.name) {
+        // Check if detected note is the correct one (includes as sharp / flats are the same semitone)
+        let playedNote = event.detail.name;
+        let [sharp, flat] = playedNote.includes(' | ') ? playedNote.split(' | ') : [playedNote, playedNote];
+        // console.log(`noteToPlay: ${this.noteToPlay}\nSharp: ${sharp}\nFlat: ${flat}\n${this.noteToPlay === flat}`);
+        if (this.noteToPlay === sharp || this.noteToPlay === flat) {
             document.querySelector('#note-span').style.color = 'green';
             // document.querySelector('#string-span').style.color = null;
             document.querySelector('#detected-note').style.color = 'green';
@@ -135,7 +141,7 @@ class NoteGame {
      */
     attemptToDisplayNextCombinationCount = 0;
 
-    displayNextCombination() {
+    prepareNextCombination() {
         // If this function was already called more than 500 times, it is assumed, that it'd be stuck
         // in an infinite loop caused by the challenging note and next combination being the same or
         // other reasons that I may not have predicted yet.
@@ -143,7 +149,7 @@ class NoteGame {
             this.notesProvider.incrementShuffledNotesIndex();
             console.debug(`There were over 200 failed attempts to display next combination. \n`
                 + `The shuffled notes index was incremented.`);
-            return this.displayNextCombination();
+            return this.prepareNextCombination();
         }
         let noteName, stringName, combination;
 
@@ -181,7 +187,7 @@ class NoteGame {
                 console.debug(`Next combination displayed even if not half tone appart or same note. Attempts over 200.`)
             } else {
                 // Call function again to try to find a combination that is half a tone appart (in challenging or vice versa)
-                return this.displayNextCombination();
+                return this.prepareNextCombination();
             }
         }
         if (this.currentCombinationIsChallenging === false) {
@@ -198,16 +204,30 @@ class NoteGame {
 
         // Reset the attempts to display next combination counter
         this.attemptToDisplayNextCombinationCount = 0;
-        document.getElementById('note-span').innerHTML = noteName;
-        document.getElementById('string-span').innerHTML = stringName;
+        this.displayCombination(stringName, noteName);
         console.debug(`Displaying ${this.currentCombinationIsChallenging ? `challenging ` : ``}combination ${combination}`);
         return {stringName: stringName, noteName: noteName};
     }
 
+    displayCombination(stringName, noteName) {
+        if (this.displayInTrebleClef === true) {
+            this.trebleClefDisplayer.displayCombinationInTrebleClef(stringName, noteName);
+        } else {
+            document.getElementById('note-span').innerHTML = noteName;
+        }
+        document.getElementById('string-span').innerHTML = stringName;
+    }
+
     presetChallengingNotes() {
         // Challenging combinations string|note
-        let challengingCombinations = ['E|C♯', 'E|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',
+        let challengingCombinationsTrebleClef = ['E|E', 'E|F', 'E|F♯', 'E|G', 'E|G♯', 'E|A', 'E|A♯', 'E|B',
+            'E|C♯', 'E|D', 'E|D♯', '^E|C♯', '^E|D', '^E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A♯', 'D|B',
             'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
+        let challengingCombinations = ['E|C♯', '^E|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',
+            'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
+        if (this.displayInTrebleClef === true){
+            challengingCombinations = challengingCombinationsTrebleClef;
+        }
         challengingCombinations.forEach((combination) => {
             this.combinations.set(combination, {incorrect: 1, correct: 0});
         });

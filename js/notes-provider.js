@@ -5,8 +5,8 @@ export class NotesProvider {
         this.shuffledNotes = [];
         this.currentIndex = 0;
         this.shuffledAmount = 0;
-        this.strings = ['E', 'B', 'G', 'D', 'A'];
-        this.notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+        this.strings = ['^E', 'B', 'G', 'D', 'A', 'E'];
+        this.notes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'];
         // const notes = ['C', 'C♯', 'D', 'D♯',];
 
         // Set the notes list during object construction
@@ -132,16 +132,16 @@ export class NotesProvider {
     /**
      * Retrieves the next note combination from the shuffled list.
      * Returns the note combination.
-     * The current index is updated in displayNextCombination function.
+     * The current index is updated in prepareNextCombination function.
      * @returns {string} The next note combination.
      */
     getNextNoteCombination() {
         // Get the next note from the shuffled list
         return this.shuffledNotes[this.currentIndex];
-        // The index is incremented in function displayNextCombination
+        // The index is incremented in function prepareNextCombination
     }
 
-    incrementShuffledNotesIndex(){
+    incrementShuffledNotesIndex() {
         // Increment the index and wrap around if necessary
         this.currentIndex = (this.currentIndex + 1) % this.shuffledNotes.length;
     }

@@ -1,7 +1,7 @@
-import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=4";
-import {NoteGame} from "./note-game.js?v=4";
-import {GameInitializer} from "./game-initializer.js?v=4";
-import {ScreenWakeLockManager} from "./screen-wake-lock-manager.js?v=4";
+import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=5";
+import {NoteGame} from "./note-game.js?v=5";
+import {GameInitializer} from "./game-initializer.js?v=5";
+import {ScreenWakeLockManager} from "./screen-wake-lock-manager.js?v=5";
 
 class GameStarter {
     constructor() {
@@ -64,6 +64,10 @@ class GameStarter {
         if (document.querySelector('#challenging-notes-preset').checked) {
             this.noteGame.presetChallengingNotes();
         }
+        if (document.querySelector('#display-in-treble-clef').checked) {
+            this.noteGame.displayInTrebleClef = true;
+        }
+
         this.metronomeNoteDetector.start();
         // Remove "display:none" on game progress and score
         document.querySelector('#game-progress-div').style.display = null;

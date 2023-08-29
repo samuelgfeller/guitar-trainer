@@ -4,17 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="css/modal.css?v=4">
-    <link rel="stylesheet" href="css/style.css?v=4">
-    <link rel="stylesheet" href="css/progress-bar.css?v=4">
+    <link rel="stylesheet" href="css/modal.css?v=5">
+    <link rel="stylesheet" href="css/style.css?v=5">
+    <link rel="stylesheet" href="css/progress-bar.css?v=5">
     <link rel="icon" type="image/x-icon" href="img/guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
     <!--<script src="lib/aubio.js"></script>-->
     <title>Guitar trainer</title>
 </head>
 <body>
-<input type="checkbox" class="start-stop-btn" id="challenging-notes-preset" alt="Preset challenging notes">
+
 <!--<label for="challenging-notes-preset">Preset challenging notes</label>-->
+<div id="settings-div">
+    <label class='checkbox-button dashboard-panel-toggle-btn'>
+        <input type="checkbox" class="start-stop-btn" id="challenging-notes-preset" alt="Preset challenging notes">
+        <span class="normal-font-size">Challenging</span>
+    </label>
+    <label class='checkbox-button dashboard-panel-toggle-btn'>
+        <input type='checkbox' checked id="display-in-treble-clef"><span class="normal-font-size">Treble clef</span>
+    </label>
+</div>
 <header>
     <div>
         <!--<label for="bpm-input">Metronome BPM</label>-->
@@ -63,6 +73,7 @@
     <div class="visible-when-game-on">
         <span class="label">Note</span>
         <span class="note-value-span" id="note-span"></span>
+          <div id="treble-clef-output"></div>
     </div>
     <div class="visible-when-game-on" id="detected-note-div">
         <!--<span id="left-cents-bar"></span>-->

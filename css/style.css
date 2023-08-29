@@ -10,7 +10,7 @@
         font-family: VarelaRound, sans-serif, serif;
     }
 
-    *:not(h1):not(h2):not(h3):not(h4) {
+    :not(.normal-font-size):not(h1):not(h2):not(h3):not(h4) {
         font-size: 20px;
     }
 
@@ -22,17 +22,37 @@
 
     body {
         background: #0e0e0e;
+        /*background: white;*/
         color: #919191;
     }
 
-    header {
+    #settings-div{
+        /*margin-top: 3vh;*/
+    }
+
+    .checkbox-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 4px 12px 4px 8px;
+        background: #1f2425;
+        border: 3px solid #3c4143;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+    .checkbox-button span{
+        font-size: 16px;
+
+    }
+    header, #settings-div {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
         width: 100%;
         align-items: center;
-
     }
 
     header > div {
@@ -83,6 +103,17 @@
         color: #919191;
         font-size: 16px;
         cursor: pointer;
+    }
+    #treble-clef-output{
+        width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+    }
+    #treble-clef-output svg{
+        display: block;
+        height: 100%;
     }
 
     #game-start-instruction {
@@ -145,7 +176,8 @@
         display: block;
     }
 
-    .note-value-span {
+    /* Class name twice to increase specificity */
+    .note-value-span.note-value-span{
         font-size: 130px;
         font-weight: bold;
         color: #bcbcbc;
@@ -208,6 +240,7 @@
     }
 
     #detected-note {
+        line-height: 20px;
         font-size: 45px;
         position: relative;
         display: inline-block;
