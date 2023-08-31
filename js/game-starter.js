@@ -64,9 +64,8 @@ class GameStarter {
         if (document.querySelector('#challenging-notes-preset').checked) {
             this.noteGame.presetChallengingNotes();
         }
-        if (document.querySelector('#display-in-treble-clef').checked) {
-            this.noteGame.displayInTrebleClef = true;
-        }
+        this.noteGame.displayInTrebleClef = document.querySelector('#display-in-treble-clef').checked;
+        this.noteGame.displayTrebleClefNoteName = document.querySelector('#display-note-name-treble-clef').checked;
 
         this.metronomeNoteDetector.start();
         // Remove "display:none" on game progress and score

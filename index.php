@@ -24,6 +24,10 @@
     <label class='checkbox-button dashboard-panel-toggle-btn'>
         <input type='checkbox' checked id="display-in-treble-clef"><span class="normal-font-size">Treble clef</span>
     </label>
+    <label class='checkbox-button dashboard-panel-toggle-btn'>
+        <input type='checkbox' id="display-note-name-treble-clef"><span class="normal-font-size">Note name</span>
+    </label>
+
 </div>
 <header>
     <div>

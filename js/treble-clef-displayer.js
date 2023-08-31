@@ -60,7 +60,11 @@ export class TrebleClefDisplayer {
 
         // Draw it!
         vf.draw();
-        output.innerHTML = output.innerHTML + originalNoteName;
+        // Display note name if0uB
+
+        if (this.noteGame.displayTrebleClefNoteName === true) {
+            output.innerHTML = output.innerHTML + originalNoteName;
+        }
     }
 
     /**

@@ -18,7 +18,8 @@ class NoteGame {
     // times for the same correct note
     correctNoteAccounted = false;
     currentCombinationIsChallenging = false;
-    displayInTrebleClef;
+    displayInTrebleClef = false;
+    displayTrebleClefNoteName = false;
 
     constructor(gameStarter) {
         // Create class-level arrow function properties for event listeners so that they can be removed
