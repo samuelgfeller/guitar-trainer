@@ -1,6 +1,6 @@
-import {GameUI} from "./game-ui.js?v=5";
-import {NotesProvider} from "./notes-provider.js?v=5";
-import {TrebleClefDisplayer} from "./treble-clef-displayer.js?v=5";
+import {GameUI} from "./game-ui.js?v=0.5";
+import {NotesProvider} from "./notes-provider.js?v=0.5";
+import {TrebleClefDisplayer} from "./treble-clef-displayer.js?v=0.5";
 
 // const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 // const strings = ['D', 'E', 'G', 'A', 'B'];
