@@ -1,14 +1,13 @@
-import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=0.5";
-import {NoteGame} from "./note-game.js?v=0.5";
-import {GameInitializer} from "./game-initializer.js?v=0.5";
-import {ScreenWakeLockManager} from "./screen-wake-lock-manager.js?v=0.5";
+import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=0.6";
+import {NoteGame} from "./note-game.js?v=0.6";
+import {GameInitializer} from "./game-initializer.js?v=0.6";
+import {ScreenWakeLockManager} from "./screen-wake-lock-manager.js?v=0.6";
 
 class GameStarter {
     constructor() {
         this.metronomeNoteDetector = new MetronomeNoteDetector();
         this.noteGame = new NoteGame(this);
         this.startStopButton = document.querySelector('#start-stop-btn');
-        this.muteMetronomeImg = document.querySelector('#mute-metronome');
         this.wakeLock = new ScreenWakeLockManager();
         this.gameInitializer = new GameInitializer(this);
     }
@@ -23,18 +22,18 @@ class GameStarter {
         this.gameInitializer.initBpmInputChangeListener();
         // Init pause / resume game on visibility change
         this.gameInitializer.initPauseAndResumeGameOnVisibilityChange();
-        // Init mute metronome toggle button
-        this.muteMetronomeImg.addEventListener('click', () => {
-            this.metronomeNoteDetector.metronome.toggleMetronomeSound(this.muteMetronomeImg);
-        });
+        this.gameInitializer.initSettingsEventListeners()
     }
 
     /**
      * Start and stop game or metronome
      */
     startStopGame() {
-        if (this.startStopButton.innerText === 'Start' || this.startStopButton.innerText === 'Resume') {
-            if (this.metronomeNoteDetector.metronome.playSound === true) {
+        if (this.startStopButton.innerText === 'Play') {
+            // In case settings is expanded, remove it
+            document.getElementById('settings-div').classList.remove('expanded');
+
+            if (document.querySelector('#metronome-mode').checked) {
                 // If play sound is true, only start metronome and not whole game
                 this.metronomeNoteDetector.metronome.init();
                 this.metronomeNoteDetector.metronome.startMetronome();
@@ -79,9 +78,6 @@ class GameStarter {
             element.style.display = 'block';
         });
         document.querySelector('#game-start-instruction').style.display = 'none';
-        // Change the word "begin" in the game instructions
-        const gameStartInstructions = document.querySelector('#game-start-instruction');
-        gameStartInstructions.innerHTML = gameStartInstructions.innerHTML.replace('begin', 'resume');
         // Prevent screen from getting dark on mobile
         void this.wakeLock.requestWakeLock();
         // To know if game should start automatically after visibility change event, keep manually paused in var
@@ -94,7 +90,7 @@ class GameStarter {
     stopGame() {
         this.metronomeNoteDetector.stop();
         this.noteGame.stop();
-        this.startStopButton.innerText = 'Resume';
+        this.startStopButton.innerText = 'Play';
         // Set false to not account error when user clicks pause
         this.noteGame.previousCombinationWasIncorrect = false;
         this.wakeLock.releaseWakeLock();

@@ -2,7 +2,6 @@ export const Metronome = function () {
     this.audioContext = null;
     this.bpmInput = document.getElementById('bpm-input');
     this.timerId = null;
-    this.playSound = false;
 }
 
 Metronome.prototype.init = function () {
@@ -30,7 +29,7 @@ Metronome.prototype.stopMetronome = function () {
     this.timerId = null;
 }
 Metronome.prototype.playClickSound = function () {
-    if (this.playSound === true) {
+    if (document.querySelector('#metronome-mode').checked) {
         const oscillator = this.audioContext.createOscillator();
         const gainNode = this.audioContext.createGain();
 
@@ -56,7 +55,8 @@ Metronome.prototype.playClickSound = function () {
     }
 }
 
-Metronome.prototype.toggleMetronomeSound = function (muteMetronomeIcon) {
+Metronome.prototype.toggleMetronomeSound = function (muteMetronomeBtn) {
+    const muteMetronomeIcon = muteMetronomeBtn.querySelector('img');
     if (muteMetronomeIcon.src.includes('sound-on-icon.svg')) {
         muteMetronomeIcon.src = 'img/mute-icon.svg';
         this.playSound = false;

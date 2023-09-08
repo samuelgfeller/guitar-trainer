@@ -10,7 +10,7 @@ Here's how it works:
 
 1. Visit [guitar.samuel-gfeller.ch](https://guitar.samuel-gfeller.ch).
 1. Set the desired beats per minute (BPM) on the metronome.
-1. Click "Start" to begin the game.
+1. Click "Play" to start or resume the game.
 1. The game will display a random combination of a note and string on the graphical user interface (GUI).
 1. Your goal is to play the correct note on the given string before the combination switches to the next one.
 1. If you have enabled microphone access, the game will listen for the correct note. When you play the right note on the string, it will be highlighted in green to indicate a correct response.

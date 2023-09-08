@@ -7,11 +7,25 @@ export class GameInitializer {
         this.gameManuallyPaused = false;
     }
 
+    initSettingsEventListeners() {
+        // Settings toggle button
+        document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
+            this.toggleSettingsExpand();
+        });
+    }
+
     initGameStartStopEventListeners() {
         // Start / stop button event listener
         this.startStopButton.addEventListener('click', this.gameStarter.startStopGame.bind(this.gameStarter));
+        // Self has to be used in the following as we loose the "this" context in the event listener anonymous func
+        let self = this;
         // Start on double click anywhere in the body
-        document.body.addEventListener('dblclick', this.gameStarter.startStopGame.bind(this.gameStarter));
+        document.addEventListener('dblclick', function (e) {
+            // Check if the target is <body> or if a parent of the target is <main>
+            if (e.target === document.body || e.target.closest('main')) {
+                self.gameStarter.startStopGame();
+            }
+        });
         // Start with Enter key press on bpm input
         document.querySelector('#bpm-input').addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
@@ -32,7 +46,7 @@ export class GameInitializer {
             this.gameStarter.stopGame();
             this.hideGameElementsAndDisplayInstructions();
             this.gameStarter.noteGame.gameUI.clearStats();
-            this.startStopButton.innerText = 'Start';
+            this.startStopButton.innerText = 'Play';
         });
         // stepUp and stepDown on input type number don't automatically fire the "change" event
         const changeEvent = new Event('change');
@@ -106,5 +120,8 @@ export class GameInitializer {
             element.style.display = 'none';
         });
         document.querySelector('#game-start-instruction').style.display = 'block';
+    }
+    toggleSettingsExpand() {
+        document.getElementById('settings-div').classList.toggle('expanded');
     }
 }

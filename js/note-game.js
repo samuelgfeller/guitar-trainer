@@ -1,6 +1,6 @@
-import {GameUI} from "./game-ui.js?v=0.5";
-import {NotesProvider} from "./notes-provider.js?v=0.5";
-import {TrebleClefDisplayer} from "./treble-clef-displayer.js?v=0.5";
+import {GameUI} from "./game-ui.js?v=0.6";
+import {NotesProvider} from "./notes-provider.js?v=0.6";
+import {TrebleClefDisplayer} from "./treble-clef-displayer.js?v=0.6";
 
 // const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 // const strings = ['D', 'E', 'G', 'A', 'B'];
@@ -211,7 +211,7 @@ class NoteGame {
     }
 
     displayCombination(stringName, noteName) {
-        if (this.displayInTrebleClef === true) {
+        if (this.displayInTrebleClef === true || this.displayTrebleClefNoteName === true) {
             this.trebleClefDisplayer.displayCombinationInTrebleClef(stringName, noteName);
         } else {
             document.getElementById('note-span').innerHTML = noteName;

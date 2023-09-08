@@ -26,26 +26,6 @@
         color: #919191;
     }
 
-    #settings-div{
-        /*margin-top: 3vh;*/
-    }
-
-    .checkbox-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5em;
-        padding: 4px 12px 4px 8px;
-        background: #1f2425;
-        border: 3px solid #3c4143;
-        border-radius: 20px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        margin-right: 10px;
-    }
-    .checkbox-button span{
-        font-size: 16px;
-
-    }
     header, #settings-div {
         display: flex;
         flex-wrap: wrap;
@@ -58,13 +38,57 @@
     header > div {
         display: flex;
         align-items: center;
-        gap: 20px;
-        justify-content: space-around;
+        /*gap: 20px;*/
+        justify-content: space-between;
         /*background: #a46d49;*/
         /*border-radius: 30px;*/
-        padding: 3vh;
+        padding: 3vh 0;
         width: 90%;
         border-bottom: 10px dotted saddlebrown;
+    }
+
+    .checkbox-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 4px 12px 4px 8px;
+        background: #1f2425;
+        border: 3px solid #3c4143;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    .checkbox-button span {
+        font-size: 16px;
+    }
+
+    #settings-div {
+        row-gap: 0;
+        /*Hide by default, expand when user clicks on the settings icon*/
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+    }
+
+    #settings-div.expanded {
+        max-height: 200px;
+        /*overflow: hidden; !* Initially, hide the overflow *!*/
+        /* Delayed animation to prevent showing the scrollbar while settings-div is expanding */
+        animation: enableScroll 0.5s ease 0.5s forwards;
+    }
+
+    /*Enable scroll in case there are more buttons than 200px height*/
+    @keyframes enableScroll {
+        to {
+            overflow: auto; /* Apply overflow: auto after the delay */
+        }
+    }
+    /*#settings-div.expanded label{*/
+    /*    margin-top: ;*/
+    /*}*/
+    #settings-toggle-btn {
+        cursor: pointer;
     }
 
     #bpm-input {
@@ -78,8 +102,8 @@
         width: 90px;
     }
 
-    .btn {
-        padding: 8px 14px;
+    .start-stop-btn {
+        padding: 8px 8px;
         border: none;
         background: transparent;
         border-radius: 10px;
@@ -89,7 +113,7 @@
         cursor: pointer;
     }
 
-    .btn:hover {
+    .start-stop-btn:hover {
         /*border-bottom: 2px dotted #8a8a8a;*/
         background: rgba(255, 255, 255, .1);
     }
@@ -99,19 +123,26 @@
         filter: invert(70%);
     }
 
+    .button-icon {
+        width: 30px;
+        filter: invert(70%);
+    }
+
     label[for="challenging-notes-preset"] {
         color: #919191;
         font-size: 16px;
         cursor: pointer;
     }
-    #treble-clef-output{
+
+    #treble-clef-output {
         width: 200px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 30px;
     }
-    #treble-clef-output svg{
+
+    #treble-clef-output svg {
         display: block;
         height: 100%;
     }
@@ -152,16 +183,14 @@
     }
 
     main {
-
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
         flex-wrap: wrap;
         width: 100%;
         height: 100%;
         text-align: center;
-        column-gap: 20vw;
-        margin-top: 40px;
+        margin-top: 20px;
     }
 
     main > div {
@@ -177,7 +206,7 @@
     }
 
     /* Class name twice to increase specificity */
-    .note-value-span.note-value-span{
+    .note-value-span.note-value-span {
         font-size: 130px;
         font-weight: bold;
         color: #bcbcbc;
@@ -198,12 +227,14 @@
     #next-lvl-btn {
         transform: rotate(-90deg);
     }
-    .lvl-icon{
-        width: 16px;
-        margin: 15px;
+
+    .lvl-icon {
+        width: 50px;
+        padding: 15px;
         cursor: pointer;
     }
-    .center-flexbox{
+
+    .center-flexbox {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -211,6 +242,7 @@
 
     /*Score*/
     #score {
+        margin-top: 10px;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -219,7 +251,7 @@
 
     #score span {
         width: fit-content;
-        padding: 20px;
+        padding: 0 20px;
         font-size: 30px;
         font-weight: bold;
     }
@@ -244,7 +276,7 @@
         font-size: 45px;
         position: relative;
         display: inline-block;
-        padding: 20px;
+        padding: 0 20px;
         /*width: 400px; !* Adjust the width as per your preference *!*/
         overflow: visible;
         color: #a96f00;
@@ -307,6 +339,10 @@
         padding-right: 5px;
     }
 
+    .hidden {
+        display: none !important;
+    }
+
     /*summary::marker{*/
     /*    content: none;*/
     /*}*/
@@ -325,8 +361,15 @@
 }
 
 @media (min-width: 641px) {
+    main {
+        margin-top: 40px;
+        justify-content: center;
+        column-gap: 20vw;
+    }
+
     header > div {
         width: 60%;
+        justify-content: space-around;
         /*justify-content: center;*/
         /*column-gap: 60px;*/
     }
