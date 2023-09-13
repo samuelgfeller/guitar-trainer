@@ -128,12 +128,6 @@
         filter: invert(70%);
     }
 
-    label[for="challenging-notes-preset"] {
-        color: #919191;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
     #treble-clef-output {
         width: 200px;
         display: flex;

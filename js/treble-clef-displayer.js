@@ -1,7 +1,7 @@
 export class TrebleClefDisplayer {
+
     constructor(noteGame) {
         this.noteGame = noteGame;
-
     }
 
     displayCombinationInTrebleClef(stringName, noteName) {
@@ -50,7 +50,7 @@ export class TrebleClefDisplayer {
 
         // Set the note color to white
         const voice = system.getVoices()[0]; // Get the first voice
-        const notes = voice.getTickables();   // Get the tickables (notes) in the voice
+        const notes = voice.getTickables();
         notes.forEach(note => {
             note.setStyle({
                 strokeStyle: '#bcbcbc',
@@ -60,7 +60,6 @@ export class TrebleClefDisplayer {
 
         // Draw it!
         vf.draw();
-        // Display note name if0uB
 
         if (this.noteGame.displayTrebleClefNoteName === true) {
             output.innerHTML = output.innerHTML + originalNoteName;

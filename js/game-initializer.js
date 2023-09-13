@@ -7,11 +7,23 @@ export class GameInitializer {
         this.gameManuallyPaused = false;
     }
 
-    initSettingsEventListeners() {
+    initSettings() {
         // Settings toggle button
         document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
             this.toggleSettingsExpand();
         });
+        const settingSwitches = document.querySelectorAll('#settings-div label');
+        for (const setting of settingSwitches) {
+            const input = setting.querySelector('input');
+            // Event listener to save setting switch in localstorage when changed
+            setting.addEventListener('click', () => {
+                localStorage.setItem(setting.id, input.checked ? '1' : '0');
+            });
+            // Set the input checked state with the one from local storage
+            if ((localStorage.getItem(setting.id) ?? '0') === '1') {
+                input.checked = true;
+            }
+        }
     }
 
     initGameStartStopEventListeners() {

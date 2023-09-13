@@ -20,26 +20,25 @@ require __DIR__ . '/JsImportVersionAdder.php';
 </head>
 <body>
 
-<!--<label for="challenging-notes-preset">Preset challenging notes</label>-->
 <div id="settings-div">
     <label class='checkbox-button dashboard-panel-toggle-btn' id="mute-metronome">
         <input type='checkbox' id="metronome-mode">
         <img src="img/metronome-icon.svg" class="button-icon">
     </label>
-    <label class='checkbox-button dashboard-panel-toggle-btn'>
-        <input type='checkbox' checked id="display-in-treble-clef">
+    <label class='checkbox-button dashboard-panel-toggle-btn' id="display-in-treble-clef">
+        <input type='checkbox'>
         <!--<span class="normal-font-size"></span>-->
         <img src="img/treble-clef-icon.svg" class="button-icon">
     </label>
-    <label class='checkbox-button dashboard-panel-toggle-btn'>
-        <input type='checkbox' id="display-note-name-treble-clef">
+    <label class='checkbox-button dashboard-panel-toggle-btn' id="display-note-name-treble-clef">
+        <input type='checkbox'>
         <div style="display: flex; align-items: center">
             <img src="img/treble-clef-icon.svg" class="button-icon">
             <span class="normal-font-size">+ name</span>
         </div>
     </label>
-    <label class='checkbox-button dashboard-panel-toggle-btn'>
-        <input type="checkbox" class="start-stop-btn" id="challenging-notes-preset" alt="Preset challenging notes">
+    <label class='checkbox-button dashboard-panel-toggle-btn' id="challenging-notes-preset">
+        <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
         <img src="img/challenging-icon.svg" class="button-icon">
     </label>
 </div>

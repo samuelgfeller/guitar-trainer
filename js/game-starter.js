@@ -22,7 +22,7 @@ class GameStarter {
         this.gameInitializer.initBpmInputChangeListener();
         // Init pause / resume game on visibility change
         this.gameInitializer.initPauseAndResumeGameOnVisibilityChange();
-        this.gameInitializer.initSettingsEventListeners()
+        this.gameInitializer.initSettings()
     }
 
     /**
@@ -60,11 +60,11 @@ class GameStarter {
         this.noteGame.init();
         this.metronomeNoteDetector.init();
         this.noteGame.frequencyBars = this.metronomeNoteDetector.frequencyBars;
-        if (document.querySelector('#challenging-notes-preset').checked) {
+        if (document.querySelector('#challenging-notes-preset input').checked) {
             this.noteGame.presetChallengingNotes();
         }
-        this.noteGame.displayInTrebleClef = document.querySelector('#display-in-treble-clef').checked;
-        this.noteGame.displayTrebleClefNoteName = document.querySelector('#display-note-name-treble-clef').checked;
+        this.noteGame.displayInTrebleClef = document.querySelector('#display-in-treble-clef input').checked;
+        this.noteGame.displayTrebleClefNoteName = document.querySelector('#display-note-name-treble-clef input').checked;
 
         this.metronomeNoteDetector.start();
         // Remove "display:none" on game progress and score
