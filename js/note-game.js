@@ -29,6 +29,7 @@ class NoteGame {
         this.gameUI = new GameUI(this);
         this.gameStarter = gameStarter;
         this.trebleClefDisplayer = new TrebleClefDisplayer(this);
+        this.playNoteInKeyRunner = new PlayNoteInKeyRunner(this, this.notesProvider);
     }
 
     init() {

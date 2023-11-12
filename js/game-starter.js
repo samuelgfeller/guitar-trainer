@@ -65,6 +65,7 @@ class GameStarter {
         }
         this.noteGame.displayInTrebleClef = document.querySelector('#display-in-treble-clef input').checked;
         this.noteGame.displayTrebleClefNoteName = document.querySelector('#display-note-name-treble-clef input').checked;
+        this.noteGame.playNoteInKey = document.querySelector('#play-note-in-key input').checked;
 
         this.metronomeNoteDetector.start();
         // Remove "display:none" on game progress and score

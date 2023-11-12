@@ -41,6 +41,10 @@ require __DIR__ . '/JsImportVersionAdder.php';
         <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
         <img src="img/challenging-icon.svg" class="button-icon">
     </label>
+    <label class='checkbox-button dashboard-panel-toggle-btn' id="play-note-in-key">
+        <input type='checkbox'>
+        <!--<img src="img/" class="button-icon">-->
+    </label>
 </div>
 <header>
     <div>
