@@ -21,30 +21,39 @@ require __DIR__ . '/JsImportVersionAdder.php';
 <body>
 
 <div id="settings-div">
-    <label class='checkbox-button dashboard-panel-toggle-btn' id="mute-metronome">
-        <input type='checkbox' id="metronome-mode">
-        <img src="img/metronome-icon.svg" class="button-icon">
-    </label>
-    <label class='checkbox-button dashboard-panel-toggle-btn' id="display-in-treble-clef">
-        <input type='checkbox'>
-        <!--<span class="normal-font-size"></span>-->
-        <img src="img/treble-clef-icon.svg" class="button-icon">
-    </label>
-    <label class='checkbox-button dashboard-panel-toggle-btn' id="display-note-name-treble-clef">
-        <input type='checkbox'>
-        <div style="display: flex; align-items: center">
+    <div id="game-modes">
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="metronome-mode">
+            <input type='checkbox'>
+            <img src="img/metronome-icon.svg" class="button-icon">
+        </label>
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="fretboard-note-game-mode">
+            <input type='checkbox'>
+            <!--<img src="img/" class="button-icon">-->
+        </label>
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="note-in-key-game-mode">
+            <input type='checkbox'>
+            <!--<img src="img/" class="button-icon">-->
+        </label>
+    </div>
+    <div id="settings">
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="display-in-treble-clef">
+            <input type='checkbox'>
+            <!--<span class="normal-font-size"></span>-->
             <img src="img/treble-clef-icon.svg" class="button-icon">
-            <span class="normal-font-size">+ name</span>
-        </div>
-    </label>
-    <label class='checkbox-button dashboard-panel-toggle-btn' id="challenging-notes-preset">
-        <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
-        <img src="img/challenging-icon.svg" class="button-icon">
-    </label>
-    <label class='checkbox-button dashboard-panel-toggle-btn' id="play-note-in-key">
-        <input type='checkbox'>
-        <!--<img src="img/" class="button-icon">-->
-    </label>
+        </label>
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="display-note-name-treble-clef">
+            <input type='checkbox'>
+            <div style="display: flex; align-items: center">
+                <img src="img/treble-clef-icon.svg" class="button-icon">
+                <span class="normal-font-size">+ name</span>
+            </div>
+        </label>
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="challenging-notes-preset">
+            <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
+            <img src="img/challenging-icon.svg" class="button-icon">
+        </label>
+
+    </div>
 </div>
 <header>
     <div>
@@ -63,11 +72,11 @@ require __DIR__ . '/JsImportVersionAdder.php';
     <!--    <span>Challenging notes count</span>-->
     <!--</div>-->
     <div id="game-progress-div" style="display: none">
-        <span id="max-errors">0</span>
+        <span id="progress-bar-left-side-label">0</span>
         <div class="meter">
             <span style="width: 0"></span>
         </div>
-        <span id="min-errors">0</span>
+        <span id="progress-bar-right-side-label">0</span>
     </div>
     <div id="score" style="display:none;">
         <span id="incorrect-count"></span><span id="correct-count"></span>

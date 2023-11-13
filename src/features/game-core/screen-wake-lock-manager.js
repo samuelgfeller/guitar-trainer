@@ -1,4 +1,4 @@
-export class ScreenWakeLockManager {
+export class ScreenWakeLockController {
     constructor() {
         this.wakeLock = null;
     }

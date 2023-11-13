@@ -1,11 +1,14 @@
-import {GameUI} from "./game-ui.js?v=0.6";
-import {NotesProvider} from "./notes-provider.js?v=0.6";
-import {TrebleClefDisplayer} from "./treble-clef-displayer.js?v=0.6";
-
 // const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 // const strings = ['D', 'E', 'G', 'A', 'B'];
 
-class NoteGame {
+import {GameProgressUpdater} from "./game-progress-updater.js";
+import {DetectedNoteVisualizer} from "../../game-core/tuner/detected-note-visualizer.js";
+import {ChallengingNotesProvider} from "./provider/challenging-notes-provider.js";
+
+/**
+ * Game mode "note-on-fretboard" core logic
+ */
+export class FretboardNoteGameCoordinator {
     frequencyBars;
     previousCombination;
     previousCombinationWasIncorrect;
@@ -21,18 +24,24 @@ class NoteGame {
     displayInTrebleClef = false;
     displayTrebleClefNoteName = false;
 
+
     constructor(gameStarter) {
         // Create class-level arrow function properties for event listeners so that they can be removed
         this.displayRandomNotesHandler = this.displayNotes.bind(this);
         this.checkIfNoteCorrectHandler = this.checkIfNoteCorrect.bind(this);
         this.notesProvider = new NotesProvider();
-        this.gameUI = new GameUI(this);
         this.gameStarter = gameStarter;
         this.trebleClefDisplayer = new TrebleClefDisplayer(this);
-        this.playNoteInKeyRunner = new PlayNoteInKeyRunner(this, this.notesProvider);
+        // Set combinations to challenging notes (if any)
+        this.combinations = new ChallengingNotesProvider().getChallengingNotes(this.displayInTrebleClef);
+        this.detectedNoteVisualizer = new DetectedNoteVisualizer();
+        this.gameProgressUpdater = new GameProgressUpdater(10, 20);
     }
 
-    init() {
+    /**
+     * Setup event handlers for fretboard note game
+     */
+    play() {
         // Event fired on each metronome beat
         document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
         // Custom event when played note was detected
@@ -46,12 +55,12 @@ class NoteGame {
 
     // Adjust the count of the previous combination that was incorrect
     adjustIncorrectPreviousCombinationCount() {
-        // If combination was wrong last time
+        // If a combination was wrong last time
         if (this.previousCombinationWasIncorrect) {
             this.incorrectCount++;
             console.debug(`Combination ${this.previousCombination} not played.`)
-            // Reset last correct notes in a row to 0 when there was an error
-            this.gameUI.lastNotesCorrectCount = 0;
+            // Reset consecutive end-of-level correct notes correct to 0 when there was an error
+            this.gameProgressUpdater.consecutiveEndOfLevelCorrectNotes = 0;
             let combinationStats = this.combinations.get(this.previousCombination);
             if (combinationStats) {
                 combinationStats.incorrect += 1;
@@ -80,7 +89,8 @@ class NoteGame {
 
     displayNotes() {
         this.adjustIncorrectPreviousCombinationCount();
-        this.gameUI.updateGameProgress();
+        this.gameProgressUpdater.updateGameProgress(this.combinations.size, this.correctCount, this.incorrectCount);
+
         this.correctNoteAccounted = false;
         // console.debug(`Previous combination: ${this.previousCombination}`);
         // Reset color of note span
@@ -117,11 +127,12 @@ class NoteGame {
                 this.previousCombinationWasIncorrect = false;
                 this.correctCount++;
                 this.correctNoteAccounted = true;
-                // Update game progress right when correct note was played
+                // Update game progress
+                // If there are no combinations left to show, increase the consecutive end-of-level correct notes
                 if (this.combinations.size === 0) {
-                    this.gameUI.lastNotesCorrectCount++;
+                    this.gameProgressUpdater.consecutiveEndOfLevelCorrectNotes++;
                 }
-                this.gameUI.updateGameProgress();
+                this.gameProgressUpdater.updateGameProgress();
             }
         } else {
             // If incorrect note is played, remove green color from frequency canvas and detected note
@@ -133,7 +144,7 @@ class NoteGame {
             // }
         }
         // Display the detected note in the GUI
-        this.gameUI.updateDetectedNoteAndCents(event.detail);
+        this.detectedNoteVisualizer.updateDetectedNoteAndCents(event.detail);
     }
 
 
@@ -155,13 +166,13 @@ class NoteGame {
         }
         let noteName, stringName, combination;
 
-        let combinationsAmount = this.combinations.size;
+        let combinationAmount = this.combinations.size;
 
         // Check if there are any combinations and increase likelihood of picking an element from the
         // combinations list as the number of elements increases
         // For one element, the likelihood is approximately 50%, and it approaches 100% as the number
         // of elements grows
-        if (combinationsAmount > 0 && Math.random() < combinationsAmount / (combinationsAmount + 3)) {
+        if (combinationAmount > 0 && Math.random() < combinationAmount / (combinationAmount + 3)) {
             // Select a random combination note from the challenging combinations list
             const combinationIndex = Math.floor(Math.random() * this.combinations.size);
             combination = [...this.combinations.keys()][combinationIndex];
@@ -178,7 +189,7 @@ class NoteGame {
         // if it's the case the function is called again.
         if (this.previousCombination && this.notesProvider.isHalfToneDifference(this.previousCombination, combination)) {
             console.debug(`Previous combination ${this.previousCombination} and current ${combination}` +
-                ` not over half a tone difference so a new combination is displayed. Challenging count: ${combinationsAmount}`);
+                ` not over half a tone difference so a new combination is displayed. Challenging count: ${combinationAmount}`);
 
             // To prevent infinite loops when e.g. the next note combination from note provider is A|D and the
             // only challenging note is also A|D, there is a count on how many times this function is called;
@@ -219,21 +230,5 @@ class NoteGame {
         }
         document.getElementById('string-span').innerHTML = stringName;
     }
-
-    presetChallengingNotes() {
-        // Challenging combinations string|note
-        let challengingCombinationsTrebleClef = ['E|E', 'E|F', 'E|F♯', 'E|G', 'E|G♯', 'E|A', 'E|A♯', 'E|B',
-            'E|C♯', 'E|D', 'E|D♯', 'Ê|C♯', 'Ê|D', 'Ê|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A♯', 'D|B',
-            'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
-        let challengingCombinations = ['E|C♯', 'Ê|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',
-            'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
-        if (this.displayInTrebleClef === true){
-            challengingCombinations = challengingCombinationsTrebleClef;
-        }
-        challengingCombinations.forEach((combination) => {
-            this.combinations.set(combination, {incorrect: 1, correct: 0});
-        });
-    }
 }
 
-export {NoteGame};

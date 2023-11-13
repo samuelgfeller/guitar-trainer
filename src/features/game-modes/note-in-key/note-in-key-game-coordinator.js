@@ -1,13 +1,26 @@
 /**
  * Class PlayNoteInKeyRunner
  */
-class PlayNoteInKeyRunner {
+class NoteInKeyGameCoordinator {
     string;
     key;
 
     constructor(noteGame, notesProvider) {
         this.noteGame = noteGame;
     }
+
+
+    /**
+     * Setup event handlers for fretboard note game
+     */
+    play() {
+        // Event fired on each metronome beat
+        document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
+        // Custom event when played note was detected
+        document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
+    }
+
+
 
     possibleKeys = {
         // String name: [possible keys for string]

@@ -1,52 +1,44 @@
-import {MetronomeNoteDetector} from "./metronome-note-detector-main.js?v=0.6";
-import {NoteGame} from "./note-game.js?v=0.6";
 import {GameInitializer} from "./game-initializer.js?v=0.6";
-import {ScreenWakeLockManager} from "./screen-wake-lock-manager.js?v=0.6";
+import {ScreenWakeLockManager} from "../../screen-wake-lock-manager.js?v=0.6";
+import {MetronomeNoteDetector} from "../metronome-note-detector-main.js?v=0.6";
+import {FretboardNoteGameCoordinator} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=0.6";
+import {CoreGameCoordinator} from "./core-game-coordinator.js";
 
-class GameStarter {
+export class GameStartAndStopper {
+
     constructor() {
         this.metronomeNoteDetector = new MetronomeNoteDetector();
-        this.noteGame = new NoteGame(this);
+        this.noteGame = new FretboardNoteGameCoordinator(this);
         this.startStopButton = document.querySelector('#start-stop-btn');
         this.wakeLock = new ScreenWakeLockManager();
         this.gameInitializer = new GameInitializer(this);
-    }
-
-    /**
-     * Init event listeners to start the game
-     */
-    init() {
-        // Init start stop button
-        this.gameInitializer.initGameStartStopEventListeners();
-        // Init bpm input listeners
-        this.gameInitializer.initBpmInputChangeListener();
-        // Init pause / resume game on visibility change
-        this.gameInitializer.initPauseAndResumeGameOnVisibilityChange();
-        this.gameInitializer.initSettings()
+        this.coreGameCoordinator = new CoreGameCoordinator(this.gameInitializer);
     }
 
     /**
      * Start and stop game or metronome
+     * Executed on click of start or stop button
      */
     startStopGame() {
+        // If the game is not running, start it. Otherwise, stop.
         if (this.startStopButton.innerText === 'Play') {
-            // In case settings is expanded, remove it
+            // In case settings div is expanded, collapse it
             document.getElementById('settings-div').classList.remove('expanded');
 
-            if (document.querySelector('#metronome-mode').checked) {
-                // If play sound is true, only start metronome and not whole game
-                this.metronomeNoteDetector.metronome.init();
+            if (document.querySelector('#metronome-mode input').checked) {
+                // If play sound is true, only start metronome and not the whole game
+                this.metronomeNoteDetector.metronome.setupAudioContext();
                 this.metronomeNoteDetector.metronome.startMetronome();
                 this.gameInitializer.onlyMetronome = true;
                 this.startStopButton.innerText = 'Pause';
             } else {
                 // Start game
-                this.startGame();
+                this.coreGameCoordinator.startGame();
                 this.gameInitializer.onlyMetronome = false;
             }
         } else {
             this.gameInitializer.gameManuallyPaused = true;
-            this.stopGame();
+            this.coreGameCoordinator.stopGame();
             // Hide game elements and display instructions (not inside stopGame() for when level is accomplished)
             this.gameInitializer.hideGameElementsAndDisplayInstructions();
         }
@@ -57,12 +49,10 @@ class GameStarter {
      */
     startGame() {
         this.startStopButton.innerText = 'Pause';
-        this.noteGame.init();
+
+        this.noteGame.play();
         this.metronomeNoteDetector.init();
         this.noteGame.frequencyBars = this.metronomeNoteDetector.frequencyBars;
-        if (document.querySelector('#challenging-notes-preset input').checked) {
-            this.noteGame.presetChallengingNotes();
-        }
         this.noteGame.displayInTrebleClef = document.querySelector('#display-in-treble-clef input').checked;
         this.noteGame.displayTrebleClefNoteName = document.querySelector('#display-note-name-treble-clef input').checked;
         this.noteGame.playNoteInKey = document.querySelector('#play-note-in-key input').checked;
@@ -97,6 +87,3 @@ class GameStarter {
         this.wakeLock.releaseWakeLock();
     }
 }
-
-const game = new GameStarter();
-game.init();

@@ -7,7 +7,7 @@
 final class JsImportVersionAdder
 {
     private $version = '1';
-    private $assetsPath = __DIR__ . '/js';
+    private $assetPath = __DIR__ . '/../src';
 
     public function __construct()
     {
@@ -32,9 +32,9 @@ final class JsImportVersionAdder
             $this->version = $version;
         }
         // $start = hrtime(true);
-        if (is_dir($this->assetsPath)) {
+        if (is_dir($this->assetPath)) {
             $rii = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($this->assetsPath, FilesystemIterator::SKIP_DOTS)
+                new RecursiveDirectoryIterator($this->assetPath, FilesystemIterator::SKIP_DOTS)
             );
 
             foreach ($rii as $file) {

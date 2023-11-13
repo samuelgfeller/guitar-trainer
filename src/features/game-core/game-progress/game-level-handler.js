@@ -1,4 +1,4 @@
-export class GameProgress {
+export class GameLevelHandler {
     constructor(gameUI) {
         this.gameUI = gameUI;
         this.closeModalEventHandler = this.closeModalEvent.bind(this);
@@ -7,7 +7,7 @@ export class GameProgress {
     }
 
     leveledUp() {
-        this.gameUI.noteGame.gameStarter.stopGame();
+        this.gameUI.noteGame.gameStarter.gameCoordinator.stopGame();
         document.querySelector('header div').style.borderBottomColor = 'green';
         this.addAccomplishedLevel(document.getElementById('bpm-input').value);
         this.gameUI.alreadyLeveledUp = true;

@@ -1,10 +1,23 @@
+import {GameStartAndStopper} from "./game-start-and-stopper.js?v=0.6";
+
 export class GameInitializer {
     constructor(gameStarter) {
-        this.gameStarter = gameStarter;
+        this.gameStartAndStopper = new GameStartAndStopper();
         this.startStopButton = document.querySelector('#start-stop-btn');
         // When only metronome should be played and not the whole game (when sound on before pressing start)
         this.onlyMetronome = false;
         this.gameManuallyPaused = false;
+    }
+
+    initGame(){
+        // Init start stop button
+        this.initGameStartStopEventListeners();
+        // Init bpm input listeners
+        this.initBpmInputChangeListener();
+        // Init pause / resume game on visibility change
+        this.initPauseAndResumeGameOnVisibilityChange();
+        this.initSettings();
+        // Init start stop
     }
 
     initSettings() {
@@ -28,20 +41,20 @@ export class GameInitializer {
 
     initGameStartStopEventListeners() {
         // Start / stop button event listener
-        this.startStopButton.addEventListener('click', this.gameStarter.startStopGame.bind(this.gameStarter));
+        this.startStopButton.addEventListener('click', this.gameStartAndStopper.startStopGame.bind(this.gameStartAndStopper));
         // Self has to be used in the following as we loose the "this" context in the event listener anonymous func
         let self = this;
         // Start on double click anywhere in the body
         document.addEventListener('dblclick', function (e) {
             // Check if the target is <body> or if a parent of the target is <main>
             if (e.target === document.body || e.target.closest('main')) {
-                self.gameStarter.startStopGame();
+                self.gameStartAndStopper.startStopGame();
             }
         });
         // Start with Enter key press on bpm input
         document.querySelector('#bpm-input').addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
-                this.gameStarter.startStopGame();
+                this.gameStartAndStopper.startStopGame();
             }
         });
     }
@@ -50,14 +63,14 @@ export class GameInitializer {
         const bpmInput = document.querySelector('#bpm-input');
 
         // Set bpm input to the current level which is always one higher than the last completed or the default value
-        bpmInput.value = this.gameStarter.noteGame.gameUI.gameProgress.getCurrentLevel();
+        bpmInput.value = this.gameStartAndStopper.noteGame.gameUI.gameLevelHandler.getCurrentLevel();
 
         // Level change event listener
         bpmInput.addEventListener('change', (e) => {
             updateIsLevelAccomplishedColor(bpmInput);
-            this.gameStarter.stopGame();
+            this.gameStartAndStopper.coreGameCoordinator.stopGame();
             this.hideGameElementsAndDisplayInstructions();
-            this.gameStarter.noteGame.gameUI.clearStats();
+            this.gameStartAndStopper.noteGame.gameUI.clearStats();
             this.startStopButton.innerText = 'Play';
         });
         // stepUp and stepDown on input type number don't automatically fire the "change" event
@@ -76,7 +89,7 @@ export class GameInitializer {
          * @param bpmInput
          */
         const updateIsLevelAccomplishedColor = (bpmInput) => {
-            if (this.gameStarter.noteGame.gameUI.gameProgress.isLevelAccomplished(bpmInput.value)) {
+            if (this.gameStartAndStopper.noteGame.gameUI.gameLevelHandler.isLevelAccomplished(bpmInput.value)) {
                 document.querySelector('header div').style.borderBottomColor = 'green';
             } else {
                 document.querySelector('header div').style.borderBottomColor = null;
@@ -114,14 +127,14 @@ export class GameInitializer {
                             document.getElementById('countdown').innerText = secondsRemainingUntilStart + 's';
                         } else {
                             document.getElementById('modal').remove();
-                            this.gameStarter.startGame();
+                            this.gameStartAndStopper.coreGameCoordinator.startGame();
                             clearInterval(countdownInterval);
                         }
                     }, 1000);
                 } else {
                     // When not visible after event, pause game and disable wake lock
-                    this.gameStarter.stopGame();
-                    this.gameStarter.gameInitializer.hideGameElementsAndDisplayInstructions();
+                    this.gameStartAndStopper.coreGameCoordinator.stopGame();
+                    this.gameStartAndStopper.gameInitializer.hideGameElementsAndDisplayInstructions();
                 }
             }
         });
