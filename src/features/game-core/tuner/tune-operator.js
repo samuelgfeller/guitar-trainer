@@ -1,5 +1,8 @@
 // Source https://github.com/qiuxiang/tuner
-
+/**
+ * Uses ScriptProcessorNode which is deprecated. Couldn't make it work, so this issue
+ * https://github.com/qiuxiang/tuner/issues/18 is ignored for now as long as it works
+ */
 export class TuneOperator {
     constructor(a4 = 440) {
         this.middleA = a4 || 440;
@@ -19,9 +22,11 @@ export class TuneOperator {
             "A♯ | B♭",
             "B",
         ];
-        this.initGetUserMedia();
     }
 
+    /**
+     * getUserMedia can only be initialized after user action
+     */
     initGetUserMedia() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!window.AudioContext) {
@@ -133,6 +138,8 @@ export class TuneOperator {
     start() {
         this.audioContext = new window.AudioContext();
         this.analyser = this.audioContext.createAnalyser();
+        // Uses ScriptProcessorNode which is deprecated. Couldn't make it work with chat gpt so this issue
+        // https://github.com/qiuxiang/tuner/issues/18 is ignored for now as long as it works
         this.scriptProcessor = this.audioContext.createScriptProcessor(
             this.bufferSize,
             1,

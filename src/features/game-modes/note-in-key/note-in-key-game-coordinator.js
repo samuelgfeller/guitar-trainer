@@ -1,3 +1,5 @@
+import {NoteDisplayCoordinator} from "../../note-combination/note-display-coordinator.js";
+
 /**
  * Class PlayNoteInKeyRunner
  */
@@ -5,19 +7,16 @@ class NoteInKeyGameCoordinator {
     string;
     key;
 
-    constructor(noteGame, notesProvider) {
-        this.noteGame = noteGame;
-    }
-
-
     /**
      * Setup event handlers for fretboard note game
      */
     play() {
-        // Event fired on each metronome beat
-        document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
-        // Custom event when played note was detected
-        document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
+        this.noteDisplayCoordinator = new NoteDisplayCoordinator(
+            ['Ê', 'B', 'G', 'D', 'A', 'E'],
+            ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
+        );
+
+
     }
 
 

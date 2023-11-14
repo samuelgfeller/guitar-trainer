@@ -1,11 +1,9 @@
 import {GameInitializer} from "./game-initializer.js?v=0.6";
-import {FretboardNoteGameLoader} from "../../game-modes/note-on-fretboard/fretboard-note-game-loader.js?v=0.6";
-import {CoreGameCoordinator} from "./core-game-coordinator.js";
 
 export class GameLoader {
     constructor() {
         // Init game core game logic
-        this.gameInitializer = new GameInitializer(this);
+        this.gameInitializer = new GameInitializer();
     }
 
     /**
@@ -13,8 +11,8 @@ export class GameLoader {
      */
     run() {
         this.gameInitializer.initGame();
-        new CoreGameCoordinator(this.gameInitializer).startGame();
     }
-
-
 }
+
+const game = new GameLoader();
+game.run();

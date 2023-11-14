@@ -1,15 +1,17 @@
-export class NotesProvider {
-    constructor() {
+export class NoteShuffler {
+    constructor(
+        strings = ['Ê', 'B', 'G', 'D', 'A', 'E'],
+        notes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
+    ) {
         // Initialize the notesList, shuffledNotes, and currentIndex properties
         this.notesList = [];
         this.shuffledNotes = [];
         this.currentIndex = 0;
         this.shuffledAmount = 0;
-        this.strings = ['Ê', 'B', 'G', 'D', 'A', 'E'];
-        this.notes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'];
-        // const notes = ['C', 'C♯', 'D', 'D♯',];
+        this.strings = strings;
+        this.notes = notes;
 
-        // Set the notes list during object construction
+        // Set the note list during object construction
         this.setNotesList();
     }
 
@@ -124,7 +126,7 @@ export class NotesProvider {
         // (Math.abs turns a negative into positive value and if the note indices is 1 or -1 it indicates a halftone difference
         return (stringIndex1 === stringIndex2 && Math.abs(noteIndex2 - noteIndex1) === 1)
             // Or the notes are the same across any string
-            || noteIndex1 === noteIndex2;
+            // || noteIndex1 === noteIndex2;
 
     }
 

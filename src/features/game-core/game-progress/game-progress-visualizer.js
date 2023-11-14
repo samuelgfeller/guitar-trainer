@@ -1,11 +1,12 @@
-import {GameProgress} from "../game-progress.js";
-import {GameLevelHandler} from "./game-level-handler.js";
+import {GameLevelHandler} from "./game-level-handler.js?v=0.6";
 
-class GameProgressVisualizer {
-    noteGame;
+export class GameProgressVisualizer {
 
-    constructor(noteGameInstance) {
-        this.noteGame = noteGameInstance;
+    /**
+     * @param {GameProgressUpdater} gameProgressUpdater
+     */
+    constructor(gameProgressUpdater) {
+        this.gameProgressUpdater = gameProgressUpdater;
         this.gameLevelHandler = new GameLevelHandler(this);
         // The far left (0%) is always the max wrong combinations
         this.maxWrongCombinations = 0;
@@ -36,27 +37,19 @@ class GameProgressVisualizer {
             this.alreadyLeveledUp = false;
         }
         // Remove span content of progress bar if its 0
-        if (progressBarWidth === 0){
+        if (progressBarWidth === 0) {
             progressBar.innerText = '';
         }
     }
 
-    clearStats(){
-        this.noteGame.combinations = new Map();
-        this.maxWrongCombinations = 0;
-        this.noteGame.incorrectCount = 0;
-        this.noteGame.correctCount = 0;
-        this.lastNotesCorrectCount = 0;
+    resetProgress() {
         document.querySelector('#game-progress-div').style.display = 'none';
         document.querySelector('#score').style.display = 'none';
-        this.updateGameStatsDisplay();
     }
 
-    updateGameStatsDisplay(correctCount, incorrectCount, maxWrongCombinations){
+    displayGameStats(correctCount, incorrectCount, maxWrongCombinations) {
         document.querySelector('#correct-count').innerText = correctCount;
         document.querySelector('#incorrect-count').innerText = incorrectCount;
         document.querySelector('#progress-bar-left-side-label').innerHTML = maxWrongCombinations;
     }
 }
-
-export {GameProgressVisualizer}

@@ -2,7 +2,7 @@ export class DetectedNoteVisualizer {
     constructor() {
     }
 
-    updateDetectedNoteAndCents(noteInfos) {
+    static updateDetectedNoteAndCents(noteInfos) {
         const detectedNote = document.querySelector('#detected-note');
         detectedNote.innerHTML = noteInfos.name;
         // Convert the cent value to a percentage for the bar width

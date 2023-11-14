@@ -26,7 +26,7 @@
         color: #919191;
     }
 
-    header, #settings-div {
+    header, #config-div {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -63,7 +63,7 @@
         font-size: 16px;
     }
 
-    #settings-div {
+    #config-div {
         row-gap: 0;
         /*Hide by default, expand when user clicks on the settings icon*/
         max-height: 0;
@@ -71,10 +71,10 @@
         transition: max-height 0.5s ease;
     }
 
-    #settings-div.expanded {
+    #config-div.expanded {
         max-height: 200px;
         /*overflow: hidden; !* Initially, hide the overflow *!*/
-        /* Delayed animation to prevent showing the scrollbar while settings-div is expanding */
+        /* Delayed animation to prevent showing the scrollbar while config-div is expanding */
         animation: enableScroll 0.5s ease 0.5s forwards;
     }
 
@@ -84,7 +84,7 @@
             overflow: auto; /* Apply overflow: auto after the delay */
         }
     }
-    /*#settings-div.expanded label{*/
+    /*#config-div.expanded label{*/
     /*    margin-top: ;*/
     /*}*/
     #settings-toggle-btn {

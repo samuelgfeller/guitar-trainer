@@ -1,30 +1,39 @@
-import {GameProgressVisualizer} from "./game-progress-visualizer.js";
+import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=0.6";
 
 export class GameProgressUpdater {
-    // At the end of the progress bar, when there is no challenging notes left, the user has to do 10 correct
-    // notes in a row to be able to have 100% progress. This is a counter of those last notes.
-    consecutiveEndOfLevelCorrectNotes = 0;
 
-    constructor(endLevelRequiredCorrectNotesAmount, levelBeginRequiredCorrectNotesAmount) {
-        this.gameProgressVisualizer = new GameProgressVisualizer();
-        this.endLevelRequiredCorrectNotesAmount = endLevelRequiredCorrectNotesAmount;
-        this.levelBeginRequiredCorrectNotesAmount = levelBeginRequiredCorrectNotesAmount;
+    maxWrongCombinations = 0;
+
+    /**
+     * @param {NoteDisplayCoordinator} noteDisplayCoordinator
+     */
+    constructor(noteDisplayCoordinator) {
+        this.noteDisplayCoordinator = noteDisplayCoordinator;
+        this.gameProgressVisualizer = new GameProgressVisualizer(this);
+        // Reset game progress via event to be able to reset it from level-up event handler without this dependency
+        document.addEventListener('resetGameProgress', this.resetGameProgress.bind(this));
+    }
+
+    updateGameStats() {
+        this.gameProgressVisualizer.displayGameStats(
+            this.noteDisplayCoordinator.correctCount,
+            this.noteDisplayCoordinator.incorrectCount,
+            this.maxWrongCombinations
+        );
     }
 
     /**
      * Update game progress bar and stats
      * @param challengingCombinationsCount current progress that will be displayed in progress bar
-     * @param correctCount correct total played in that session
-     * @param incorrectCount incorrect total played in that session
      */
-    updateGameProgress(challengingCombinationsCount, correctCount, incorrectCount) {
+    updateGameProgress(challengingCombinationsCount) {
 
         // Update max wrong combinations to the actual value if it's greater than the previous max.
         if (challengingCombinationsCount > this.maxWrongCombinations) {
             this.maxWrongCombinations = challengingCombinationsCount;
         }
         // Update game stats after setting the actual maxWrongCombinations
-        this.gameProgressVisualizer.updateGameStatsDisplay(correctCount, incorrectCount, this.maxWrongCombinations);
+        this.updateGameStats();
 
         // Text inside the progress bar
         let movingBarLabel = '';
@@ -33,15 +42,15 @@ export class GameProgressUpdater {
         let percentage = 0;
         // If there are no more challenging notes, calculate the percentage via the amount of notes played correctly in a row
         if (challengingCombinationsCount === 0) {
-            let requiredCorrectNotesAmount = this.endLevelRequiredCorrectNotesAmount;
+            let requiredCorrectNotesAmount = this.noteDisplayCoordinator.endLevelRequiredCorrectNotesAmount;
             if (this.maxWrongCombinations === 0) {
                 // If there were no wrong combination, it's the beginning of the level. For the level to be not too
                 // easy in the beginning, the required correct notes amount is higher.
-                requiredCorrectNotesAmount = this.levelBeginRequiredCorrectNotesAmount;
+                requiredCorrectNotesAmount = this.noteDisplayCoordinator.levelBeginRequiredCorrectNotesAmount;
             }
             // percentage = this.lastNotesCorrectCount / this.requiredCorrectLastNotes * 100;
-            percentage = this.consecutiveEndOfLevelCorrectNotes / requiredCorrectNotesAmount * 100;
-            movingBarLabel = this.consecutiveEndOfLevelCorrectNotes;
+            percentage = this.noteDisplayCoordinator.consecutiveEndOfLevelCorrectNotes / requiredCorrectNotesAmount * 100;
+            movingBarLabel = this.noteDisplayCoordinator.consecutiveEndOfLevelCorrectNotes;
             // Set the right side of the progress bar to the amount or required correct notes
             progressBarRightSideLabel = requiredCorrectNotesAmount;
         } // If there are challenging notes meaning, an end of level stage is not reached
@@ -57,5 +66,18 @@ export class GameProgressUpdater {
         }
 
         this.gameProgressVisualizer.updateGameProgress(percentage, movingBarLabel, progressBarRightSideLabel);
+    }
+
+    /**
+     * After a level is completed, the game progress is reset to 0% and stats are reset to 0.
+     */
+    resetGameProgress(){
+        this.noteDisplayCoordinator.combinations = new Map();
+        this.maxWrongCombinations = 0;
+        this.noteDisplayCoordinator.incorrectCount = 0;
+        this.noteDisplayCoordinator.correctCount = 0;
+        this.noteDisplayCoordinator.lastNotesCorrectCount = 0;
+        this.gameProgressVisualizer.resetProgress();
+        this.updateGameStats(); // Also refreshes the new stats visually
     }
 }

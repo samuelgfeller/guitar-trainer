@@ -1,8 +1,10 @@
 import {GameStartAndStopper} from "./game-start-and-stopper.js?v=0.6";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
+import {GameLevelTracker} from "../game-progress/game-level-tracker.js";
 
 export class GameInitializer {
-    constructor(gameStarter) {
-        this.gameStartAndStopper = new GameStartAndStopper();
+    constructor() {
+        this.gameStartAndStopper = new GameStartAndStopper(this);
         this.startStopButton = document.querySelector('#start-stop-btn');
         // When only metronome should be played and not the whole game (when sound on before pressing start)
         this.onlyMetronome = false;
@@ -25,7 +27,7 @@ export class GameInitializer {
         document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
             this.toggleSettingsExpand();
         });
-        const settingSwitches = document.querySelectorAll('#settings-div label');
+        const settingSwitches = document.querySelectorAll('#config-div label');
         for (const setting of settingSwitches) {
             const input = setting.querySelector('input');
             // Event listener to save setting switch in localstorage when changed
@@ -63,14 +65,15 @@ export class GameInitializer {
         const bpmInput = document.querySelector('#bpm-input');
 
         // Set bpm input to the current level which is always one higher than the last completed or the default value
-        bpmInput.value = this.gameStartAndStopper.noteGame.gameUI.gameLevelHandler.getCurrentLevel();
+        bpmInput.value = GameLevelTracker.getCurrentLevel();
 
         // Level change event listener
         bpmInput.addEventListener('change', (e) => {
             updateIsLevelAccomplishedColor(bpmInput);
             this.gameStartAndStopper.coreGameCoordinator.stopGame();
-            this.hideGameElementsAndDisplayInstructions();
-            this.gameStartAndStopper.noteGame.gameUI.clearStats();
+            GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+            // Reset game progress in the form of an event to avoid having to need game progress instance here
+            document.dispatchEvent(new Event('resetGameProgress'));
             this.startStopButton.innerText = 'Play';
         });
         // stepUp and stepDown on input type number don't automatically fire the "change" event
@@ -89,7 +92,7 @@ export class GameInitializer {
          * @param bpmInput
          */
         const updateIsLevelAccomplishedColor = (bpmInput) => {
-            if (this.gameStartAndStopper.noteGame.gameUI.gameLevelHandler.isLevelAccomplished(bpmInput.value)) {
+            if (GameLevelTracker.isLevelAccomplished(bpmInput.value)) {
                 document.querySelector('header div').style.borderBottomColor = 'green';
             } else {
                 document.querySelector('header div').style.borderBottomColor = null;
@@ -134,7 +137,7 @@ export class GameInitializer {
                 } else {
                     // When not visible after event, pause game and disable wake lock
                     this.gameStartAndStopper.coreGameCoordinator.stopGame();
-                    this.gameStartAndStopper.gameInitializer.hideGameElementsAndDisplayInstructions();
+                    GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
                 }
             }
         });
@@ -147,6 +150,6 @@ export class GameInitializer {
         document.querySelector('#game-start-instruction').style.display = 'block';
     }
     toggleSettingsExpand() {
-        document.getElementById('settings-div').classList.toggle('expanded');
+        document.getElementById('config-div').classList.toggle('expanded');
     }
 }

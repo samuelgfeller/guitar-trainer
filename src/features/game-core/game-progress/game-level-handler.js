@@ -1,16 +1,23 @@
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
+import {GameLevelTracker} from "./game-level-tracker.js";
+
 export class GameLevelHandler {
-    constructor(gameUI) {
-        this.gameUI = gameUI;
+    /**
+     * @param {GameProgressVisualizer} gameProgressVisualizer
+     */
+    constructor(gameProgressVisualizer) {
+        this.gameProgressVisualizer = gameProgressVisualizer;
         this.closeModalEventHandler = this.closeModalEvent.bind(this);
         this.nextLevelEventHandler = this.nextLevelEvent.bind(this);
-        this.defaultStartingLevel = 13;
     }
 
     leveledUp() {
-        this.gameUI.noteGame.gameStarter.gameCoordinator.stopGame();
+        // Stop the game in the form of an event to avoid a circular dependency with core-game-coordinator
+        document.dispatchEvent(new Event('gameStop'));
+
         document.querySelector('header div').style.borderBottomColor = 'green';
-        this.addAccomplishedLevel(document.getElementById('bpm-input').value);
-        this.gameUI.alreadyLeveledUp = true;
+        GameLevelTracker.addAccomplishedLevel(document.getElementById('bpm-input').value);
+        this.gameProgressVisualizer.alreadyLeveledUp = true;
 
         let header = `<h2>Congratulations 🎉</h2>`;
         let body = `<div>Level completed!</div>`;
@@ -44,56 +51,13 @@ export class GameLevelHandler {
     }
 
     nextLevelEvent() {
-        this.gameUI.clearStats();
+        this.gameProgressVisualizer.gameProgressUpdater.resetGameProgress();
         let bpmInput = document.getElementById('bpm-input');
         bpmInput.stepUp();
         // stepUp on input type number doesn't automatically fire the "change" event
         const changeEvent = new Event('change');
         bpmInput.dispatchEvent(changeEvent);
-        this.gameUI.noteGame.gameStarter.gameInitializer.hideGameElementsAndDisplayInstructions();
-    }
-
-    // Store the accomplished levels in localStorage
-    storeAccomplishedLevels(levels) {
-        localStorage.setItem('accomplishedLevels', JSON.stringify(levels));
-    }
-
-    // Add an accomplished level to the list in localStorage
-    addAccomplishedLevel(level) {
-        let levels = this.getAccomplishedLevels();
-        if (!levels.includes(level)) {
-            levels.push(level);
-            this.storeAccomplishedLevels(levels);
-        }
-    }
-
-    // Get the list of accomplished levels from localStorage
-    getAccomplishedLevels() {
-        let levels = localStorage.getItem('accomplishedLevels');
-        if (levels) {
-            return JSON.parse(levels);
-        } else {
-            return [];
-        }
-    }
-
-    // Check if a level is accomplished
-    isLevelAccomplished(level) {
-        let levels = this.getAccomplishedLevels();
-        return levels.includes(level);
-    }
-
-    /**
-     * Get the current level which is always one higher than the last completed or the default value
-     * @return {number}
-     */
-    getCurrentLevel(){
-        let levels = this.getAccomplishedLevels();
-        if (Array.isArray(levels) && levels.length > 0) {
-            return parseInt(levels[levels.length - 1]) + 1;
-        }
-        // Return default level
-        return this.defaultStartingLevel;
+        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
     }
 
 }

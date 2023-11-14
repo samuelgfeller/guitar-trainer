@@ -6,13 +6,15 @@ require __DIR__ . '/JsImportVersionAdder.php';
 <!doctype html>
 <html lang="en">
 <head>
+    <!--<base href="/guitar-trainer/src/">-->
+    <!--<base href="/">-->
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="css/modal.css?v=6">
-    <link rel="stylesheet" href="css/style.css?v=6">
-    <link rel="stylesheet" href="css/progress-bar.css?v=5">
-    <link rel="icon" type="image/x-icon" href="img/guitar.ico">
+    <link rel="stylesheet" href="src/assets/styles/modal.css?v=6">
+    <link rel="stylesheet" href="src/assets/styles/style.css?v=6">
+    <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=5">
+    <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
     <!--<script src="lib/aubio.js"></script>-->
@@ -20,37 +22,37 @@ require __DIR__ . '/JsImportVersionAdder.php';
 </head>
 <body>
 
-<div id="settings-div">
+<div id="config-div">
     <div id="game-modes">
         <label class='checkbox-button dashboard-panel-toggle-btn' id="metronome-mode">
             <input type='checkbox'>
-            <img src="img/metronome-icon.svg" class="button-icon">
+            <img src="src/assets/images/metronome-icon.svg" class="button-icon">
         </label>
         <label class='checkbox-button dashboard-panel-toggle-btn' id="fretboard-note-game-mode">
             <input type='checkbox'>
-            <!--<img src="img/" class="button-icon">-->
+            <img src="src/assets/images/guitar-fretboard-icon.svg" class="button-icon">
         </label>
         <label class='checkbox-button dashboard-panel-toggle-btn' id="note-in-key-game-mode">
             <input type='checkbox'>
-            <!--<img src="img/" class="button-icon">-->
+            <img src="src/assets/images/key-icon.svg" class="button-icon">
         </label>
     </div>
     <div id="settings">
         <label class='checkbox-button dashboard-panel-toggle-btn' id="display-in-treble-clef">
             <input type='checkbox'>
             <!--<span class="normal-font-size"></span>-->
-            <img src="img/treble-clef-icon.svg" class="button-icon">
+            <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
         </label>
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="display-note-name-treble-clef">
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="display-note-name-and-treble-clef">
             <input type='checkbox'>
             <div style="display: flex; align-items: center">
-                <img src="img/treble-clef-icon.svg" class="button-icon">
+                <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
                 <span class="normal-font-size">+ name</span>
             </div>
         </label>
         <label class='checkbox-button dashboard-panel-toggle-btn' id="challenging-notes-preset">
             <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
-            <img src="img/challenging-icon.svg" class="button-icon">
+            <img src="src/assets/images/challenging-icon.svg" class="button-icon">
         </label>
 
     </div>
@@ -58,11 +60,11 @@ require __DIR__ . '/JsImportVersionAdder.php';
 <header>
     <div>
         <!--<label for="bpm-input">Metronome BPM</label>-->
-        <img src="img/settings-icon.svg" id="settings-toggle-btn" class="icon">
+        <img src="src/assets/images/settings-icon.svg" id="settings-toggle-btn" class="icon">
         <div class="center-flexbox">
-            <img src="img/next-level.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
+            <img src="src/assets/images/next-level.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
             <input type="number" min="0" value="17" id="bpm-input">
-            <img src="img/next-level.svg" alt=">" id="next-lvl-btn" class="icon lvl-icon">
+            <img src="src/assets/images/next-level.svg" alt=">" id="next-lvl-btn" class="icon lvl-icon">
         </div>
         <button class="start-stop-btn" id="start-stop-btn">Play</button>
     </div>
@@ -112,7 +114,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
     </div>
     <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>
-<script type="module" src="js/game-starter.js?v=<?= mt_rand(1, 1000) ?>"></script>
+<script type="module" src="src/features/game-core/game-start/game-loader.js?v=<?= mt_rand(1, 1000) ?>"></script>
 <!--<script type="module" src="js/test/tests-main.js?v=--><?php
 //= mt_rand(1, 1000) ?><!--"></script>-->
 </body>

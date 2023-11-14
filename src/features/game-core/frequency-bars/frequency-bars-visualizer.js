@@ -5,8 +5,8 @@
  * @author @qiuxiang
  */
 export class FrequencyBarsVisualizer {
-    constructor(selector) {
-        this.$canvas = document.querySelector(selector);
+    constructor() {
+        this.$canvas = document.querySelector("#frequency-bars");
         this.$canvas.width = document.body.clientWidth;
         this.$canvas.height = document.body.clientHeight / 2;
         this.canvasContext = this.$canvas.getContext("2d");

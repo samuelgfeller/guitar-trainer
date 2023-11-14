@@ -1,10 +1,6 @@
-export class TrebleClefDisplayer {
+export class TrebleClefVisualizer {
 
-    constructor(noteGame) {
-        this.noteGame = noteGame;
-    }
-
-    displayCombinationInTrebleClef(stringName, noteName) {
+    static displayCombinationInTrebleClef(stringName, noteName, displayNoteNameAndTrebleClef) {
 
         // document.getElementById('note-span').innerHTML = noteName;
         // Empty output
@@ -61,7 +57,7 @@ export class TrebleClefDisplayer {
         // Draw it!
         vf.draw();
 
-        if (this.noteGame.displayTrebleClefNoteName === true) {
+        if (displayNoteNameAndTrebleClef === true) {
             output.innerHTML = output.innerHTML + originalNoteName;
         }
     }
@@ -75,7 +71,7 @@ export class TrebleClefDisplayer {
      * @param noteName {string} - The name of the note (e.g., 'C', 'F#', 'G', etc.).
      * @return octave {number} - The octave of the note on the treble clef staff.
      */
-    getTrebleClefStaffOctaveWithStringAndNoteName(stringName, noteName) {
+    static getTrebleClefStaffOctaveWithStringAndNoteName(stringName, noteName) {
         // Define the mapping of note names to semitones from C.
         const semitonesFromCMapping = {
             'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3,

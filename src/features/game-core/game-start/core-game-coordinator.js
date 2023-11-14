@@ -1,11 +1,11 @@
 import {
     FretboardNoteGameCoordinator
 } from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=0.6";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js";
-import {TuneOperator} from "../note-detector/tuner/tune-operator.js";
-import {MetronomeOperator} from "../note-detector/metronome/metronome-operator.js";
-import {FrequencyBarsVisualizer} from "../frequency-bars/frequency-bars-visualizer.js";
-import {ScreenWakeLockController} from "../screen-wake-lock-manager.js";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=0.6";
+import {TuneOperator} from "../tuner/tune-operator.js?v=0.6";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=0.6";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=0.6";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -17,6 +17,11 @@ export class CoreGameCoordinator {
     constructor(gameInitializer) {
         // Inject instance as an attribute there is changed
         this.gameInitializer = gameInitializer;
+
+        // Listen for game stop event to stop game
+        document.addEventListener('gameStop', this.stopGame.bind(this));
+
+        this.screenWakeLocker = new ScreenWakeLocker();
     }
 
     /**
@@ -27,16 +32,15 @@ export class CoreGameCoordinator {
         // Figure out which game mode should be started
         if (document.querySelector('#metronome-mode input').checked) {
             // new MetronomeOperator().startMetronome();
-        }
-
-        if (document.querySelector('#fretboard-note-game-mode input').checked) {
+        }else if (document.querySelector('#fretboard-note-game-mode input').checked) {
+            this.gameCoordinator = new FretboardNoteGameCoordinator();
+        }else if (document.querySelector('#note-in-key-game-mode input').checked) {
+            this.gameCoordinator = new NoteInKeyGameCoordinator();
+        }else{
+            // Default
             this.gameCoordinator = new FretboardNoteGameCoordinator();
         }
-
-        if (document.querySelector('#note-in-key-game-mode input').checked) {
-            this.gameCoordinator = new NoteInKeyGameCoordinator();
-        }
-        // All game coordinators MUST implement a play() and stop() method, "combinations" map attribute
+        // All game coordinators MUST implement a play() and stop() method
     }
 
     startGame() {
@@ -44,8 +48,30 @@ export class CoreGameCoordinator {
         this.startCoreGameFunctionalities();
 
         this.setGameCoordinator();
-        // Start game
+
+        // Start game module
         this.gameCoordinator.play();
+
+        // This gets the game moving and has to be after the game module has been propperly started
+        this.metronomeOperator.startMetronome();
+    }
+
+
+    /**
+     * Game stop
+     */
+    stopGame() {
+        this.metronomeOperator.stopMetronome();
+        this.tuneOperator.stop();
+
+        // Stop game if there is a game coordinator (not the case when changing level before game start)
+        if (this.gameCoordinator !== null) {
+            this.gameCoordinator.stop();
+        }
+
+        document.querySelector('#start-stop-btn').innerText = 'Play';
+
+        this.screenWakeLocker.releaseWakeLock();
     }
 
     /**
@@ -55,19 +81,17 @@ export class CoreGameCoordinator {
         // Start metronome audioContext can only be set after a user action
         this.metronomeOperator.setupAudioContext();
         // Start tuner
+        this.tuneOperator.initGetUserMedia();
         this.tuneOperator.start();
 
         // Set frequencyData instance variable
         let frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
-        new FrequencyBarsController(frequencyData).updateFrequencyBars();
+        new FrequencyBarsController(frequencyData).updateFrequencyBars(this.tuneOperator);
 
-        // This gets the game moving
-        this.metronomeOperator.startMetronome();
-
-        this.changeToRunningGameUI();
+        GameElementsVisualizer.showGameElementsAndHideInstructions();
 
         // Prevent screen from getting dark on mobile
-        void new ScreenWakeLockController().requestWakeLock();
+        void this.screenWakeLocker.requestWakeLock();
         // To know if game should start automatically after visibility change event, keep manually paused in var
         this.gameInitializer.gameManuallyPaused = false;
 
@@ -101,39 +125,4 @@ export class CoreGameCoordinator {
         // this.gameInitializer.gameManuallyPaused = false;
         */
     }
-
-    /**
-     * Change GUI when game is running
-     */
-    changeToRunningGameUI() {
-        document.querySelector('#start-stop-btn').innerText = 'Pause';
-
-        // Remove "display:none" on game progress and score
-        document.querySelector('#game-progress-div').style.display = null;
-        document.querySelector('#score').style.display = null;
-        // Collapse game instructions
-        document.querySelector('#game-start-instruction details').open = false;
-
-        // Display game elements and remove instructions
-        document.querySelectorAll('.visible-when-game-on').forEach(element => {
-            element.style.display = 'block';
-        });
-        document.querySelector('#game-start-instruction').style.display = 'none';
-    }
-
-    /**
-     * Game stop
-     */
-    stopGame() {
-        this.metronomeOperator.stopMetronome();
-        this.tuneOperator.stop();
-
-        // Stop game
-        this.gameCoordinator.stop();
-
-        document.querySelector('#start-stop-btn').innerText = 'Play';
-
-        new ScreenWakeLockController().releaseWakeLock();
-    }
-
 }
