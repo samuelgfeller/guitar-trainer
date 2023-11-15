@@ -1,63 +1,68 @@
-import {NoteDisplayCoordinator} from "../../note-combination/note-display-coordinator.js";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js";
+import {NoteDisplayPracticeCoordinator} from "../../note-combination/note-display-practice-coordinator.js";
 
-/**
- * Class PlayNoteInKeyRunner
- */
-class NoteInKeyGameCoordinator {
+export class NoteInKeyGameCoordinator {
     string;
     key;
+    interval;
 
-    /**
-     * Setup event handlers for fretboard note game
-     */
-    play() {
-        this.noteDisplayCoordinator = new NoteDisplayCoordinator(
-            ['Ê', 'B', 'G', 'D', 'A', 'E'],
-            ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
-        );
+    // allNotes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭']
+    allNotes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B']
 
 
-    }
-
-
-
-    possibleKeys = {
+    possibleKeysOnStrings = {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
     };
 
-    /**
-     * Return random string and random key from that string
-     */
-    reloadStringAndKey() {
-        const strings = Object.keys(this.possibleKeys);
-        this.string = strings[Math.floor(Math.random() * strings.length)];
-        // Keys for given string
-        const keys = this.possibleKeys[this.string];
-        // Get random key from possible keys for string
-        this.key = keys[Math.floor(Math.random() * keys.length)];
-        console.log(`Key String: ${this.string}, Key Note: ${this.key}`);
+    constructor() {
     }
 
-    displayRandomNoteNumberInKey() {
-        // Random note between 1 and 7
-        const noteNumber = Math.floor(Math.random() * 7) + 1;
-        const strings = Object.keys(this.possibleKeys);
-        const stringToPlayNote = strings[Math.floor(Math.random() * strings.length)];
 
-        console.log(`String: ${stringToPlayNote}, Note Number: ${noteNumber}`);
+    play() {
+        console.log('helloo');
+        const noteInKeyGenerator = new NoteInKeyGenerator(this.possibleKeysOnStrings);
+        let {keyString, keyNote} = noteInKeyGenerator.getNewStringAndKey();
+        console.log(`Key String: ${keyString}, Key Note: ${keyNote}`);
+        document.getElementById('info-above-string-and-key').innerText = `String: ${keyString}, Key: ${keyNote}`;
+        noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
+        const noteDisplayCoordinator = new NoteDisplayPracticeCoordinator(noteInKeyGenerator);
+        // Set first note to first note of the key
+        noteDisplayCoordinator.displayNotes({stringName: keyString, noteName: {noteName: keyNote, number: 1}});
+
+        noteDisplayCoordinator.beingGame();
+
+        // Display random note number in key every 5 seconds
+        // this.interval = setInterval(() => {
+        //     const {stringToPlayNote, noteNumber} = this.generatator.getRandomNoteNumberInKey(notesAndStrings);
+        //     console.log(`String: ${stringToPlayNote}, Note Number: ${noteNumber}`);
+        //     NoteCombinationVisualizer.displayCombination(stringToPlayNote, noteNumber);
+        // }, 5000);
+
     }
+
+    stop() {
+        clearInterval(this.interval);
+    }
+
+    //
+    // beingGame() {
+    //     // Event fired on each metronome beat
+    //     document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
+    //     // Custom event when played note was detected
+    //     document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
+    // }
+    //
+    // endGame() {
+    //     document.removeEventListener('metronome-beat', this.displayRandomNotesHandler);
+    //     document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
+    // }
+
 
     /**
      * game manager
      */
-    runGame() {
-        this.reloadStringAndKey();
-        // Display random note number in key every 5 seconds
-        setInterval(() => {
-            this.displayRandomNoteNumberInKey();
-        }, 5000);
-    }
+
 
 }

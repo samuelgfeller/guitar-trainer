@@ -1,4 +1,4 @@
-import {TrebleClefVisualizer} from "../treble-clef/treble-clef-visualizer.js?v=0.6";
+import {TrebleClefVisualizer} from "../../treble-clef/treble-clef-visualizer.js";
 
 export class NoteCombinationVisualizer {
 
@@ -12,7 +12,6 @@ export class NoteCombinationVisualizer {
 
     static displayCombination(stringName, noteName) {
         const displayInTrebleClef = document.querySelector('#display-in-treble-clef input').checked;
-        console.log(displayInTrebleClef);
         const displayTrebleClefAndNoteName =
             document.querySelector('#display-note-name-and-treble-clef input').checked;
 

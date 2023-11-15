@@ -6,6 +6,7 @@ import {TuneOperator} from "../tuner/tune-operator.js?v=0.6";
 import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=0.6";
 import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
 import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=0.6";
+import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -32,11 +33,11 @@ export class CoreGameCoordinator {
         // Figure out which game mode should be started
         if (document.querySelector('#metronome-mode input').checked) {
             // new MetronomeOperator().startMetronome();
-        }else if (document.querySelector('#fretboard-note-game-mode input').checked) {
+        } else if (document.querySelector('#fretboard-note-game-mode input').checked) {
             this.gameCoordinator = new FretboardNoteGameCoordinator();
-        }else if (document.querySelector('#note-in-key-game-mode input').checked) {
+        } else if (document.querySelector('#note-in-key-game-mode input').checked) {
             this.gameCoordinator = new NoteInKeyGameCoordinator();
-        }else{
+        } else {
             // Default
             this.gameCoordinator = new FretboardNoteGameCoordinator();
         }
@@ -53,7 +54,13 @@ export class CoreGameCoordinator {
         this.gameCoordinator.play();
 
         // This gets the game moving and has to be after the game module has been propperly started
-        this.metronomeOperator.startMetronome();
+        console.log(document.querySelector('#practice-mode input').checked);
+        if (!document.querySelector('#practice-mode input').checked) {
+            console.log('hey');
+            this.metronomeOperator.startMetronome();
+            // Only show when not practice mode
+            GameElementsVisualizer.showGameProgress();
+        }
     }
 
 

@@ -9,9 +9,7 @@ export class GameElementsVisualizer {
     static showGameElementsAndHideInstructions() {
         document.querySelector('#start-stop-btn').innerText = 'Pause';
 
-        // Remove "display:none" on game progress and score
-        document.querySelector('#game-progress-div').style.display = null;
-        document.querySelector('#score').style.display = null;
+
         // Collapse game instructions
         document.querySelector('#game-start-instruction details').open = false;
 
@@ -20,5 +18,11 @@ export class GameElementsVisualizer {
             element.style.display = 'block';
         });
         document.querySelector('#game-start-instruction').style.display = 'none';
+    }
+
+    static showGameProgress(){
+        // Remove "display:none" on game progress and score
+        document.querySelector('#game-progress-div').style.display = null;
+        document.querySelector('#score').style.display = null;
     }
 }

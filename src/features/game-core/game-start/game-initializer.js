@@ -22,6 +22,9 @@ export class GameInitializer {
         // Init start stop
     }
 
+    /**
+     * Store settings
+     */
     initSettings() {
         // Settings toggle button
         document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
@@ -38,6 +41,13 @@ export class GameInitializer {
             if ((localStorage.getItem(setting.id) ?? '0') === '1') {
                 input.checked = true;
             }
+        }
+        let difficultyInput = document.getElementById('note-in-key-difficulty-level');
+        difficultyInput.addEventListener('change', (e) => {
+            localStorage.setItem('note-in-key-difficulty-level', e.target.value);
+        });
+        if (localStorage.getItem('note-in-key-difficulty-level') !== null) {
+            difficultyInput.value = localStorage.getItem('note-in-key-difficulty-level');
         }
     }
 

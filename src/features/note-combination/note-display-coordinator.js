@@ -1,7 +1,7 @@
 import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=0.6";
 import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=0.6";
-import {NoteCombinationCalculator} from "./note-combination-calculator.js?v=0.6";
-import {NoteCombinationVisualizer} from "./note-combination-visualizer.js?v=0.6";
+import {NoteCombinationGenerator} from "./note-combination-generator.js?v=0.6";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js";
 
 export class NoteDisplayCoordinator {
     challengingCombinations = new Map();
@@ -18,15 +18,20 @@ export class NoteDisplayCoordinator {
     // It is incremented by the event handler on a detected correct note.
     consecutiveEndOfLevelCorrectNotes = 0;
 
-
-    constructor(strings, notes,) {
+    /**
+     *
+     * @param noteGenerator instance of a note generator that implements a getNextCombination() method
+     */
+    constructor(noteGenerator) {
         this.gameProgressUpdater = new GameProgressUpdater(this);
-        this.noteCombinationCalculator = new NoteCombinationCalculator(strings, notes);
-        this.detectedNoteVerifier = new DetectedNoteVerifier(this);
+        this.noteGenerator = noteGenerator;
+        this.detectedNoteVerifier = new DetectedNoteVerifier();
         // Create class-level arrow function properties for event listeners so that they can be removed
         this.displayRandomNotesHandler = this.displayNotes.bind(this);
         // Event handler that checks if note is correct. Updates attributes and calls functions of this coordinator.
         this.checkIfNoteCorrectHandler = this.detectedNoteVerifier.checkIfNoteIsCorrect.bind(this.detectedNoteVerifier);
+        // Event when the correct note was played
+        document.addEventListener('correct-note-played', this.correctNoteEventHandler.bind(this));
     }
 
     beingGame() {
@@ -54,18 +59,43 @@ export class NoteDisplayCoordinator {
         NoteCombinationVisualizer.resetAllColors();
 
         // Get the next combination
-        let {noteName, stringName} = this.noteCombinationCalculator.prepareAndGetNextCombination(
+        let {stringName, noteName} = this.noteGenerator.getNextCombination(
             this.challengingCombinations,
             this.previousCombination
         );
+        // Note could be displayed as number
+        let noteNumber = null;
+        // Check if note is an object or a string
+        if (typeof noteName === 'object') {
+            noteNumber = noteName.number;
+            noteName = noteName.noteName;
+        }
+
         // Display next note and string
-        NoteCombinationVisualizer.displayCombination(stringName, noteName);
+        NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
         // console.debug(`Displaying combination ${stringName}|${noteName}`);
         this.detectedNoteVerifier.noteToPlay = noteName;
 
         // Set incorrect by default, changed to false if correct note was played (in highlightNoteIfCorrect)
         this.previousCombinationWasIncorrect = true;
         this.previousCombination = `${stringName}|${noteName}`;
+    }
+
+    /**
+     * Update stats and progress on correct note
+     */
+    correctNoteEventHandler(){
+        // Combination was correct meaning that its count should be adjusted or removed if over 3 times correct
+        this.adjustCombinationCorrectCount();
+        // Mark that it was correct by setting value to false
+        this.previousCombinationWasIncorrect = false;
+        this.correctCount++;
+        // Update game progress
+        // If there are no combinations left to show, increase the consecutive end-of-level correct notes
+        if (this.challengingCombinations.size === 0) {
+            this.consecutiveEndOfLevelCorrectNotes++;
+        }
+        this.updateProgress();
     }
 
     updateProgress() {

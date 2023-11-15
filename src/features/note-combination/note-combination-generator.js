@@ -1,7 +1,7 @@
-import {NoteCombinationVisualizer} from "./note-combination-visualizer.js?v=0.6";
 import {NoteShuffler} from "../shuffler/note-shuffler.js?v=0.6";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js";
 
-export class NoteCombinationCalculator {
+export class NoteCombinationGenerator {
     constructor(strings, notes) {
         this.noteShuffler = new NoteShuffler(strings, notes);
     }
@@ -20,7 +20,7 @@ export class NoteCombinationCalculator {
      * @param previousCombination previous combination that was displayed
      * @return {*|{stringName: *, noteName: *}}
      */
-    prepareAndGetNextCombination(combinations, previousCombination) {
+    getNextCombination(combinations, previousCombination) {
         // If this function was already called more than 200 times, it's assumed that it'd be stuck
         // in an infinite loop caused by the challenging note and next combination being the same or
         // other reasons that I may not have predicted.
@@ -28,7 +28,7 @@ export class NoteCombinationCalculator {
             this.noteShuffler.incrementShuffledNotesIndex();
             console.debug(`There were over 200 failed attempts to display next combination. \n`
                 + `The shuffled notes index was incremented.`);
-            return this.prepareAndGetNextCombination(combinations, previousCombination);
+            return this.getNextCombination(combinations, previousCombination);
         }
         let noteName, stringName, combination;
 
@@ -71,7 +71,7 @@ export class NoteCombinationCalculator {
                 console.debug(`Next combination displayed even if not half tone appart or same note. Attempts over 200.`)
             } else {
                 // Call function again to try to find a combination that is half a tone appart (in challenging or vice versa)
-                return this.prepareAndGetNextCombination(combinations, previousCombination);
+                return this.getNextCombination(combinations, previousCombination);
             }
         }
         if (currentCombinationIsChallenging === false) {

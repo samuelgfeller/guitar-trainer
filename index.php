@@ -37,7 +37,21 @@ require __DIR__ . '/JsImportVersionAdder.php';
             <img src="src/assets/images/key-icon.svg" class="button-icon">
         </label>
     </div>
+    <div id="lessons-div">
+        <!--<h3>Lessons</h3>-->
+        <input type="number" value="1" id="note-in-key-difficulty-level"
+               style="background: rgba(255,255,255,0.2); width: 50px;border:none">
+        <!--<label class='checkbox-button dashboard-panel-toggle-btn' id="chords-lesson">-->
+        <!--    <input type='checkbox'>-->
+        <!--    <img src="src/assets/images/chords-icon.svg" class="button-icon">-->
+        <!--</label>-->
+    </div>
     <div id="settings">
+        <label class='checkbox-button dashboard-panel-toggle-btn' id="practice-mode">
+            <input type='checkbox'>
+            <span class="normal-font-size">Practice</span>
+            <!--<img src="src/assets/images/treble-clef-icon.svg" class="button-icon">-->
+        </label>
         <label class='checkbox-button dashboard-panel-toggle-btn' id="display-in-treble-clef">
             <input type='checkbox'>
             <!--<span class="normal-font-size"></span>-->
@@ -98,6 +112,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
                 progress bar to 100% and complete the level.</p>
         </details>
     </div>
+    <div id="info-above-string-and-key" style="width: 80%; text-align: center"></div>
     <div class="visible-when-game-on">
         <span class="label">String</span>
         <span class="note-value-span" id="string-span"></span>
