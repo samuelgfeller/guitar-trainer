@@ -112,7 +112,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
                 progress bar to 100% and complete the level.</p>
         </details>
     </div>
-    <div id="info-above-string-and-key" style="width: 80%; text-align: center"></div>
+    <div class="visible-when-game-on" id="info-above-string-and-key"></div>
     <div class="visible-when-game-on">
         <span class="label">String</span>
         <span class="note-value-span" id="string-span"></span>

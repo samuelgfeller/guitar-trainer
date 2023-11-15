@@ -21,6 +21,7 @@ export class CoreGameCoordinator {
 
         // Listen for game stop event to stop game
         document.addEventListener('gameStop', this.stopGame.bind(this));
+        document.addEventListener('gameStart', this.startGame.bind(this));
 
         this.screenWakeLocker = new ScreenWakeLocker();
     }

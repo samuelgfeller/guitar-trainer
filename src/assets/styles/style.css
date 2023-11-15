@@ -337,6 +337,25 @@
         display: none !important;
     }
 
+    #info-above-string-and-key {
+        width: 80%;
+        text-align: center;
+        display: block;
+        margin: 5px 0 40px 0;
+        font-size: 25px;
+    }
+    #info-above-string-and-key b{
+        color: #a2a2a2;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    #info-above-string-and-key .icon{
+        width: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+        filter: invert(60%);
+    }
+
     /*summary::marker{*/
     /*    content: none;*/
     /*}*/

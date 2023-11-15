@@ -24,8 +24,20 @@ export class NoteInKeyGameCoordinator {
         console.log('helloo');
         const noteInKeyGenerator = new NoteInKeyGenerator(this.possibleKeysOnStrings);
         let {keyString, keyNote} = noteInKeyGenerator.getNewStringAndKey();
-        console.log(`Key String: ${keyString}, Key Note: ${keyNote}`);
-        document.getElementById('info-above-string-and-key').innerText = `String: ${keyString}, Key: ${keyNote}`;
+        console.log(`Key String: ${keyString} Key Note: ${keyNote}`);
+
+        document.getElementById('info-above-string-and-key').innerHTML =
+            `<img src="src/assets/images/reload-icon.svg" class="icon" alt="reload" id="reload-key-btn">String: <b>${keyString}</b> Key: <b>${keyNote}</b>`;
+
+
+        document.getElementById('reload-key-btn').addEventListener('click', () => {
+            document.dispatchEvent(new Event('gameStop'));
+            // let {keyString, keyNote} = noteInKeyGenerator.getNewStringAndKey();
+            // noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
+            document.dispatchEvent(new Event('gameStart'));
+        });
+
+
         noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
         const noteDisplayCoordinator = new NoteDisplayPracticeCoordinator(noteInKeyGenerator);
         // Set first note to first note of the key
@@ -43,7 +55,6 @@ export class NoteInKeyGameCoordinator {
     }
 
     stop() {
-        clearInterval(this.interval);
     }
 
     //

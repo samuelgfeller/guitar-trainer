@@ -24,6 +24,7 @@ export class DetectedNoteVerifier {
             // A correct note should only be accounted once, but event listener catches the same note multiple times
             if (!this.correctNoteAccounted) {
                 this.correctNoteAccounted = true;
+                document.getElementById('note-span').innerHTML = this.noteToPlay;
                 // Dispatch the correct-note-played event
                 document.dispatchEvent(new Event('correct-note-played'));
             }

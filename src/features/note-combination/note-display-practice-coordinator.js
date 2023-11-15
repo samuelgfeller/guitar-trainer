@@ -25,27 +25,30 @@ export class NoteDisplayPracticeCoordinator {
     }
 
     displayNotes(combination) {
-        // this.detectedNoteVerifier.correctNoteAccounted = false;
-        // NoteCombinationVisualizer.resetAllColors();
+        setTimeout(() => {
+            this.detectedNoteVerifier.correctNoteAccounted = false;
+            NoteCombinationVisualizer.resetAllColors();
 
-        let stringName, noteName;
-        // Get the next combination
-        if (combination) {
-            ({stringName, noteName} = combination);
-        } else {
-            ({stringName, noteName} = this.noteGenerator.getNextCombination());
-        }
-        // Note could be displayed as number
-        let noteNumber = null;
-        // Check if note is an object or a string
-        if (typeof noteName === 'object') {
-            noteNumber = noteName.number;
-            noteName = noteName.noteName;
-        }
-        console.log(stringName, noteName);
-        // Display next note and string
-        NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
-        // console.debug(`Displaying combination ${stringName}|${noteName}`);
-        this.detectedNoteVerifier.noteToPlay = noteName;
+            let stringName, noteName;
+            // Get the next combination
+            if (combination && typeof combination === 'object' && 'noteName' in combination) {
+                ({stringName, noteName} = combination);
+            } else {
+                ({stringName, noteName} = this.noteGenerator.getNextCombination());
+            }
+            console.log(stringName, noteName);
+            // Note could be displayed as number
+            let noteNumber = null;
+            // Check if note is an object or a string
+            if (typeof noteName === 'object') {
+                noteNumber = noteName.number;
+                noteName = noteName.noteName;
+            }
+            console.log(stringName, noteName);
+            // Display next note and string
+            NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
+            // console.debug(`Displaying combination ${stringName}|${noteName}`);
+            this.detectedNoteVerifier.noteToPlay = noteName;
+        }, 700);
     }
 }
