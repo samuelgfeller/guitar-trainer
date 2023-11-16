@@ -16,19 +16,23 @@ export class NoteInKeyGameCoordinator {
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
     };
 
+    noteDisplayCoordinator;
+
+
     constructor() {
     }
 
 
     play() {
-        console.log('helloo');
+        // Always check the practice mode input as there is no function to test note in key game
+        document.querySelector('#practice-mode input').checked = true;
+
         const noteInKeyGenerator = new NoteInKeyGenerator(this.possibleKeysOnStrings);
         let {keyString, keyNote} = noteInKeyGenerator.getNewStringAndKey();
         console.log(`Key String: ${keyString} Key Note: ${keyNote}`);
 
         document.getElementById('info-above-string-and-key').innerHTML =
             `<img src="src/assets/images/reload-icon.svg" class="icon" alt="reload" id="reload-key-btn">String: <b>${keyString}</b> Key: <b>${keyNote}</b>`;
-
 
         document.getElementById('reload-key-btn').addEventListener('click', () => {
             document.dispatchEvent(new Event('gameStop'));
@@ -37,13 +41,13 @@ export class NoteInKeyGameCoordinator {
             document.dispatchEvent(new Event('gameStart'));
         });
 
-
         noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
-        const noteDisplayCoordinator = new NoteDisplayPracticeCoordinator(noteInKeyGenerator);
+        this.noteDisplayCoordinator = new NoteDisplayPracticeCoordinator(noteInKeyGenerator);
+        this.noteDisplayCoordinator.detectedNoteVerifier.displayCorrectNoteName = true;
         // Set first note to first note of the key
-        noteDisplayCoordinator.displayNotes({stringName: keyString, noteName: {noteName: keyNote, number: 1}});
+        this.noteDisplayCoordinator.displayNotes({stringName: keyString, noteName: {noteName: keyNote, number: 1}});
 
-        noteDisplayCoordinator.beingGame();
+        this.noteDisplayCoordinator.beingGame();
 
         // Display random note number in key every 5 seconds
         // this.interval = setInterval(() => {
@@ -55,6 +59,7 @@ export class NoteInKeyGameCoordinator {
     }
 
     stop() {
+        this.noteDisplayCoordinator.endGame();
     }
 
     //

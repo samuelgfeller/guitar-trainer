@@ -14,6 +14,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
     <link rel="stylesheet" href="src/assets/styles/modal.css?v=6">
     <link rel="stylesheet" href="src/assets/styles/style.css?v=6">
     <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=5">
+    <link rel="stylesheet" href="src/assets/styles/range-slider.css">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
@@ -23,52 +24,62 @@ require __DIR__ . '/JsImportVersionAdder.php';
 <body>
 
 <div id="config-div">
-    <div id="game-modes">
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="metronome-mode">
-            <input type='checkbox'>
-            <img src="src/assets/images/metronome-icon.svg" class="button-icon">
-        </label>
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="fretboard-note-game-mode">
-            <input type='checkbox'>
-            <img src="src/assets/images/guitar-fretboard-icon.svg" class="button-icon">
-        </label>
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="note-in-key-game-mode">
-            <input type='checkbox'>
-            <img src="src/assets/images/key-icon.svg" class="button-icon">
-        </label>
-    </div>
-    <div id="lessons-div">
-        <!--<h3>Lessons</h3>-->
-        <input type="number" value="1" id="note-in-key-difficulty-level"
-               style="background: rgba(255,255,255,0.2); width: 50px;border:none">
-        <!--<label class='checkbox-button dashboard-panel-toggle-btn' id="chords-lesson">-->
-        <!--    <input type='checkbox'>-->
-        <!--    <img src="src/assets/images/chords-icon.svg" class="button-icon">-->
-        <!--</label>-->
-    </div>
-    <div id="settings">
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="practice-mode">
-            <input type='checkbox'>
-            <span class="normal-font-size">Practice</span>
-            <!--<img src="src/assets/images/treble-clef-icon.svg" class="button-icon">-->
-        </label>
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="display-in-treble-clef">
-            <input type='checkbox'>
-            <!--<span class="normal-font-size"></span>-->
-            <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
-        </label>
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="display-note-name-and-treble-clef">
-            <input type='checkbox'>
-            <div style="display: flex; align-items: center">
+    <!-- Additional div necessary to have options and game modes on separate lines with smooth animation -->
+    <div id="config-inner-div">
+        <span class="normal-font-size label-text">Game modes</span>
+        <div id="game-mode-selection">
+            <label class='checkbox-button' id="metronome-mode">
+                <input type='checkbox'>
+                <img src="src/assets/images/metronome-icon.svg" class="button-icon">
+            </label>
+            <label class='checkbox-button' id="fretboard-note-game-mode">
+                <input type='checkbox'>
+                <img src="src/assets/images/guitar-fretboard-icon.svg" class="button-icon">
+            </label>
+            <label class='checkbox-button' id="note-in-key-game-mode">
+                <input type='checkbox'>
+                <img src="src/assets/images/key-icon.png" class="button-icon">
+            </label>
+        </div>
+        <!-- Game mode options in HTML as they may be used by multiple modes -->
+        <span class="normal-font-size label-text">Options</span>
+        <div id="options-for-game-modes">
+            <!-- Fretboard note game options -->
+            <label class='checkbox-button option-for-game-mode' id="display-in-treble-clef">
+                <input type='checkbox'>
+                <!--<span class="normal-font-size"></span>-->
                 <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
-                <span class="normal-font-size">+ name</span>
-            </div>
-        </label>
-        <label class='checkbox-button dashboard-panel-toggle-btn' id="challenging-notes-preset">
-            <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
-            <img src="src/assets/images/challenging-icon.svg" class="button-icon">
-        </label>
+            </label>
+            <label class='checkbox-button option-for-game-mode' id="display-note-name-and-treble-clef">
+                <input type='checkbox'>
+                <div style="display: flex; align-items: center">
+                    <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
+                    <span class="normal-font-size">+ name</span>
+                </div>
+            </label>
+            <label class='checkbox-button option-for-game-mode' id="challenging-notes-preset">
+                <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
+                <img src="src/assets/images/challenging-icon.svg" class="button-icon">
+            </label>
 
+            <!-- Practice note in key game mode options -->
+            <label class='checkbox-button option-for-game-mode' id="practice-mode">
+                <input type='checkbox'>
+                <span class="normal-font-size">Practice</span>
+                <!--<img src="src/assets/images/treble-clef-icon.svg" class="button-icon">-->
+            </label>
+
+            <div id="difficulty-range-slider-container" class="option-for-game-mode">
+                <input type='range' min='1' max='3' value='1' step='1'
+                       list="level-options" id="difficulty-range-slider"/>
+                <datalist id="level-options">
+                    <option value="1" label="Lvl 1"></option>
+                    <option value="2" label="Lvl 2"></option>
+                    <option value="3" label="Lvl 3"></option>
+                </datalist>
+
+            </div>
+        </div>
     </div>
 </div>
 <header>
@@ -76,9 +87,11 @@ require __DIR__ . '/JsImportVersionAdder.php';
         <!--<label for="bpm-input">Metronome BPM</label>-->
         <img src="src/assets/images/settings-icon.svg" id="settings-toggle-btn" class="icon">
         <div class="center-flexbox">
-            <img src="src/assets/images/next-level.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
+            <!--<img src="src/assets/images/next-level.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">-->
+            <img src="src/assets/images/arrow-left-icon.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
             <input type="number" min="0" value="17" id="bpm-input">
-            <img src="src/assets/images/next-level.svg" alt=">" id="next-lvl-btn" class="icon lvl-icon">
+            <img src="src/assets/images/arrow-right-icon.svg" alt="<" id="next-lvl-btn" class="icon lvl-icon">
+            <!--<img src="src/assets/images/next-level.svg" alt=">" id="next-lvl-btn" class="icon lvl-icon">-->
         </div>
         <button class="start-stop-btn" id="start-stop-btn">Play</button>
     </div>

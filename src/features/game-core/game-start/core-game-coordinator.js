@@ -15,6 +15,9 @@ export class CoreGameCoordinator {
     // Game coordinator that implements a play() and stop() method
     gameCoordinator = null;
 
+    /**
+     * @param {GameInitializer} gameInitializer
+     */
     constructor(gameInitializer) {
         // Inject instance as an attribute there is changed
         this.gameInitializer = gameInitializer;
@@ -54,10 +57,8 @@ export class CoreGameCoordinator {
         // Start game module
         this.gameCoordinator.play();
 
-        // This gets the game moving and has to be after the game module has been propperly started
-        console.log(document.querySelector('#practice-mode input').checked);
+        // This gets the game moving and has to be after the game module has been properly started
         if (!document.querySelector('#practice-mode input').checked) {
-            console.log('hey');
             this.metronomeOperator.startMetronome();
             // Only show when not practice mode
             GameElementsVisualizer.showGameProgress();

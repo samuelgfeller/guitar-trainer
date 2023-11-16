@@ -8,7 +8,7 @@ export class DetectedNoteVerifier {
     // times for the same correct note
     correctNoteAccounted = false;
 
-    correctCount = 0;
+    displayCorrectNoteName = false;
 
     checkIfNoteIsCorrect(event) {
         // Check if detected note is the correct one (includes as sharp / flats are the same semitone)
@@ -18,13 +18,16 @@ export class DetectedNoteVerifier {
         // console.log(`noteToPlay: ${this.noteToPlay} playedNote: ${playedNote}`);
         // C# and Db are the same note
         if (this.noteToPlay === sharp || this.noteToPlay === flat) {
+            console.log('Correct note played', this.noteToPlay);
             // Color spans and detected note in green when correct
             NoteCombinationVisualizer.setColorsToIndicateCorrectlyPlayedNote();
 
             // A correct note should only be accounted once, but event listener catches the same note multiple times
             if (!this.correctNoteAccounted) {
                 this.correctNoteAccounted = true;
-                document.getElementById('note-span').innerHTML = this.noteToPlay;
+                if (this.displayCorrectNoteName) {
+                    document.getElementById('note-span').innerHTML = this.noteToPlay;
+                }
                 // Dispatch the correct-note-played event
                 document.dispatchEvent(new Event('correct-note-played'));
             }

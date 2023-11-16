@@ -29,7 +29,7 @@ export class NoteInKeyGenerator {
         console.log(diatonicNotesOnStrings);
 
         // const keyIndex = this.possibleKeysOnStrings[keyString].indexOf(keyNote);
-        const difficulty = parseInt(document.getElementById('note-in-key-difficulty-level').value) ?? 1;
+        const difficulty = parseInt(document.getElementById('difficulty-range-slider').value) ?? 1;
 
         // Get index of key-note on string with newly created diatonicNotesOnStrings
         const keyIndex = diatonicNotesOnStrings[keyString].findIndex(noteObject => noteObject.noteName === keyNote);

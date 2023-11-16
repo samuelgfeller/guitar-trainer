@@ -1,6 +1,6 @@
 import {GameStartAndStopper} from "./game-start-and-stopper.js?v=0.6";
 import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
-import {GameLevelTracker} from "../game-progress/game-level-tracker.js";
+import {GameConfigurationManager} from "../game-ui/game-configuration-manager.js";
 
 export class GameInitializer {
     constructor() {
@@ -15,7 +15,7 @@ export class GameInitializer {
         // Init start stop button
         this.initGameStartStopEventListeners();
         // Init bpm input listeners
-        this.initBpmInputChangeListener();
+        GameConfigurationManager.initBpmInputChangeListener(this.gameStartAndStopper.coreGameCoordinator);
         // Init pause / resume game on visibility change
         this.initPauseAndResumeGameOnVisibilityChange();
         this.initSettings();
@@ -23,32 +23,15 @@ export class GameInitializer {
     }
 
     /**
-     * Store settings
+     * Init behaviour of configuration (settings) area
      */
     initSettings() {
         // Settings toggle button
         document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
-            this.toggleSettingsExpand();
+            GameConfigurationManager.toggleSettingsExpand();
         });
-        const settingSwitches = document.querySelectorAll('#config-div label');
-        for (const setting of settingSwitches) {
-            const input = setting.querySelector('input');
-            // Event listener to save setting switch in localstorage when changed
-            setting.addEventListener('click', () => {
-                localStorage.setItem(setting.id, input.checked ? '1' : '0');
-            });
-            // Set the input checked state with the one from local storage
-            if ((localStorage.getItem(setting.id) ?? '0') === '1') {
-                input.checked = true;
-            }
-        }
-        let difficultyInput = document.getElementById('note-in-key-difficulty-level');
-        difficultyInput.addEventListener('change', (e) => {
-            localStorage.setItem('note-in-key-difficulty-level', e.target.value);
-        });
-        if (localStorage.getItem('note-in-key-difficulty-level') !== null) {
-            difficultyInput.value = localStorage.getItem('note-in-key-difficulty-level');
-        }
+
+        GameConfigurationManager.storeAndLoadConfigValuesInLocalStorage();
     }
 
     initGameStartStopEventListeners() {
@@ -69,45 +52,6 @@ export class GameInitializer {
                 this.gameStartAndStopper.startStopGame();
             }
         });
-    }
-
-    initBpmInputChangeListener() {
-        const bpmInput = document.querySelector('#bpm-input');
-
-        // Set bpm input to the current level which is always one higher than the last completed or the default value
-        bpmInput.value = GameLevelTracker.getCurrentLevel();
-
-        // Level change event listener
-        bpmInput.addEventListener('change', (e) => {
-            updateIsLevelAccomplishedColor(bpmInput);
-            this.gameStartAndStopper.coreGameCoordinator.stopGame();
-            GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
-            // Reset game progress in the form of an event to avoid having to need game progress instance here
-            document.dispatchEvent(new Event('resetGameProgress'));
-            this.startStopButton.innerText = 'Play';
-        });
-        // stepUp and stepDown on input type number don't automatically fire the "change" event
-        const changeEvent = new Event('change');
-        document.getElementById('next-lvl-btn').addEventListener('click', () => {
-            bpmInput.stepUp();
-            bpmInput.dispatchEvent(changeEvent);
-        });
-        document.getElementById('previous-lvl-btn').addEventListener('click', () => {
-            bpmInput.stepDown();
-            bpmInput.dispatchEvent(changeEvent);
-        });
-
-        /**
-         * Change color of the bottom line to indicated level is accomplished
-         * @param bpmInput
-         */
-        const updateIsLevelAccomplishedColor = (bpmInput) => {
-            if (GameLevelTracker.isLevelAccomplished(bpmInput.value)) {
-                document.querySelector('header div').style.borderBottomColor = 'green';
-            } else {
-                document.querySelector('header div').style.borderBottomColor = null;
-            }
-        }
     }
 
     /**
@@ -159,7 +103,5 @@ export class GameInitializer {
         });
         document.querySelector('#game-start-instruction').style.display = 'block';
     }
-    toggleSettingsExpand() {
-        document.getElementById('config-div').classList.toggle('expanded');
-    }
+
 }

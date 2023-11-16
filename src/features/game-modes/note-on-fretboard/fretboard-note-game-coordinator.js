@@ -16,6 +16,9 @@ export class FretboardNoteGameCoordinator {
      * Start fretboard note game
      */
     play() {
+        // Always uncheck the practice mode input as there is no practice function yet in this game mode
+        document.querySelector('#practice-mode input').checked = false;
+
         this.noteDisplayCoordinator = new NoteDisplayCoordinator(
             new NoteCombinationGenerator(
                 ['Ê', 'B', 'G', 'D', 'A', 'E'],

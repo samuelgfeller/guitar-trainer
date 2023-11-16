@@ -4,6 +4,12 @@
     font-weight: 400;
 }
 
+@font-face {
+    font-family: SF-Pro-Text;
+    src: url(../fonts/SF-Pro-Text-Bold.otf);
+    font-weight: bold;
+}
+
 @media (min-width: 100px) {
     * {
         box-sizing: border-box;
@@ -56,7 +62,7 @@
         border: 3px solid #3c4143;
         border-radius: 20px;
         cursor: pointer;
-        margin-top: 15px;
+        min-height: 40px;
     }
 
     .checkbox-button span {
@@ -72,10 +78,19 @@
     }
 
     #config-div.expanded {
-        max-height: 200px;
+        max-height: 240px;
         /*overflow: hidden; !* Initially, hide the overflow *!*/
         /* Delayed animation to prevent showing the scrollbar while config-div is expanding */
         animation: enableScroll 0.5s ease 0.5s forwards;
+    }
+
+    #config-inner-div > div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        width: 100%;
+        align-items: center;
     }
 
     /*Enable scroll in case there are more buttons than 200px height*/
@@ -120,11 +135,13 @@
 
     .icon {
         width: 30px;
+        /*height: 30px;*/
         filter: invert(70%);
     }
 
     .button-icon {
         width: 30px;
+        height: 30px;
         filter: invert(70%);
     }
 
@@ -215,15 +232,15 @@
     }
 
     #previous-lvl-btn {
-        transform: rotate(90deg);
+        /*transform: rotate(90deg);*/
     }
 
     #next-lvl-btn {
-        transform: rotate(-90deg);
+        /*transform: rotate(-90deg);*/
     }
 
     .lvl-icon {
-        width: 50px;
+        width: 43px;
         padding: 15px;
         cursor: pointer;
     }
@@ -288,9 +305,9 @@
         border-radius: 99px;
     }
 
-    /* Left and right bar width set by javascript depending on the length oft bar (cent amount) */
     #detected-note::before {
         left: 0;
+        /* Left and right bar width set by javascript depending on the length oft bar (cent amount) */
         width: var(--left-bar-width, 0%);
         transform: translate(-100%, -50%);
     }
@@ -298,6 +315,7 @@
     #detected-note::after {
         right: 0;
         transform: translate(100%, -50%);
+        /* Left and right bar width set by javascript depending on the length oft bar (cent amount) */
         width: var(--right-bar-width, 0%);
     }
 
@@ -344,16 +362,40 @@
         margin: 5px 0 40px 0;
         font-size: 25px;
     }
-    #info-above-string-and-key b{
+
+    #info-above-string-and-key b {
         color: #a2a2a2;
         font-size: 30px;
         font-weight: bold;
     }
-    #info-above-string-and-key .icon{
+
+    #info-above-string-and-key .icon {
         width: 20px;
         margin-right: 20px;
         cursor: pointer;
         filter: invert(60%);
+    }
+
+    .option-for-game-mode {
+        display: none;
+    }
+
+    .config-number-input {
+        background: rgba(255, 255, 255, 0.2);
+        width: 60px;
+        border: none;
+        padding: 5px;
+        border-radius: 10px;
+        text-align: center;
+        color: #c0c0c0;
+    }
+    .label-text{
+        /*font-family: SF-Pro-Text, CenturyGothic, Geneva, AppleGothic, sans-serif;*/
+        font-size: 13px;
+        text-align: center;
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 10px;
     }
 
     /*summary::marker{*/

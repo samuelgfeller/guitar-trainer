@@ -1,0 +1,16 @@
+.difficulty-range-slider-container{
+    width: 150px;
+}
+.difficulty-range-slider-container input{
+    width: 100%;
+    margin: 0;
+}
+#level-options {
+  display: flex;
+  justify-content: space-between;
+    /*margin: 0 2px 0 4px;*/
+}
+#level-options option {
+  font-size: 15px;
+    font-weight: bold;
+}

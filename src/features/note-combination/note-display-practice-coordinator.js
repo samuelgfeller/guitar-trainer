@@ -2,6 +2,10 @@ import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js";
 import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js";
 
 export class NoteDisplayPracticeCoordinator {
+    /**
+     *
+     * @param noteGenerator instance that contains a getNextCombination() method
+     */
     constructor(noteGenerator) {
         this.noteGenerator = noteGenerator;
         this.detectedNoteVerifier = new DetectedNoteVerifier();
@@ -20,11 +24,13 @@ export class NoteDisplayPracticeCoordinator {
     }
 
     endGame() {
-        document.addEventListener('correct-note-played', this.displayNotesHandler);
+        document.removeEventListener('correct-note-played', this.displayNotesHandler);
         document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
     }
 
     displayNotes(combination) {
+        // console.log('displayNotes is called');
+        // console.trace();
         setTimeout(() => {
             this.detectedNoteVerifier.correctNoteAccounted = false;
             NoteCombinationVisualizer.resetAllColors();
@@ -36,7 +42,6 @@ export class NoteDisplayPracticeCoordinator {
             } else {
                 ({stringName, noteName} = this.noteGenerator.getNextCombination());
             }
-            console.log(stringName, noteName);
             // Note could be displayed as number
             let noteNumber = null;
             // Check if note is an object or a string
@@ -44,7 +49,7 @@ export class NoteDisplayPracticeCoordinator {
                 noteNumber = noteName.number;
                 noteName = noteName.noteName;
             }
-            console.log(stringName, noteName);
+            console.log('note to play', stringName, noteName);
             // Display next note and string
             NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
             // console.debug(`Displaying combination ${stringName}|${noteName}`);
