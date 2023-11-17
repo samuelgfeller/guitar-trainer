@@ -8,16 +8,17 @@ export class GameLevelHandler {
     constructor(gameProgressVisualizer) {
         this.gameProgressVisualizer = gameProgressVisualizer;
         this.closeModalEventHandler = this.closeModalEvent.bind(this);
-        this.nextLevelEventHandler = this.nextLevelEvent.bind(this);
+        this.goToNextLevelEventHandler = this.goToNextLevelEvent.bind(this);
     }
 
-    leveledUp() {
+    static leveledUp() {
         // Stop the game in the form of an event to avoid a circular dependency with core-game-coordinator
-        document.dispatchEvent(new Event('gameStop'));
+        document.dispatchEvent(new Event('game-stop'));
 
         document.querySelector('header div').style.borderBottomColor = 'green';
-        GameLevelTracker.addAccomplishedLevel(document.getElementById('bpm-input').value);
-        this.gameProgressVisualizer.alreadyLeveledUp = true;
+
+
+        // this.gameProgressVisualizer.alreadyLeveledUp = true;
 
         let header = `<h2>Congratulations 🎉</h2>`;
         let body = `<div>Level completed!</div>`;
@@ -34,30 +35,7 @@ export class GameLevelHandler {
 
         // Add event listeners
         document.getElementById('close-modal-btn').addEventListener('click', this.closeModalEventHandler);
-        document.getElementById('next-lvl-modal-btn').addEventListener('click', this.nextLevelEventHandler);
+        document.getElementById('next-lvl-modal-btn').addEventListener('click', this.goToNextLevelEventHandler);
         document.getElementById('modal').addEventListener('click', this.closeModalEventHandler);
     }
-
-    closeModalEvent() {
-        this.closeModal();
-    }
-
-    closeModal() {
-        let modal = document.getElementById('modal');
-        document.getElementById('close-modal-btn').removeEventListener('click', this.closeModalEventHandler);
-        document.getElementById('next-lvl-modal-btn').removeEventListener('click', this.nextLevelEventHandler);
-        document.getElementById('modal').removeEventListener('click', this.closeModalEventHandler);
-        modal.remove();
-    }
-
-    nextLevelEvent() {
-        this.gameProgressVisualizer.gameProgressUpdater.resetGameProgress();
-        let bpmInput = document.getElementById('bpm-input');
-        bpmInput.stepUp();
-        // stepUp on input type number doesn't automatically fire the "change" event
-        const changeEvent = new Event('change');
-        bpmInput.dispatchEvent(changeEvent);
-        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
-    }
-
 }

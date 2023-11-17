@@ -189,7 +189,7 @@
         margin-left: 10px;
     }
 
-    #metronome-mode {
+    #metronome-game-mode {
         cursor: pointer;
     }
 
@@ -359,7 +359,7 @@
         width: 80%;
         text-align: center;
         display: block;
-        margin: 5px 0 40px 0;
+        margin: 40px 0 40px 0;
         font-size: 25px;
     }
 

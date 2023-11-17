@@ -1,5 +1,5 @@
 import {NoteInKeyGenerator} from "./note-in-key-generator.js";
-import {NoteDisplayPracticeCoordinator} from "../../note-combination/note-display-practice-coordinator.js";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -16,7 +16,7 @@ export class NoteInKeyGameCoordinator {
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
     };
 
-    noteDisplayCoordinator;
+    noteDisplayer;
 
 
     constructor() {
@@ -24,42 +24,45 @@ export class NoteInKeyGameCoordinator {
 
 
     play() {
-        // Always check the practice mode input as there is no function to test note in key game
-        document.querySelector('#practice-mode input').checked = true;
-
         const noteInKeyGenerator = new NoteInKeyGenerator(this.possibleKeysOnStrings);
         let {keyString, keyNote} = noteInKeyGenerator.getNewStringAndKey();
-        console.log(`Key String: ${keyString} Key Note: ${keyNote}`);
 
         document.getElementById('info-above-string-and-key').innerHTML =
             `<img src="src/assets/images/reload-icon.svg" class="icon" alt="reload" id="reload-key-btn">String: <b>${keyString}</b> Key: <b>${keyNote}</b>`;
 
-        document.getElementById('reload-key-btn').addEventListener('click', () => {
-            document.dispatchEvent(new Event('gameStop'));
-            // let {keyString, keyNote} = noteInKeyGenerator.getNewStringAndKey();
-            // noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
-            document.dispatchEvent(new Event('gameStart'));
-        });
+        // Reload key button event listener
+        document.getElementById('reload-key-btn').addEventListener('click', this.reloadKey);
 
+        // Prepare the attribute containing the notes on strings that may be displayed (diatonic to key, difficulty)
         noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
-        this.noteDisplayCoordinator = new NoteDisplayPracticeCoordinator(noteInKeyGenerator);
-        this.noteDisplayCoordinator.detectedNoteVerifier.displayCorrectNoteName = true;
-        // Set first note to first note of the key
-        this.noteDisplayCoordinator.displayNotes({stringName: keyString, noteName: {noteName: keyNote, number: 1}});
 
-        this.noteDisplayCoordinator.beingGame();
+        // Instantiate object with note displayer function that will be called when new note should be displayed
+        // after a correct one has been played.
+        this.noteDisplayer = new PracticeNoteDisplayer(noteInKeyGenerator);
+        // After the correct number has been played, replace number with note name - or not
+        this.noteDisplayer.detectedNoteVerifier.displayCorrectNoteName = false;
 
-        // Display random note number in key every 5 seconds
-        // this.interval = setInterval(() => {
-        //     const {stringToPlayNote, noteNumber} = this.generatator.getRandomNoteNumberInKey(notesAndStrings);
-        //     console.log(`String: ${stringToPlayNote}, Note Number: ${noteNumber}`);
-        //     NoteCombinationVisualizer.displayCombination(stringToPlayNote, noteNumber);
-        // }, 5000);
+        // Manually call displayNotes because the first combination should be the note of the key
+        this.noteDisplayer.displayNotes({stringName: keyString, noteName: {noteName: keyNote, number: 1}});
 
+        // Level up event listener
+        document.addEventListener('leveled-up', this.levelUp.bind(this));
+
+        // Init event listeners that will automatically call displayNotes() when correct note has been played
+        this.noteDisplayer.beingGame();
     }
 
     stop() {
-        this.noteDisplayCoordinator.endGame();
+        this.noteDisplayer.endGame();
+    }
+
+    levelUp() {
+
+    }
+
+    reloadKey() {
+        document.dispatchEvent(new Event('game-stop'));
+        document.dispatchEvent(new Event('game-start'));
     }
 
     //

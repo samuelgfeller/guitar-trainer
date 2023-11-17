@@ -1,21 +1,6 @@
-import {GameLevelHandler} from "./game-level-handler.js?v=0.6";
-
 export class GameProgressVisualizer {
-
-    /**
-     * @param {GameProgressUpdater} gameProgressUpdater
-     */
-    constructor(gameProgressUpdater) {
-        this.gameProgressUpdater = gameProgressUpdater;
-        this.gameLevelHandler = new GameLevelHandler(this);
-        // The far left (0%) is always the max wrong combinations
-        this.maxWrongCombinations = 0;
-        // At the end of the progress bar, when there is no challenging notes left, the user has to do 10 correct
-        // notes in a row to be able to have 100% progress. This is a counter of those last notes.
-        this.lastNotesCorrectCount = 0;
-
-        // If user wants to continue playing after 100% reached
-        this.alreadyLeveledUp = false;
+    alreadyLeveledUp = false;
+    constructor() {
     }
 
     updateGameProgress(percentage, movingBarLabel) {
@@ -29,8 +14,12 @@ export class GameProgressVisualizer {
         progressBar.style.width = `${progressBarWidth}%`;
         if (percentage >= 100) {
             progressBar.style.borderRadius = '20px';
+            // Check if already leveled up for the case updateGameProgress is called twice times
+            console.log(!this.alreadyLeveledUp)
             if (!this.alreadyLeveledUp) {
-                this.gameLevelHandler.leveledUp();
+                // Dispatch leveled up event
+                this.alreadyLeveledUp = true;
+                document.dispatchEvent(new Event('leveled-up'));
             }
         } else {
             progressBar.style.borderRadius = null;

@@ -21,25 +21,26 @@ export class NoteInKeyGenerator {
         return {keyString: this.string, keyNote: this.key};
     }
 
+    /**
+     * Load the this.notesOnStrings attribute which is the possible notes that can be displayed.
+     * Related to the given key and difficulty level.
+     * @param keyString
+     * @param keyNote
+     */
     loadNotesAndStrings(keyString, keyNote) {
-               // Convert the range of possibleKeysOnStrings to the diatonic scale of the given keyNote
+        // Convert the range of possibleKeysOnStrings to the diatonic scale of the given keyNote
         let diatonicNotesOnStrings = this.getPossibleStringsAndKeysInDiatonicScale(
             keyNote, this.possibleStringsAndKeys
         );
-        console.log(diatonicNotesOnStrings);
 
         // const keyIndex = this.possibleKeysOnStrings[keyString].indexOf(keyNote);
         const difficulty = parseInt(document.getElementById('difficulty-range-slider').value) ?? 1;
 
         // Get index of key-note on string with newly created diatonicNotesOnStrings
         const keyIndex = diatonicNotesOnStrings[keyString].findIndex(noteObject => noteObject.noteName === keyNote);
-        console.log(keyIndex);
 
         // Remove notes that are not nearby the key note, according to the difficulty level
-        let notesOnStrings = this.removeNotesAccordingToDifficultyLevel(diatonicNotesOnStrings, keyIndex, difficulty);
-        console.log(notesOnStrings);
-
-        this.notesOnStrings = notesOnStrings;
+        this.notesOnStrings = this.removeNotesAccordingToDifficultyLevel(diatonicNotesOnStrings, keyIndex, difficulty);
     }
 
     getNextCombination() {

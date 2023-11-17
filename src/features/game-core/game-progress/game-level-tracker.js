@@ -1,22 +1,22 @@
 export class GameLevelTracker {
 
 // Store the accomplished levels in localStorage
-    static storeAccomplishedLevels(levels) {
-        localStorage.setItem('accomplishedLevels', JSON.stringify(levels));
+    static storeAccomplishedLevels(levels, key) {
+        localStorage.setItem(key, JSON.stringify(levels));
     }
 
     // Add an accomplished level to the list in localStorage
-    static addAccomplishedLevel(level) {
-        let levels = this.getAccomplishedLevels();
+    static addAccomplishedLevel(level, gameModeLevelKey) {
+        let levels = this.getAccomplishedLevels(gameModeLevelKey);
         if (!levels.includes(level)) {
             levels.push(level);
-            this.storeAccomplishedLevels(levels);
+            this.storeAccomplishedLevels(levels, gameModeLevelKey);
         }
     }
 
     // Get the list of accomplished levels from localStorage
-    static getAccomplishedLevels() {
-        let levels = localStorage.getItem('accomplishedLevels');
+    static getAccomplishedLevels(key) {
+        let levels = localStorage.getItem(key);
         if (levels) {
             return JSON.parse(levels);
         } else {
@@ -25,8 +25,8 @@ export class GameLevelTracker {
     }
 
     // Check if a level is accomplished
-    static isLevelAccomplished(level) {
-        let levels = this.getAccomplishedLevels();
+    static isLevelAccomplished(level, gameModeLevelKey) {
+        let levels = this.getAccomplishedLevels(gameModeLevelKey);
         return levels.includes(level);
     }
 
@@ -34,8 +34,8 @@ export class GameLevelTracker {
      * Get the current level which is always one higher than the last completed or the default value
      * @return {number}
      */
-    static getCurrentLevel() {
-        let levels = this.getAccomplishedLevels();
+    static getCurrentLevel(gameModeLevelKey) {
+        let levels = this.getAccomplishedLevels(gameModeLevelKey);
         if (Array.isArray(levels) && levels.length > 0) {
             return parseInt(levels[levels.length - 1]) + 1;
         }

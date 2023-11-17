@@ -31,7 +31,7 @@ export class MetronomeOperator {
     }
 
     playClickSound() {
-        if (document.querySelector('#metronome-mode input').checked) {
+        if (document.querySelector('#metronome-game-mode input').checked) {
             const oscillator = this.audioContext.createOscillator();
             const gainNode = this.audioContext.createGain();
 

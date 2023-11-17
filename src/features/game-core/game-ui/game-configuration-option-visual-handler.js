@@ -1,3 +1,5 @@
+import {GameLevelTracker} from "../game-progress/game-level-tracker.js";
+
 export class GameConfigurationOptionVisualHandler {
 
     /**
@@ -11,6 +13,9 @@ export class GameConfigurationOptionVisualHandler {
         if (settingId === 'note-in-key-game-mode') {
             this.noteInKeyGameModeSettings();
         }
+        if (settingId === 'note-in-key-game-mode') {
+            // There are no options
+        }
     }
 
     /**
@@ -18,6 +23,7 @@ export class GameConfigurationOptionVisualHandler {
      * there were some before the game mode has been selected.
      */
     static hideAllGameModeOptions() {
+        document.querySelector('#options-title-span').style.display = 'none';
         this.toggleCheckboxOptions(false, [
             // Fretboard note game options
             'display-in-treble-clef',
@@ -25,8 +31,7 @@ export class GameConfigurationOptionVisualHandler {
             'challenging-notes-preset',
             // Note in key game options
             'difficulty-range-slider-container',
-            // Option for both game modes
-            'practice-mode',
+            //'note-in-key-test-mode',
         ]);
     }
 
@@ -37,7 +42,6 @@ export class GameConfigurationOptionVisualHandler {
                 'display-in-treble-clef',
                 'display-note-name-and-treble-clef',
                 'challenging-notes-preset',
-                'practice-mode',
             ]
             // If new are added, they have to be added to hideAllGameModeOptions as well
         );
@@ -45,7 +49,10 @@ export class GameConfigurationOptionVisualHandler {
 
     static noteInKeyGameModeSettings() {
         // Display practice checkbox
-        this.toggleCheckboxOptions(true, ['practice-mode']);
+        //this.toggleCheckboxOptions(true, ['note-in-key-test-mode']);
+
+        // Show options title
+        document.querySelector('#options-title-span').style.display = null;
 
         // Showing the range is different from checkboxes
         document.getElementById('difficulty-range-slider-container').style.display = 'inline-block';
@@ -66,6 +73,10 @@ export class GameConfigurationOptionVisualHandler {
             } else {
                 console.error(`Element with id "${optionId}" does not exist.`);
             }
+        }
+        // If options should be shown, remove display none on option title
+        if (show){
+            document.querySelector('#options-title-span').style.display = null;
         }
     }
 }

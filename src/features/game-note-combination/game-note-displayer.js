@@ -1,9 +1,14 @@
 import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=0.6";
 import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=0.6";
-import {NoteCombinationGenerator} from "./note-combination-generator.js?v=0.6";
 import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js";
 
-export class NoteDisplayCoordinator {
+/**
+ * Note display coordinator when playing the "game" which
+ * means with metronome rhythm, progress bar and challenging
+ * notes.
+ * One level more is a higher metronome beat.
+ */
+export class GameNoteDisplayer {
     challengingCombinations = new Map();
     incorrectCount = 0;
     correctCount = 0;
@@ -13,7 +18,7 @@ export class NoteDisplayCoordinator {
     // At the end of the progress bar, when there is no challenging notes left, the user has to do
     // x amount (default 10) correct notes in a row to be able to have 100% progress. More at level begin.
     endLevelRequiredCorrectNotesAmount = 10;
-    levelBeginRequiredCorrectNotesAmount = 20;
+    levelBeginRequiredCorrectNotesAmount = 1;
     // This is a counter of those last notes.
     // It is incremented by the event handler on a detected correct note.
     consecutiveEndOfLevelCorrectNotes = 0;
@@ -30,8 +35,8 @@ export class NoteDisplayCoordinator {
         this.displayRandomNotesHandler = this.displayNotes.bind(this);
         // Event handler that checks if note is correct. Updates attributes and calls functions of this coordinator.
         this.checkIfNoteCorrectHandler = this.detectedNoteVerifier.checkIfNoteIsCorrect.bind(this.detectedNoteVerifier);
-        // Event when the correct note was played
-        document.addEventListener('correct-note-played', this.correctNoteEventHandler.bind(this));
+        this.correctNoteEventHandler = this.correctNoteHandler.bind(this);
+        this.resetGameProgressHandler = this.resetGameProgress.bind(this);
     }
 
     beingGame() {
@@ -39,11 +44,16 @@ export class NoteDisplayCoordinator {
         document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
         // Custom event when played note was detected
         document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
+        // Event when the correct note was played
+        document.addEventListener('correct-note-played', this.correctNoteEventHandler);
+        // Event when game progress should be reset
+        document.addEventListener('reset-game-progress', this.resetGameProgressHandler);
     }
 
     endGame() {
         document.removeEventListener('metronome-beat', this.displayRandomNotesHandler);
         document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
+        document.removeEventListener('correct-note-played', this.correctNoteEventHandler);
     }
 
     displayNotes() {
@@ -57,7 +67,10 @@ export class NoteDisplayCoordinator {
 
         // Reset color of note span
         NoteCombinationVisualizer.resetAllColors();
-
+        // console.log('Displaying notes', this.noteGenerator.getNextCombination(
+        //             this.challengingCombinations,
+        //             this.previousCombination
+        //         ));
         // Get the next combination
         let {stringName, noteName} = this.noteGenerator.getNextCombination(
             this.challengingCombinations,
@@ -84,7 +97,8 @@ export class NoteDisplayCoordinator {
     /**
      * Update stats and progress on correct note
      */
-    correctNoteEventHandler(){
+    correctNoteHandler(){
+        console.log('handling correct note event')
         // Combination was correct meaning that its count should be adjusted or removed if over 3 times correct
         this.adjustCombinationCorrectCount();
         // Mark that it was correct by setting value to false
@@ -99,7 +113,7 @@ export class NoteDisplayCoordinator {
     }
 
     updateProgress() {
-        this.gameProgressUpdater.updateGameProgress(this.challengingCombinations.size);
+        this.gameProgressUpdater.calculateAndUpdateGameProgress(this.challengingCombinations.size);
     }
 
     // Adjust the count of the previous combination that was incorrect
@@ -133,5 +147,16 @@ export class NoteDisplayCoordinator {
                 this.challengingCombinations.set(this.previousCombination, combinationStats);
             }
         }
+    }
+
+    resetGameProgress(){
+        this.noteGenerator.combinations = new Map();
+        this.gameProgressUpdater.maxWrongCombinations = 0;
+        this.incorrectCount = 0;
+        this.correctCount = 0;
+        this.consecutiveEndOfLevelCorrectNotes = 0;
+        this.gameProgressUpdater.gameProgressVisualizer.resetProgress();
+        console.log('reset game progress called')
+        this.gameProgressUpdater.updateGameStats(); // Also refreshes the new stats visually
     }
 }

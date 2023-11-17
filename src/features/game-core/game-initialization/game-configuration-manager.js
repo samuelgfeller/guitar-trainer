@@ -1,6 +1,5 @@
-import {GameLevelTracker} from "../game-progress/game-level-tracker.js";
-import {GameElementsVisualizer} from "./game-elements-visualizer.js";
-import {GameConfigurationOptionVisualHandler} from "./game-configuration-option-visual-handler.js";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js";
+import {GameConfigurationOptionVisualHandler} from "../game-ui/game-configuration-option-visual-handler.js";
 
 export class GameConfigurationManager {
 
@@ -20,7 +19,9 @@ export class GameConfigurationManager {
                 if (setting.id.includes('game-mode')) {
                     GameConfigurationOptionVisualHandler.updateModeOptions(setting.id);
                     // If there was a game running, stop it
-                    document.dispatchEvent(new Event('gameStop'));
+                    document.dispatchEvent(new Event('game-stop'));
+                    // Fire game mode change event to init new game mode
+                    document.dispatchEvent(new Event('game-mode-change'));
                 }
             });
             // Set the input checked state with the one from local storage
@@ -81,22 +82,21 @@ export class GameConfigurationManager {
         }
     }
 
-
     static initBpmInputChangeListener(coreGameCoordinator) {
         const bpmInput = document.querySelector('#bpm-input');
 
         // Set bpm input to the current level which is always one higher than the last completed or the default value
-        bpmInput.value = GameLevelTracker.getCurrentLevel();
+        // bpmInput.value = GameLevelTracker.getCurrentLevel();
 
-        // Level change event listener
+        // Level change event listener and handler
         bpmInput.addEventListener('change', (e) => {
-            updateIsLevelAccomplishedColor(bpmInput);
             coreGameCoordinator.stopGame();
             GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
             // Reset game progress in the form of an event to avoid having to need game progress instance here
-            document.dispatchEvent(new Event('resetGameProgress'));
+            document.dispatchEvent(new Event('reset-game-progress'));
             document.querySelector('#start-stop-btn').innerText = 'Play';
         });
+
         // stepUp and stepDown on input type number don't automatically fire the "change" event
         const changeEvent = new Event('change');
         document.getElementById('next-lvl-btn').addEventListener('click', () => {
@@ -107,18 +107,6 @@ export class GameConfigurationManager {
             bpmInput.stepDown();
             bpmInput.dispatchEvent(changeEvent);
         });
-
-        /**
-         * Change color of the bottom line to indicated level is accomplished
-         * @param bpmInput
-         */
-        const updateIsLevelAccomplishedColor = (bpmInput) => {
-            if (GameLevelTracker.isLevelAccomplished(bpmInput.value)) {
-                document.querySelector('header div').style.borderBottomColor = 'green';
-            } else {
-                document.querySelector('header div').style.borderBottomColor = null;
-            }
-        }
     }
 
 }

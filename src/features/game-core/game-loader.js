@@ -1,4 +1,4 @@
-import {GameInitializer} from "./game-initializer.js?v=0.6";
+import {GameInitializer} from "./game-initialization/game-initializer.js";
 
 export class GameLoader {
     constructor() {

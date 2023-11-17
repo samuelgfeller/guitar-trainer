@@ -28,7 +28,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
     <div id="config-inner-div">
         <span class="normal-font-size label-text">Game modes</span>
         <div id="game-mode-selection">
-            <label class='checkbox-button' id="metronome-mode">
+            <label class='checkbox-button' id="metronome-game-mode">
                 <input type='checkbox'>
                 <img src="src/assets/images/metronome-icon.svg" class="button-icon">
             </label>
@@ -42,7 +42,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
             </label>
         </div>
         <!-- Game mode options in HTML as they may be used by multiple modes -->
-        <span class="normal-font-size label-text">Options</span>
+        <span class="normal-font-size label-text" id="options-title-span">Options</span>
         <div id="options-for-game-modes">
             <!-- Fretboard note game options -->
             <label class='checkbox-button option-for-game-mode' id="display-in-treble-clef">
@@ -63,11 +63,11 @@ require __DIR__ . '/JsImportVersionAdder.php';
             </label>
 
             <!-- Practice note in key game mode options -->
-            <label class='checkbox-button option-for-game-mode' id="practice-mode">
-                <input type='checkbox'>
-                <span class="normal-font-size">Practice</span>
-                <!--<img src="src/assets/images/treble-clef-icon.svg" class="button-icon">-->
-            </label>
+            <!--<label class='checkbox-button option-for-game-mode' id="note-in-key-test-mode">-->
+            <!--    <input type='checkbox'>-->
+            <!--    <span class="normal-font-size">Test mode</span>-->
+            <!--    <img src="src/assets/images/icon.svg" class="button-icon">-->
+            <!--</label>-->
 
             <div id="difficulty-range-slider-container" class="option-for-game-mode">
                 <input type='range' min='1' max='3' value='1' step='1'
@@ -142,7 +142,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
     </div>
     <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>
-<script type="module" src="src/features/game-core/game-start/game-loader.js?v=<?= mt_rand(1, 1000) ?>"></script>
+<script type="module" src="src/features/game-core/game-loader.js?v=<?= mt_rand(1, 1000) ?>"></script>
 <!--<script type="module" src="js/test/tests-main.js?v=--><?php
 //= mt_rand(1, 1000) ?><!--"></script>-->
 </body>

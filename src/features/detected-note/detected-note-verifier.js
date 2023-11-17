@@ -17,7 +17,7 @@ export class DetectedNoteVerifier {
         // console.log(`noteToPlay: ${this.noteToPlay}\nSharp: ${sharp}\nFlat: ${flat}\n${this.noteToPlay === flat}`);
         // console.log(`noteToPlay: ${this.noteToPlay} playedNote: ${playedNote}`);
         // C# and Db are the same note
-        if (this.noteToPlay === sharp || this.noteToPlay === flat) {
+        if (this.noteToPlay === sharp || this.noteToPlay === flat || true) {
             console.log('Correct note played', this.noteToPlay);
             // Color spans and detected note in green when correct
             NoteCombinationVisualizer.setColorsToIndicateCorrectlyPlayedNote();
@@ -29,6 +29,7 @@ export class DetectedNoteVerifier {
                     document.getElementById('note-span').innerHTML = this.noteToPlay;
                 }
                 // Dispatch the correct-note-played event
+                console.log('correct note played and correctNoteAccounted = false')
                 document.dispatchEvent(new Event('correct-note-played'));
             }
         } else {

@@ -1,3 +1,5 @@
+import {GameLevelTracker} from "../game-progress/game-level-tracker.js";
+
 export class GameElementsVisualizer {
     static hideGameElementsAndDisplayInstructions() {
         document.querySelectorAll('.visible-when-game-on').forEach(element => {
@@ -11,7 +13,7 @@ export class GameElementsVisualizer {
 
 
         // Collapse game instructions
-        document.querySelector('#game-start-instruction details').open = false;
+        // document.querySelector('#game-start-instruction details').open = false;
 
         // Display game elements and remove instructions
         document.querySelectorAll('.visible-when-game-on').forEach(element => {
@@ -20,9 +22,23 @@ export class GameElementsVisualizer {
         document.querySelector('#game-start-instruction').style.display = 'none';
     }
 
-    static showGameProgress(){
+    static showGameProgress(scoreEnabled){
         // Remove "display:none" on game progress and score
         document.querySelector('#game-progress-div').style.display = null;
-        document.querySelector('#score').style.display = null;
+        if (scoreEnabled) {
+            document.querySelector('#score').style.display = null;
+        }
+    }
+
+    /**
+     * Change color of the bottom line to indicated level is accomplished
+     */
+    static updateIsLevelAccomplishedColor (gameModeLevelKey) {
+        const bpmInput = document.querySelector('#bpm-input');
+        if (GameLevelTracker.isLevelAccomplished(bpmInput.value, gameModeLevelKey)) {
+            document.querySelector('header div').style.borderBottomColor = 'green';
+        } else {
+            document.querySelector('header div').style.borderBottomColor = null;
+        }
     }
 }

@@ -1,25 +1,35 @@
-import {GameStartAndStopper} from "./game-start-and-stopper.js?v=0.6";
 import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
-import {GameConfigurationManager} from "../game-ui/game-configuration-manager.js";
+import {GameConfigurationManager} from "./game-configuration-manager.js";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js";
 
 export class GameInitializer {
     constructor() {
-        this.gameStartAndStopper = new GameStartAndStopper(this);
+        this.coreGameCoordinationInitializer = new CoreGameCoordinationInitializer(this);
         this.startStopButton = document.querySelector('#start-stop-btn');
         // When only metronome should be played and not the whole game (when sound on before pressing start)
         this.onlyMetronome = false;
         this.gameManuallyPaused = false;
     }
 
+    /**
+     * First entry point of the game when the game is loaded
+     */
     initGame(){
         // Init start stop button
         this.initGameStartStopEventListeners();
         // Init bpm input listeners
-        GameConfigurationManager.initBpmInputChangeListener(this.gameStartAndStopper.coreGameCoordinator);
+        GameConfigurationManager.initBpmInputChangeListener(this.coreGameCoordinationInitializer.coreGameCoordinator);
         // Init pause / resume game on visibility change
         this.initPauseAndResumeGameOnVisibilityChange();
         this.initSettings();
+
+        // Set the correct game coordinator for the selected game mode (has to be after initSettings)
+        this.coreGameCoordinationInitializer.setCorrectAndInitGameCoordinator();
         // Init start stop
+
+        document.addEventListener('game-mode-change', (e) => {
+            this.coreGameCoordinationInitializer.setCorrectAndInitGameCoordinator();
+        });
     }
 
     /**
@@ -36,20 +46,20 @@ export class GameInitializer {
 
     initGameStartStopEventListeners() {
         // Start / stop button event listener
-        this.startStopButton.addEventListener('click', this.gameStartAndStopper.startStopGame.bind(this.gameStartAndStopper));
+        this.startStopButton.addEventListener('click', this.coreGameCoordinationInitializer.startOrStopButtonActionHandler.bind(this.coreGameCoordinationInitializer));
         // Self has to be used in the following as we loose the "this" context in the event listener anonymous func
         let self = this;
         // Start on double click anywhere in the body
         document.addEventListener('dblclick', function (e) {
             // Check if the target is <body> or if a parent of the target is <main>
             if (e.target === document.body || e.target.closest('main')) {
-                self.gameStartAndStopper.startStopGame();
+                self.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
             }
         });
         // Start with Enter key press on bpm input
         document.querySelector('#bpm-input').addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
-                this.gameStartAndStopper.startStopGame();
+                this.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
             }
         });
     }
@@ -84,13 +94,13 @@ export class GameInitializer {
                             document.getElementById('countdown').innerText = secondsRemainingUntilStart + 's';
                         } else {
                             document.getElementById('modal').remove();
-                            this.gameStartAndStopper.coreGameCoordinator.startGame();
+                            this.coreGameCoordinationInitializer.coreGameCoordinator.startGame();
                             clearInterval(countdownInterval);
                         }
                     }, 1000);
                 } else {
                     // When not visible after event, pause game and disable wake lock
-                    this.gameStartAndStopper.coreGameCoordinator.stopGame();
+                    this.coreGameCoordinationInitializer.coreGameCoordinator.stopGame();
                     GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
                 }
             }

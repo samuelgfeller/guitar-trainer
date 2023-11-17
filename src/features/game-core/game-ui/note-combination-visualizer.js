@@ -11,15 +11,13 @@ export class NoteCombinationVisualizer {
         }
 
     static displayCombination(stringName, noteName) {
-        const displayInTrebleClef = document.querySelector('#display-in-treble-clef input').checked;
-        const displayTrebleClefAndNoteName =
-            document.querySelector('#display-note-name-and-treble-clef input').checked;
-
         // Clear treble clef output in case it was displayed before and user disabled it in settings
         document.getElementById('treble-clef-output').innerHTML = '';
 
-        if (displayInTrebleClef === true || displayTrebleClefAndNoteName === true) {
-            TrebleClefVisualizer.displayCombinationInTrebleClef(stringName, noteName, displayTrebleClefAndNoteName);
+        if (document.getElementById('note-in-key-game-mode').checked &&
+            (document.querySelector('#display-in-treble-clef input').checked ||
+                document.querySelector('#display-note-name-and-treble-clef input').checked)) {
+            TrebleClefVisualizer.displayCombinationInTrebleClef(stringName, noteName);
         } else {
             document.getElementById('note-span').innerHTML = noteName;
         }

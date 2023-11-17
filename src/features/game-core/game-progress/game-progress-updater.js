@@ -1,17 +1,22 @@
 import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=0.6";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js";
 
+/**
+ * Progress update for games that use the metronome and have challenging
+ * combinations
+ */
 export class GameProgressUpdater {
 
     maxWrongCombinations = 0;
 
     /**
-     * @param {NoteDisplayCoordinator} noteDisplayCoordinator
+     * @param {GameNoteDisplayer} noteDisplayCoordinator
      */
     constructor(noteDisplayCoordinator) {
         this.noteDisplayCoordinator = noteDisplayCoordinator;
         this.gameProgressVisualizer = new GameProgressVisualizer(this);
         // Reset game progress via event to be able to reset it from level-up event handler without this dependency
-        document.addEventListener('resetGameProgress', this.resetGameProgress.bind(this));
+        document.addEventListener('go-to-next-level', this.goToNextLevel.bind(this));
     }
 
     updateGameStats() {
@@ -23,10 +28,10 @@ export class GameProgressUpdater {
     }
 
     /**
-     * Update game progress bar and stats
+     * Calculate and update game progress bar and stats with challenging combination
      * @param challengingCombinationsCount current progress that will be displayed in progress bar
      */
-    updateGameProgress(challengingCombinationsCount) {
+    calculateAndUpdateGameProgress(challengingCombinationsCount) {
 
         // Update max wrong combinations to the actual value if it's greater than the previous max.
         if (challengingCombinationsCount > this.maxWrongCombinations) {
@@ -66,6 +71,17 @@ export class GameProgressUpdater {
         }
 
         this.gameProgressVisualizer.updateGameProgress(percentage, movingBarLabel, progressBarRightSideLabel);
+    }
+
+
+    goToNextLevel() {
+        this.resetGameProgress();
+        let bpmInput = document.getElementById('bpm-input');
+        bpmInput.stepUp();
+        // stepUp on input type number doesn't automatically fire the "change" event
+        const changeEvent = new Event('change');
+        bpmInput.dispatchEvent(changeEvent);
+        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
     }
 
     /**

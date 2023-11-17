@@ -15,54 +15,43 @@ export class CoreGameCoordinator {
     // Game coordinator that implements a play() and stop() method
     gameCoordinator = null;
 
+    // With metronome
+    metronomeEnabled = false;
+    // Counter for correct / incorrect notes played
+    scoreEnabled = false;
+
+
     /**
-     * @param {GameInitializer} gameInitializer
+     * @param {CoreGameCoordinationInitializer} coreGameCoordinationInitializer
      */
-    constructor(gameInitializer) {
+    constructor(coreGameCoordinationInitializer) {
         // Inject instance as an attribute there is changed
-        this.gameInitializer = gameInitializer;
+        this.coreGameCoordinationInitializer = coreGameCoordinationInitializer;
 
         // Listen for game stop event to stop game
-        document.addEventListener('gameStop', this.stopGame.bind(this));
-        document.addEventListener('gameStart', this.startGame.bind(this));
+        document.addEventListener('game-stop', this.stopGame.bind(this));
+        document.addEventListener('game-start', this.startGame.bind(this));
 
         this.screenWakeLocker = new ScreenWakeLocker();
     }
 
-    /**
-     * Set this.gameCoordinator to the right game mode
-     * All game coordinators MUST implement a play() and stop() method
-     */
-    setGameCoordinator() {
-        // Figure out which game mode should be started
-        if (document.querySelector('#metronome-mode input').checked) {
-            // new MetronomeOperator().startMetronome();
-        } else if (document.querySelector('#fretboard-note-game-mode input').checked) {
-            this.gameCoordinator = new FretboardNoteGameCoordinator();
-        } else if (document.querySelector('#note-in-key-game-mode input').checked) {
-            this.gameCoordinator = new NoteInKeyGameCoordinator();
-        } else {
-            // Default
-            this.gameCoordinator = new FretboardNoteGameCoordinator();
-        }
-        // All game coordinators MUST implement a play() and stop() method
-    }
 
     startGame() {
         // Init game core game logic such as metronome, note detector
         this.startCoreGameFunctionalities();
 
-        this.setGameCoordinator();
-
         // Start game module
         this.gameCoordinator.play();
 
-        // This gets the game moving and has to be after the game module has been properly started
-        if (!document.querySelector('#practice-mode input').checked) {
+        console.log('metronome enabled: ',this.metronomeEnabled)
+        if (this.metronomeEnabled) {
+            // This gets the game moving and has to be after the game module has been properly started
             this.metronomeOperator.startMetronome();
-            // Only show when not practice mode
-            GameElementsVisualizer.showGameProgress();
         }
+
+        // Only show when not practice mode
+        GameElementsVisualizer.showGameProgress(this.scoreEnabled);
+
     }
 
 
@@ -102,7 +91,7 @@ export class CoreGameCoordinator {
         // Prevent screen from getting dark on mobile
         void this.screenWakeLocker.requestWakeLock();
         // To know if game should start automatically after visibility change event, keep manually paused in var
-        this.gameInitializer.gameManuallyPaused = false;
+        this.coreGameCoordinationInitializer.gameInitializer.gameManuallyPaused = false;
 
         /* const frequencyBars = new FrequencyBarsVisualizer("#frequency-bars");
         //

@@ -1,7 +1,17 @@
 import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js";
 import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js";
 
-export class NoteDisplayPracticeCoordinator {
+/**
+ * Note displayer for "practice" mode, which means
+ * without metronome beat, scores and challenging notes.
+ * No time limit to play note and change happens after
+ * the correct note has been played.
+ */
+export class PracticeNoteDisplayer {
+
+    correctNoteCount = 0;
+    notesAmountForFullProgressBar = 20;
+
     /**
      *
      * @param noteGenerator instance that contains a getNextCombination() method
@@ -49,11 +59,29 @@ export class NoteDisplayPracticeCoordinator {
                 noteNumber = noteName.number;
                 noteName = noteName.noteName;
             }
-            console.log('note to play', stringName, noteName);
             // Display next note and string
             NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
             // console.debug(`Displaying combination ${stringName}|${noteName}`);
             this.detectedNoteVerifier.noteToPlay = noteName;
         }, 700);
+    }
+
+    updateProgressBar() {
+        // Text inside the progress bar
+        let movingBarLabel = '';
+        let progressBarRightSideLabel = '';
+        // Calculate percentage
+        let percentage = 0;
+        // If there are no more challenging notes, calculate the percentage via the amount of notes played correctly in a row
+
+        // percentage = this.lastNotesCorrectCount / this.requiredCorrectLastNotes * 100;
+        percentage = this.correctNoteCount / this.notesAmountForFullProgressBar * 100;
+        movingBarLabel = this.correctNoteCount;
+        // Set the right side of the progress bar to the amount or required correct notes
+        progressBarRightSideLabel = this.notesAmountForFullProgressBar;
+
+
+        this.gameProgressVisualizer.updateGameProgress(percentage, movingBarLabel, progressBarRightSideLabel);
+
     }
 }
