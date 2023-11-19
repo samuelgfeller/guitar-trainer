@@ -40,7 +40,7 @@ export class CoreGameCoordinator {
         // Init game core game logic such as metronome, note detector
         this.startCoreGameFunctionalities();
 
-        // Start game module
+        // Start game module todo implement pause and resume
         this.gameCoordinator.play();
 
         console.log('metronome enabled: ',this.metronomeEnabled)

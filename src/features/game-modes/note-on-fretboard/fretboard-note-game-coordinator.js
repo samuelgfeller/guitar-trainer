@@ -20,14 +20,17 @@ export class FretboardNoteGameCoordinator {
 
     /**
      * Start fretboard note game
+     * @param {GameNoteDisplayer} noteDisplayerInstance instance provided if game was paused
      */
-    play() {
-        this.noteDisplayer = new GameNoteDisplayer(
-            new FretboardNoteGameCombinationGenerator(
-                ['Ê', 'B', 'G', 'D', 'A', 'E'],
-                ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
-            )
-        );
+    play(noteDisplayerInstance) {
+        if (!noteDisplayerInstance) {
+            this.noteDisplayer = new GameNoteDisplayer(
+                new FretboardNoteGameCombinationGenerator(
+                    ['Ê', 'B', 'G', 'D', 'A', 'E'],
+                    ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
+                )
+            );
+        }
 
         // Add challenging combinations (if checkbox checked)
         if (document.querySelector('#challenging-notes-preset input').checked) {

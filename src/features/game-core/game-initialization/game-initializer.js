@@ -30,6 +30,10 @@ export class GameInitializer {
         document.addEventListener('game-mode-change', (e) => {
             this.coreGameCoordinationInitializer.setCorrectAndInitGameCoordinator();
         });
+        document.addEventListener('click', e => {
+            // Event delegation as modal is removed and added dynamically
+            console.log(e.target, e.target.id);
+        });
     }
 
     /**
@@ -51,8 +55,10 @@ export class GameInitializer {
         let self = this;
         // Start on double click anywhere in the body
         document.addEventListener('dblclick', function (e) {
-            // Check if the target is <body> or if a parent of the target is <main>
-            if (e.target === document.body || e.target.closest('main')) {
+            // Check if the target is <body> or if a parent of the target is <main> (to avoid catching dblclicks in
+            // header, but only if the modal is not open)
+            if ((e.target === document.body || e.target.closest('main'))
+                && (e.target.id !== 'modal' && !e.target.closest('#modal'))) {
                 self.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
             }
         });

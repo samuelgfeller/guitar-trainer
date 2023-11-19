@@ -1,11 +1,5 @@
-import {GameElementsVisualizer} from "./game-elements-visualizer.js";
 
 export class LevelUpVisualizer {
-
-    static closeModalEventHandler = this.closeModalEvent.bind(this);
-    static restartLevelEventHandler;
-    static goToNextLevelEventHandler;
-
     static displayLeveledUpModal(bodyText, confirmButtonText, goToNextLevelEventHandler, restartLevelEventHandler) {
         // Stop the game in the form of an event to avoid a circular dependency with core-game-coordinator
         document.dispatchEvent(new Event('game-stop'));
@@ -28,14 +22,12 @@ export class LevelUpVisualizer {
         // Insert at end of page content which is in <main></main>
         document.querySelector('main').insertAdjacentHTML('beforeend', htmlString);
 
-        this.goToNextLevelEventHandler = goToNextLevelEventHandler;
-        this.restartLevelEventHandler = restartLevelEventHandler;
-
         // Add event listeners
-        document.getElementById('restart-modal-btn').addEventListener('click', this.closeModalEventHandler);
-        document.getElementById('restart-modal-btn').addEventListener('click', this.restartLevelEventHandler);
-        document.getElementById('next-lvl-modal-btn').addEventListener('click', this.goToNextLevelEventHandler);
-        document.getElementById('modal').addEventListener('click', this.closeModalEventHandler);
+        document.getElementById('restart-modal-btn').addEventListener('click', restartLevelEventHandler);
+        document.getElementById('restart-modal-btn').addEventListener('click', this.closeModalEvent.bind(this));
+
+        document.getElementById('next-lvl-modal-btn').addEventListener('click', goToNextLevelEventHandler);
+        document.getElementById('next-lvl-modal-btn').addEventListener('click', this.closeModalEvent.bind(this));
     }
 
     static closeModalEvent() {
@@ -44,13 +36,9 @@ export class LevelUpVisualizer {
 
     static closeModal() {
         let modal = document.getElementById('modal');
-        document.getElementById('restart-modal-btn').removeEventListener('click', this.closeModalEventHandler);
-        document.getElementById('next-lvl-modal-btn').removeEventListener('click', this.goToNextLevelEventHandler);
-        document.getElementById('modal').removeEventListener('click', this.closeModalEventHandler);
+        // Event listeners don't need to be removed as entire dom element is removed
         modal.remove();
-        // Remove restart level handler when modal is closed
-        // document.getElementById('restart-modal-btn').removeEventListener('click', this.restartLevelEventHandler);
-        // setTimeout(() => {
-        // }, 500);
+        // Both restart and next level event handlers should reset the game progress and after its done event listener that resets the game progress
+        document.dispatchEvent(new Event('remove-progress-reset-event-listener-after-level-completion'));
     }
 }

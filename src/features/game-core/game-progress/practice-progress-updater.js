@@ -10,8 +10,6 @@ export class GameProgressUpdater {
     constructor(noteDisplayCoordinator) {
         this.noteDisplayCoordinator = noteDisplayCoordinator;
         this.gameProgressVisualizer = new GameProgressVisualizer();
-        // Reset game progress via event to be able to reset it from level-up event handler without this dependency
-        document.addEventListener('go-to-next-level', this.goToNextLevel.bind(this));
     }
 
     updateGameStats() {

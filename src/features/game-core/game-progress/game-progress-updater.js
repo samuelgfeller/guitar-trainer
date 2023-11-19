@@ -15,8 +15,6 @@ export class GameProgressUpdater {
     constructor(noteDisplayCoordinator) {
         this.noteDisplayCoordinator = noteDisplayCoordinator;
         this.gameProgressVisualizer = new GameProgressVisualizer(this);
-        // Reset game progress via event to be able to reset it from level-up event handler without this dependency
-        document.addEventListener('go-to-next-level', this.goToNextLevel.bind(this));
     }
 
     updateGameStats() {
@@ -74,26 +72,26 @@ export class GameProgressUpdater {
     }
 
 
-    goToNextLevel() {
-        this.resetGameProgress();
-        let bpmInput = document.getElementById('bpm-input');
-        bpmInput.stepUp();
-        // stepUp on input type number doesn't automatically fire the "change" event
-        const changeEvent = new Event('change');
-        bpmInput.dispatchEvent(changeEvent);
-        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
-    }
+    // goToNextLevel() {
+    //     this.resetGameProgress();
+    //     let bpmInput = document.getElementById('bpm-input');
+    //     bpmInput.stepUp();
+    //     // stepUp on input type number doesn't automatically fire the "change" event
+    //     const changeEvent = new Event('change');
+    //     bpmInput.dispatchEvent(changeEvent);
+    //     GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+    // }
 
     /**
      * After a level is completed, the game progress is reset to 0% and stats are reset to 0.
      */
-    resetGameProgress(){
-        this.noteDisplayCoordinator.combinations = new Map();
-        this.maxWrongCombinations = 0;
-        this.noteDisplayCoordinator.incorrectCount = 0;
-        this.noteDisplayCoordinator.correctCount = 0;
-        this.noteDisplayCoordinator.lastNotesCorrectCount = 0;
-        this.gameProgressVisualizer.resetProgress();
-        this.updateGameStats(); // Also refreshes the new stats visually
-    }
+    // resetGameProgress(){
+    //     this.noteDisplayCoordinator.combinations = new Map();
+    //     this.maxWrongCombinations = 0;
+    //     this.noteDisplayCoordinator.incorrectCount = 0;
+    //     this.noteDisplayCoordinator.correctCount = 0;
+    //     this.noteDisplayCoordinator.lastNotesCorrectCount = 0;
+    //     this.gameProgressVisualizer.resetProgress();
+    //     this.updateGameStats(); // Also refreshes the new stats visually
+    // }
 }

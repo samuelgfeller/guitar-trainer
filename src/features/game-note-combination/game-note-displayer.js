@@ -18,7 +18,7 @@ export class GameNoteDisplayer {
     // At the end of the progress bar, when there is no challenging notes left, the user has to do
     // x amount (default 10) correct notes in a row to be able to have 100% progress. More at level begin.
     endLevelRequiredCorrectNotesAmount = 10;
-    levelBeginRequiredCorrectNotesAmount = 1;
+    levelBeginRequiredCorrectNotesAmount = 20;
     // This is a counter of those last notes.
     // It is incremented by the event handler on a detected correct note.
     consecutiveEndOfLevelCorrectNotes = 0;
@@ -36,7 +36,10 @@ export class GameNoteDisplayer {
         // Event handler that checks if note is correct. Updates attributes and calls functions of this coordinator.
         this.checkIfNoteCorrectHandler = this.detectedNoteVerifier.checkIfNoteIsCorrect.bind(this.detectedNoteVerifier);
         this.correctNoteEventHandler = this.correctNoteHandler.bind(this);
+        // Reset game progress when level is reset or leveled up
         this.resetGameProgressHandler = this.resetGameProgress.bind(this);
+        this.levelCompletionEventListenerCleanupHandler =
+            this.removeResetGameProgressEventListenerAfterLevelCompletion.bind(this);
     }
 
     beingGame() {
@@ -48,12 +51,18 @@ export class GameNoteDisplayer {
         document.addEventListener('correct-note-played', this.correctNoteEventHandler);
         // Event when game progress should be reset
         document.addEventListener('reset-game-progress', this.resetGameProgressHandler);
+        // Add event listener that removes the reset game progress event listener after the level completion modal is closed
+        document.addEventListener('remove-progress-reset-event-listener-after-level-completion',
+            this.levelCompletionEventListenerCleanupHandler);
     }
 
     endGame() {
         document.removeEventListener('metronome-beat', this.displayRandomNotesHandler);
         document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
         document.removeEventListener('correct-note-played', this.correctNoteEventHandler);
+        // Reset game process event handler cannot be removed here because it's called from the level-up
+        // or reset functions that are called after the game is stopped.
+        // It's removed in the function removeResetGameProgressEventListenerAfterLevelCompletion()
     }
 
     displayNotes() {
@@ -97,7 +106,7 @@ export class GameNoteDisplayer {
     /**
      * Update stats and progress on correct note
      */
-    correctNoteHandler(){
+    correctNoteHandler() {
         console.log('handling correct note event')
         // Combination was correct meaning that its count should be adjusted or removed if over 3 times correct
         this.adjustCombinationCorrectCount();
@@ -149,7 +158,21 @@ export class GameNoteDisplayer {
         }
     }
 
-    resetGameProgress(){
+
+    /**
+     * Reset game progress event handler cannot be removed at the end of the game as the
+     * user clicks on "go to next level" in the modal box displayed after the game is stopped.
+     * The same goes for restart, the progress should be reset after endGame() is called.
+     */
+    removeResetGameProgressEventListenerAfterLevelCompletion() {
+        // Remove event listener after it's called once
+        document.removeEventListener('reset-game-progress', this.resetGameProgressHandler);
+        // Remove the handler that points to this function itself
+        document.removeEventListener('remove-progress-reset-event-listener-after-level-completion',
+            this.levelCompletionEventListenerCleanupHandler);
+    }
+
+    resetGameProgress() {
         this.noteGenerator.combinations = new Map();
         this.gameProgressUpdater.maxWrongCombinations = 0;
         this.incorrectCount = 0;

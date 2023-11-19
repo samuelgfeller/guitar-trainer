@@ -3,7 +3,9 @@ import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visu
 import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js";
 
 export class FretboardNoteGameInitializer {
-    levelLocalStorageKey = 'fretboard-note-game-level';
+    constructor() {
+        this.levelLocalStorageKey = 'fretboard-note-game-level';
+    }
 
     init() {
         // Set bpmInput value to current level for this game mode
@@ -22,8 +24,11 @@ export class FretboardNoteGameInitializer {
      * When game mode is changed, the initialized event listeners should be removed
      */
     destroy() {
-        document.querySelector('#bpm-input')
-            .removeEventListener('change', this.updateIsLevelAccomplishedColor);
+        // document.querySelector('#bpm-input')
+        //     .removeEventListener('change', this.updateIsLevelAccomplishedColor);
+        // // These would have to be changed to arrow attributes to be able to remove them levelUp.bind(this) doesnt work
+        // document.removeEventListener('leveled-up', this.levelUp.bind(this));
+        // document.removeEventListener('go-to-next-level', this.goToNextLevel.bind(this));
     }
 
     updateIsLevelAccomplishedColor() {
@@ -35,23 +40,30 @@ export class FretboardNoteGameInitializer {
         let level = document.getElementById('bpm-input').value;
         GameLevelTracker.addAccomplishedLevel(level, this.levelLocalStorageKey);
         // Fire game-stop event and display modal
-        LevelUpVisualizer.displayLeveledUpModal('Level completed!', 'Go to next level', this.goToNextLevel.bind(this), this.restartLevel);
+        LevelUpVisualizer.displayLeveledUpModal(
+            'Level completed!',
+            'Go to next level',
+            this.goToNextLevel.bind(this),
+            this.restartLevel);
     }
 
     goToNextLevel() {
         console.log('goToNextLevel');
         let bpmInput = document.getElementById('bpm-input');
         bpmInput.stepUp();
-        // stepUp on input type number doesn't automatically fire the "change" event
+        // stepUp on input type number doesn't automatically fire the "change" event.
+        // And the change event automatically resets the game progress so this has to be called before it can be removed
         const changeEvent = new Event('change');
         bpmInput.dispatchEvent(changeEvent);
         GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
-        console.log('reset game progrress dispatcheed')
-        document.dispatchEvent(new Event('reset-game-progress'));
+        // document.dispatchEvent(new Event('go-to-next-level'));
+        // No need to call reset game progress here because it's called in the bpm input change event handler
     }
 
-    restartLevel(){
+    restartLevel() {
         GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+        // Game progress is reset each time beginGame is called as a new instance of display notes is created with
+        // new default attributes
         // document.dispatchEvent(new Event('reset-game-progress'))
     }
 
