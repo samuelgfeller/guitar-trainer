@@ -1,4 +1,4 @@
-import {TrebleClefVisualizer} from "../../treble-clef/treble-clef-visualizer.js";
+import {TrebleClefVisualizer} from "../../treble-clef/treble-clef-visualizer.js?v=1.0";
 
 export class NoteCombinationVisualizer {
 
@@ -10,13 +10,13 @@ export class NoteCombinationVisualizer {
             this.frequencyBarsController.updateFrequencyBarsFillStyle(color);
         }
 
-    static displayCombination(stringName, noteName) {
+    static displayCombination(stringName, noteName, displayInTrebleClef, displayTrebleClefAndNoteName) {
         // Clear treble clef output in case it was displayed before and user disabled it in settings
         document.getElementById('treble-clef-output').innerHTML = '';
 
-        if (document.getElementById('note-in-key-game-mode').checked &&
-            (document.querySelector('#display-in-treble-clef input').checked ||
-                document.querySelector('#display-note-name-and-treble-clef input').checked)) {
+        if (displayInTrebleClef || displayTrebleClefAndNoteName) {
+            // Remove content of notspan if there were any
+            document.getElementById('note-span').innerHTML = '';
             TrebleClefVisualizer.displayCombinationInTrebleClef(stringName, noteName);
         } else {
             document.getElementById('note-span').innerHTML = noteName;

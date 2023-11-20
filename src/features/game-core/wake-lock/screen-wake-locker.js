@@ -4,9 +4,9 @@ export class ScreenWakeLocker {
     }
 
     async requestWakeLock() {
+            console.debug('Wake lock requested.');
         if ('wakeLock' in navigator) {
             this.wakeLock = await navigator.wakeLock.request('screen');
-            console.debug('Wake lock requested.');
         }
     }
 

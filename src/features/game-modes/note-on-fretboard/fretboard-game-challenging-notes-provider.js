@@ -9,9 +9,9 @@ export class FretboardGameChallengingNotesProvider {
     static getChallengingNotes(displayInTrebleClef) {
         // Challenging combinations string|note
         let challengingCombinationsTrebleClef = ['E|E', 'E|F', 'E|F♯', 'E|G', 'E|G♯', 'E|A', 'E|A♯', 'E|B',
-            'E|C♯', 'E|D', 'E|D♯', 'Ê|C♯', 'Ê|D', 'Ê|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A♯', 'D|B',
+            'E|C♯', 'E|D', 'E|D♯', 'E2|C♯', 'E2|D', 'E2|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A♯', 'D|B',
             'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
-        let challengingCombinations = ['E|C♯', 'Ê|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',
+        let challengingCombinations = ['E|C♯', 'E2|D', 'E|D♯', 'A|F♯', 'A|G', 'A|G♯', 'D|A', 'D|A♯', 'D|B',
             'D|C', 'D|C♯', 'G|D♯', 'G|E', 'G|F', 'G|F♯', 'B|G', 'B|G♯', 'B|A', 'B|A♯'];
         if (displayInTrebleClef === true) {
             challengingCombinations = challengingCombinationsTrebleClef;

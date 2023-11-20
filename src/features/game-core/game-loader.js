@@ -1,4 +1,4 @@
-import {GameInitializer} from "./game-initialization/game-initializer.js";
+import {GameInitializer} from "./game-initialization/game-initializer.js?v=1.0";
 
 export class GameLoader {
     constructor() {
@@ -13,6 +13,7 @@ export class GameLoader {
         this.gameInitializer.initGame();
     }
 }
-
-const game = new GameLoader();
-game.run();
+document.addEventListener('DOMContentLoaded', () => {
+    const game = new GameLoader();
+    game.run();
+});

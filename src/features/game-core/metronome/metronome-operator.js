@@ -1,7 +1,6 @@
 export class MetronomeOperator {
     constructor() {
         this.audioContext = null;
-        this.bpmInput = document.getElementById('bpm-input');
         this.timerId = null;
     }
 
@@ -10,7 +9,7 @@ export class MetronomeOperator {
     }
 
     startMetronome() {
-        const bpm = parseInt(this.bpmInput.value);
+        const bpm = parseInt(document.getElementById('bpm-input').value);
         const interval = 60000 / bpm; // Convert BPM to milliseconds
 
         this.playClickSound(); // Play the initial click sound

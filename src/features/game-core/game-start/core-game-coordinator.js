@@ -1,18 +1,14 @@
-import {
-    FretboardNoteGameCoordinator
-} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=0.6";
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=0.6";
-import {TuneOperator} from "../tuner/tune-operator.js?v=0.6";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=0.6";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=0.6";
-import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.0";
+import {TuneOperator} from "../tuner/tune-operator.js?v=1.0";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.0";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.0";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
     tuneOperator = new TuneOperator();
 
-    // Game coordinator that implements a play() and stop() method
+    // Game coordinator that implement setup(), destroy(), play() and stop() methods
     gameCoordinator = null;
 
     // With metronome
@@ -35,23 +31,19 @@ export class CoreGameCoordinator {
         this.screenWakeLocker = new ScreenWakeLocker();
     }
 
-
     startGame() {
         // Init game core game logic such as metronome, note detector
         this.startCoreGameFunctionalities();
 
-        // Start game module todo implement pause and resume
+        // Start game module
         this.gameCoordinator.play();
 
-        console.log('metronome enabled: ',this.metronomeEnabled)
         if (this.metronomeEnabled) {
             // This gets the game moving and has to be after the game module has been properly started
             this.metronomeOperator.startMetronome();
         }
 
-        // Only show when not practice mode
         GameElementsVisualizer.showGameProgress(this.scoreEnabled);
-
     }
 
 
@@ -90,6 +82,7 @@ export class CoreGameCoordinator {
 
         // Prevent screen from getting dark on mobile
         void this.screenWakeLocker.requestWakeLock();
+
         // To know if game should start automatically after visibility change event, keep manually paused in var
         this.coreGameCoordinationInitializer.gameInitializer.gameManuallyPaused = false;
 

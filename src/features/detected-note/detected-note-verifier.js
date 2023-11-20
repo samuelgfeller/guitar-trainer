@@ -1,5 +1,5 @@
-import {DetectedNoteVisualizer} from "./detected-note-visualizer.js?v=0.6";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js";
+import {DetectedNoteVisualizer} from "./detected-note-visualizer.js?v=1.0";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.0";
 
 export class DetectedNoteVerifier {
     // Variable is set in note-combination-coordinator each time new note is displayed
@@ -17,7 +17,7 @@ export class DetectedNoteVerifier {
         // console.log(`noteToPlay: ${this.noteToPlay}\nSharp: ${sharp}\nFlat: ${flat}\n${this.noteToPlay === flat}`);
         // console.log(`noteToPlay: ${this.noteToPlay} playedNote: ${playedNote}`);
         // C# and Db are the same note
-        if (this.noteToPlay === sharp || this.noteToPlay === flat || true) {
+        if (this.noteToPlay === sharp || this.noteToPlay === flat) {
             console.log('Correct note played', this.noteToPlay);
             // Color spans and detected note in green when correct
             NoteCombinationVisualizer.setColorsToIndicateCorrectlyPlayedNote();

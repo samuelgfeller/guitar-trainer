@@ -7,7 +7,7 @@
 final class JsImportVersionAdder
 {
     private $version = '1';
-    private $assetPath = __DIR__ . '/../src';
+    private $assetPath = __DIR__ . '/src';
 
     public function __construct()
     {

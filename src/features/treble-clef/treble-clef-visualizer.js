@@ -57,7 +57,7 @@ export class TrebleClefVisualizer {
         // Draw it!
         vf.draw();
 
-        if (document.querySelector('#display-note-name-and-treble-clef input').checked) {
+        if (document.querySelector('#fretboard-note-game-treble-clef-and-name input')?.checked) {
             output.innerHTML = output.innerHTML + originalNoteName;
         }
     }
@@ -119,7 +119,7 @@ export class TrebleClefVisualizer {
                 // After C, octave is 5
                 return 5;
             // High E
-            case 'Ê':
+            case 'E2':
                 // If string is high E and note is E or higher, it's the 5th octave after C it's the 6th
                 if (semitonesFromC >= semitonesFromCMapping['E']) {
                     return 5;

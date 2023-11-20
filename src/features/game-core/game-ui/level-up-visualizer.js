@@ -4,9 +4,6 @@ export class LevelUpVisualizer {
         // Stop the game in the form of an event to avoid a circular dependency with core-game-coordinator
         document.dispatchEvent(new Event('game-stop'));
 
-        document.querySelector('header div').style.borderBottomColor = 'green';
-
-
         // this.gameProgressVisualizer.alreadyLeveledUp = true;
 
         let header = `<h2>Congratulations 🎉</h2>`;
@@ -22,7 +19,7 @@ export class LevelUpVisualizer {
         // Insert at end of page content which is in <main></main>
         document.querySelector('main').insertAdjacentHTML('beforeend', htmlString);
 
-        // Add event listeners
+        // Add event listeners (don't have to be removed as the entire modal box is removed from dom)
         document.getElementById('restart-modal-btn').addEventListener('click', restartLevelEventHandler);
         document.getElementById('restart-modal-btn').addEventListener('click', this.closeModalEvent.bind(this));
 

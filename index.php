@@ -1,19 +1,19 @@
 <?php
 
 require __DIR__ . '/JsImportVersionAdder.php';
-(new JsImportVersionAdder())->addVersionToJsImports('0.6');
+(new JsImportVersionAdder())->addVersionToJsImports('1.0');
 ?>
 <!doctype html>
 <html lang="en">
 <head>
-    <!--<base href="/guitar-trainer/src/">-->
-    <!--<base href="/">-->
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="src/assets/styles/modal.css?v=6">
-    <link rel="stylesheet" href="src/assets/styles/style.css?v=6">
-    <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=5">
+    <link rel="stylesheet" href="src/assets/styles/modal.css?v=0.9">
+    <link rel="stylesheet" href="src/assets/styles/style.css?v=0.9">
+    <link rel="stylesheet" href="src/assets/styles/note-in-key.css">
+    <link rel="stylesheet" href="src/assets/styles/fretboard-note-game.css">
+    <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=0.9">
     <link rel="stylesheet" href="src/assets/styles/range-slider.css">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
@@ -41,44 +41,9 @@ require __DIR__ . '/JsImportVersionAdder.php';
                 <img src="src/assets/images/key-icon.png" class="button-icon">
             </label>
         </div>
-        <!-- Game mode options in HTML as they may be used by multiple modes -->
         <span class="normal-font-size label-text" id="options-title-span">Options</span>
-        <div id="options-for-game-modes">
-            <!-- Fretboard note game options -->
-            <label class='checkbox-button option-for-game-mode' id="display-in-treble-clef">
-                <input type='checkbox'>
-                <!--<span class="normal-font-size"></span>-->
-                <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
-            </label>
-            <label class='checkbox-button option-for-game-mode' id="display-note-name-and-treble-clef">
-                <input type='checkbox'>
-                <div style="display: flex; align-items: center">
-                    <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
-                    <span class="normal-font-size">+ name</span>
-                </div>
-            </label>
-            <label class='checkbox-button option-for-game-mode' id="challenging-notes-preset">
-                <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
-                <img src="src/assets/images/challenging-icon.svg" class="button-icon">
-            </label>
-
-            <!-- Practice note in key game mode options -->
-            <!--<label class='checkbox-button option-for-game-mode' id="note-in-key-test-mode">-->
-            <!--    <input type='checkbox'>-->
-            <!--    <span class="normal-font-size">Test mode</span>-->
-            <!--    <img src="src/assets/images/icon.svg" class="button-icon">-->
-            <!--</label>-->
-
-            <div id="difficulty-range-slider-container" class="option-for-game-mode">
-                <input type='range' min='1' max='3' value='1' step='1'
-                       list="level-options" id="difficulty-range-slider"/>
-                <datalist id="level-options">
-                    <option value="1" label="Lvl 1"></option>
-                    <option value="2" label="Lvl 2"></option>
-                    <option value="3" label="Lvl 3"></option>
-                </datalist>
-
-            </div>
+        <div id="game-mode-options">
+            <!--  Options added at instantiation of game mode coordinator -->
         </div>
     </div>
 </div>
@@ -86,59 +51,62 @@ require __DIR__ . '/JsImportVersionAdder.php';
     <div>
         <!--<label for="bpm-input">Metronome BPM</label>-->
         <img src="src/assets/images/settings-icon.svg" id="settings-toggle-btn" class="icon">
-        <div class="center-flexbox">
-            <!--<img src="src/assets/images/next-level.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">-->
-            <img src="src/assets/images/arrow-left-icon.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
-            <input type="number" min="0" value="17" id="bpm-input">
-            <img src="src/assets/images/arrow-right-icon.svg" alt="<" id="next-lvl-btn" class="icon lvl-icon">
-            <!--<img src="src/assets/images/next-level.svg" alt=">" id="next-lvl-btn" class="icon lvl-icon">-->
+        <div class="center-flexbox" id="header-center-container">
+            <!--  Content added at instantiation of game mode coordinator -->
+            <p>Guitar Trainer</p>
         </div>
         <button class="start-stop-btn" id="start-stop-btn">Play</button>
     </div>
 </header>
-<main>
+<main id="game-container">
     <!--<div id="progress-bar-title-div">-->
     <!--    <span>Challenging notes count</span>-->
     <!--</div>-->
     <div id="game-progress-div" style="display: none">
-        <span id="progress-bar-left-side-label">0</span>
-        <div class="meter">
-            <span style="width: 0"></span>
+        <div id="progress-bar-container">
+            <span id="progress-bar-left-side-label">0</span>
+            <div class="meter">
+                <span style="width: 0"></span>
+            </div>
+            <span id="progress-bar-right-side-label">0</span>
         </div>
-        <span id="progress-bar-right-side-label">0</span>
+        <div id="score" style="display:none;">
+            <span id="incorrect-count"></span><span id="correct-count"></span>
+        </div>
     </div>
-    <div id="score" style="display:none;">
-        <span id="incorrect-count"></span><span id="correct-count"></span>
-    </div>
+
     <div id="game-start-instruction">
         <details open>
-            <summary><h3>Game instructions</h3></summary>
-            <p>Click "Play" to start or resume the game, or simply double-click anywhere on the screen.</p>
-            <p>When you fail to play a note correctly, it gets added to the challenging notes list.</p>
-            <p>The challenging notes have a higher chance of reappearing in the game to help you focus on learning
-                them.</p>
-            <p>The progress bar represents the number of challenging notes that still need to be "learned"
-                correctly.</p>
-            <p>Each time you play a challenging note correctly when it appears 3 times in a row, the progress bar
-                advances.</p>
-            <p>After mastering all challenging notes, 10 additional notes have to be played correctly to fill the
-                progress bar to 100% and complete the level.</p>
+            <summary><h3>Instructions</h3></summary>
+            <div id="game-instruction-text">
+                <p>Click on the settings icon in the header to select a game mode.</p>
+                <p>For certain game modes, there are different options such as displaying notes on a
+                    treble clef staff or to change the difficulty.</p>
+                <p><b>Available game modes: </b></p>
+                <ol style="list-style-position: inside;">
+                    <li>Plain metronome</li>
+                    <li>Play given note on fretboard
+                    <li>Play note number in the given key
+                </ol>
+                <p>You have to allow microphone access when it is asked so that the game can work.
+                    It will detect what note you're playing.</p>
+
+            </div>
         </details>
     </div>
-    <div class="visible-when-game-on" id="info-above-string-and-key"></div>
-    <div class="visible-when-game-on">
-        <span class="label">String</span>
-        <span class="note-value-span" id="string-span"></span>
-    </div>
-    <div class="visible-when-game-on">
-        <span class="label">Note</span>
-        <span class="note-value-span" id="note-span"></span>
-        <div id="treble-clef-output"></div>
+    <div id="key-and-string-container" style="display: none">
+        <div>
+            <span class="label">String</span>
+            <span class="note-value-span" id="string-span"></span>
+        </div>
+        <div>
+            <span class="label">Note</span>
+            <span class="note-value-span" id="note-span"></span>
+            <div id="treble-clef-output"></div>
+        </div>
     </div>
     <div class="visible-when-game-on" id="detected-note-div">
-        <!--<span id="left-cents-bar"></span>-->
         <p id="detected-note"></p>
-        <!--<span id="right-cents-bar"></span>-->
     </div>
     <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>

@@ -1,10 +1,13 @@
-import {GameLevelTracker} from "../game-progress/game-level-tracker.js";
+import {GameLevelTracker} from "../game-progress/game-level-tracker.js?v=1.0";
 
 export class GameElementsVisualizer {
     static hideGameElementsAndDisplayInstructions() {
         document.querySelectorAll('.visible-when-game-on').forEach(element => {
             element.style.display = 'none';
         });
+        console.log('hideGameElementsAndDisplayInstructions');
+        document.querySelector('#key-and-string-container').style.display = 'none';
+
         document.querySelector('#game-start-instruction').style.display = 'block';
     }
 
@@ -20,9 +23,10 @@ export class GameElementsVisualizer {
             element.style.display = 'block';
         });
         document.querySelector('#game-start-instruction').style.display = 'none';
+        document.querySelector('#key-and-string-container').style.display = null;
     }
 
-    static showGameProgress(scoreEnabled){
+    static showGameProgress(scoreEnabled) {
         // Remove "display:none" on game progress and score
         document.querySelector('#game-progress-div').style.display = null;
         if (scoreEnabled) {
@@ -33,7 +37,7 @@ export class GameElementsVisualizer {
     /**
      * Change color of the bottom line to indicated level is accomplished
      */
-    static updateIsLevelAccomplishedColor (gameModeLevelKey) {
+    static updateIsLevelAccomplishedColor(gameModeLevelKey) {
         const bpmInput = document.querySelector('#bpm-input');
         if (GameLevelTracker.isLevelAccomplished(bpmInput.value, gameModeLevelKey)) {
             document.querySelector('header div').style.borderBottomColor = 'green';

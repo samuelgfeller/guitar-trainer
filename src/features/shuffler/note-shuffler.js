@@ -1,6 +1,6 @@
 export class NoteShuffler {
     constructor(
-        strings = ['Ê', 'B', 'G', 'D', 'A', 'E'],
+        strings = ['E2', 'B', 'G', 'D', 'A', 'E'],
         notes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
     ) {
         // Initialize the notesList, shuffledNotes, and currentIndex properties

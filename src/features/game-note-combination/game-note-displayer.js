@@ -1,6 +1,7 @@
-import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=0.6";
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=0.6";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js";
+import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=1.0";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.0";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.0";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.0";
 
 /**
  * Note display coordinator when playing the "game" which
@@ -51,12 +52,15 @@ export class GameNoteDisplayer {
         document.addEventListener('correct-note-played', this.correctNoteEventHandler);
         // Event when game progress should be reset
         document.addEventListener('reset-game-progress', this.resetGameProgressHandler);
-        // Add event listener that removes the reset game progress event listener after the level completion modal is closed
+        // Add event listener that removes the reset game progress event listener after the level completion modal
+        // is closed (either when going to the next level or restart the current one)
         document.addEventListener('remove-progress-reset-event-listener-after-level-completion',
             this.levelCompletionEventListenerCleanupHandler);
     }
 
     endGame() {
+        // Set the previous note to correct so that it doesn't count as failed when the game is paused
+        this.previousCombinationWasIncorrect = false;
         document.removeEventListener('metronome-beat', this.displayRandomNotesHandler);
         document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
         document.removeEventListener('correct-note-played', this.correctNoteEventHandler);
@@ -93,8 +97,11 @@ export class GameNoteDisplayer {
             noteName = noteName.noteName;
         }
 
-        // Display next note and string
-        NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
+        // Display next note and string and if with treble clef
+        NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName,
+            document.querySelector('#fretboard-note-game-treble-clef input').checked,
+            document.querySelector('#fretboard-note-game-treble-clef-and-name input').checked
+            );
         // console.debug(`Displaying combination ${stringName}|${noteName}`);
         this.detectedNoteVerifier.noteToPlay = noteName;
 
@@ -178,8 +185,8 @@ export class GameNoteDisplayer {
         this.incorrectCount = 0;
         this.correctCount = 0;
         this.consecutiveEndOfLevelCorrectNotes = 0;
-        this.gameProgressUpdater.gameProgressVisualizer.resetProgress();
-        console.log('reset game progress called')
+        GameProgressVisualizer.resetProgress();
+        console.log('reset game progress called fretboard')
         this.gameProgressUpdater.updateGameStats(); // Also refreshes the new stats visually
     }
 }

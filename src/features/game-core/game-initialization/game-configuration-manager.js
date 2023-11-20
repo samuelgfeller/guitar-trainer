@@ -1,5 +1,5 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js";
-import {GameConfigurationOptionVisualHandler} from "../game-ui/game-configuration-option-visual-handler.js";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.0";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=1.0";
 
 export class GameConfigurationManager {
 
@@ -7,82 +7,99 @@ export class GameConfigurationManager {
         document.getElementById('config-div').classList.toggle('expanded');
     }
 
-    static storeAndLoadConfigValuesInLocalStorage() {
-        // Init all config input switches (game modes and options)
-        const settingSwitches = document.querySelectorAll('#config-div label');
-        for (const setting of settingSwitches) {
-            const input = setting.querySelector('input');
-            // Event listener to save setting switch in localstorage when changed
-            setting.addEventListener('change', () => {
-                this.storeItemInLocalStorage(setting.id, input.checked);
-                // If checked checkbox is a game mode, hide or display, according options
-                if (setting.id.includes('game-mode')) {
-                    GameConfigurationOptionVisualHandler.updateModeOptions(setting.id);
-                    // If there was a game running, stop it
-                    document.dispatchEvent(new Event('game-stop'));
-                    // Fire game mode change event to init new game mode
-                    document.dispatchEvent(new Event('game-mode-change'));
-                }
-            });
-            // Set the input checked state with the one from local storage
-            if ((localStorage.getItem(setting.id) ?? '0') === '1') {
-                input.checked = true;
-            }
+    static initGameModeSelection() {
+        const gameModeSelection = document.querySelector('#game-mode-selection');
+        const previouslySelectedGameModeId = localStorage.getItem('game-mode');
+        // Check the input of the game mode from local storage
+        if (previouslySelectedGameModeId) {
+            document.querySelector(`#${previouslySelectedGameModeId} input`).checked = true;
         }
-
-        // Only one game mode can be selected at a time
-        this.setupSingleChoiceCheckbox(document.querySelectorAll('#game-mode-selection label'));
-
-        // Init all config input range sliders
-        const settingRangeSliders = document.querySelectorAll('#config-div input[type=range]');
-        for (const setting of settingRangeSliders) {
-            // Event listener to save setting range slider in localstorage when changed
-            setting.addEventListener('change', () => {
-                this.storeItemInLocalStorage(setting.id, setting.value);
-            });
-            // Set the input value with the one from local storage
-            setting.value = localStorage.getItem(setting.id) ?? setting.value;
-        }
-
-        // Load game mode options on page load
-        const selectedGameMode = document.querySelector('#game-mode-selection label input:checked')
-        if (selectedGameMode) {
-            GameConfigurationOptionVisualHandler.updateModeOptions(selectedGameMode.closest('label').id);
-        }
-    }
-
-    /**
-     * @param {string} itemId
-     * @param {boolean|string} value
-     */
-    static storeItemInLocalStorage(itemId, value) {
-        if (typeof value !== 'string') {
-            localStorage.setItem(itemId, value ? '1' : '0');
-        } else {
-            localStorage.setItem(itemId, value);
-        }
-    }
-
-    /**
-     * @param labelCollection Input checkboxes are inside labels
-     */
-    static setupSingleChoiceCheckbox(labelCollection) {
         // If one of the game mode radio buttons is checked, the other should be unchecked
-        for (const label of labelCollection) {
-            label.addEventListener('change', () => {
-                for (const gameModeLabel of labelCollection) {
-                    // Uncheck all game mode radio buttons
+        for (const gameMode of gameModeSelection.querySelectorAll('label')) {
+            gameMode.addEventListener('change', () => {
+                // When one game mode is selected, uncheck all game modes
+                for (const gameModeLabel of gameModeSelection.querySelectorAll('label')) {
                     gameModeLabel.querySelector('input').checked = false;
-                    this.storeItemInLocalStorage(gameModeLabel.id, '0');
                 }
                 // The radio button that was clicked should be checked
-                label.querySelector('input').checked = true;
-                this.storeItemInLocalStorage(label.id, '1');
+                gameMode.querySelector('input').checked = true;
+                localStorage.setItem('game-mode', gameMode.id);
+                // GameConfigurationOptionVisualHandler.updateModeOptions(gameMode.id);
+                // If there was a game running, stop it
+                document.dispatchEvent(new Event('game-stop'));
+                // Fire game mode change event to init new game mode
+                document.dispatchEvent(new Event('game-mode-change'));
+                // Hide progress
+                GameProgressVisualizer.resetProgress();
             });
         }
     }
 
-    static initBpmInputChangeListener(coreGameCoordinator) {
+    /**
+     * Sets up game mode options based on the user's previous choices stored in the local storage.
+     * And if input is changed, it saves the new value in the local storage.
+     */
+    static initGameModeOptions() {
+        const gameModeOptions = document.querySelector('#game-mode-options');
+        // Toggle visibility of game mode options title
+        if (gameModeOptions.children.length === 0){
+            document.querySelector('#options-title-span').style.display = 'none';
+            return;
+        }else {
+            document.querySelector('#options-title-span').style.display = null;
+        }
+
+        this.setupGameModeOptionsStateAndValue(gameModeOptions.children);
+    }
+
+    /**
+     * Sets up game mode options based on the user's previous choices stored in the local storage.
+     * And if input is changed, it saves the new value in the local storage.
+     */
+    static setupGameModeOptionsStateAndValue(gameModeOptions){
+        // Loop over game mode options (children of #game-mode-options) that may contain inputs of different types
+        for (const gameModeOption of gameModeOptions) {
+            // Get the inputs of type checkbox
+            const gameModeCheckboxInput = gameModeOption.querySelector('input[type=checkbox]');
+            if (gameModeCheckboxInput) {
+                // Set the input checked state with the one from local storage
+                if ((localStorage.getItem(gameModeOption.id) ?? '0') === '1') {
+                    gameModeCheckboxInput.checked = true;
+                }
+                // Init the event listener that saves the value when checkbox input is changed
+                gameModeCheckboxInput.addEventListener('change', () => {
+                    localStorage.setItem(gameModeOption.id, gameModeCheckboxInput.checked ? '1' : '0');
+                });
+            }
+            // Set the range slider value with the one from local storage
+            const gameModeRangeInput = gameModeOption.querySelector('input[type=range]');
+            if (gameModeRangeInput){
+                // Set the range input value to the one from local storage
+                if(localStorage.getItem(gameModeOption.id)) {
+                    gameModeRangeInput.value = localStorage.getItem(gameModeOption.id);
+                }
+                // Set up the event listener that saves the value when range value is changed
+                gameModeRangeInput.addEventListener('input', () => {
+                    console.log(gameModeRangeInput.value);
+                    localStorage.setItem(gameModeOption.id, gameModeRangeInput.value);
+                });
+            }
+            // If options of other types are added, they have to be initialized like the ones above here
+        }
+    }
+
+    /**
+     * Used by different initializers to show the bpm input
+     */
+    static showBpmInput() {
+        document.querySelector('#header-center-container').innerHTML =
+            `<img src="src/assets/images/arrow-left-icon.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
+             <input type="number" min="0" value="60" id="bpm-input">
+             <img src="src/assets/images/arrow-right-icon.svg" alt="<" id="next-lvl-btn" class="icon lvl-icon">`;
+        this.initBpmInputChangeListener()
+    }
+
+    static initBpmInputChangeListener() {
         const bpmInput = document.querySelector('#bpm-input');
 
         // Set bpm input to the current level which is always one higher than the last completed or the default value
@@ -90,7 +107,7 @@ export class GameConfigurationManager {
 
         // Level change event listener and handler
         bpmInput.addEventListener('change', (e) => {
-            coreGameCoordinator.stopGame();
+            document.dispatchEvent(new Event('game-stop'));
             GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
             // Reset game progress in the form of an event to avoid having to need game progress instance here
             document.dispatchEvent(new Event('reset-game-progress'));
@@ -108,5 +125,4 @@ export class GameConfigurationManager {
             bpmInput.dispatchEvent(changeEvent);
         });
     }
-
 }

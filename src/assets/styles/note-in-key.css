@@ -1,0 +1,21 @@
+@media (min-width: 100px) {
+    #current-key-and-string{
+        width: 100%;
+        text-align: center;
+        display: none;
+        font-size: 25px;
+    }
+
+    #current-key-and-string b {
+        color: #a2a2a2;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+
+    #reload-key-btn {
+        width: 15px;
+        margin: 10px;
+        filter: invert(50%);
+    }
+}

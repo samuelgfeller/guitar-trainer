@@ -165,6 +165,7 @@
         text-align: center;
         gap: 0;
         max-width: 975px;
+        margin-top: 10px;
     }
 
     #game-start-instruction p {
@@ -202,6 +203,7 @@
         height: 100%;
         text-align: center;
         margin-top: 20px;
+        gap: 30px;
     }
 
     main > div {
@@ -325,23 +327,32 @@
         z-index: -1;
     }
 
+    #game-progress-div{
+        width: 90%;
+    }
+    #progress-bar-container{
+        width: 100%;
+    }
     #progress-bar-title-div {
         width: 100%;
         margin-bottom: 10px;
     }
 
-    #game-progress-div {
-        width: 90%;
+    #progress-bar-container {
+        display: flex;
+        margin: auto;
+        gap: 12px;
         align-items: center;
+        justify-content: space-between;
         flex-wrap: nowrap;
         color: #b6b6b6;
     }
 
-    #game-progress-div span {
+    #progress-bar-container span {
         width: fit-content;
     }
 
-    #game-progress-div .meter {
+    #progress-bar-container .meter {
         width: 100%;
     }
 
@@ -355,30 +366,33 @@
         display: none !important;
     }
 
-    #info-above-string-and-key {
-        width: 80%;
-        text-align: center;
-        display: block;
-        margin: 40px 0 40px 0;
-        font-size: 25px;
+    #key-and-string-container {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        /*column-gap: 50px;*/
+        flex-wrap: wrap;
     }
 
-    #info-above-string-and-key b {
-        color: #a2a2a2;
-        font-size: 30px;
-        font-weight: bold;
+    #key-and-string-container > div {
+        /* Treble clef is 200px wide */
+        width: 200px;
+        height: 100%;
+    }
+    #key-and-string-container > div .note-value-span{
+        height: 100%;
     }
 
-    #info-above-string-and-key .icon {
-        width: 20px;
-        margin-right: 20px;
-        cursor: pointer;
-        filter: invert(60%);
-    }
+    /*#current-key-and-string .icon {*/
+    /*    width: 20px;*/
+    /*    margin-right: 20px§;*/
+    /*    cursor: pointer;*/
+    /*    filter: invert(60%);*/
+    /*}*/
 
-    .option-for-game-mode {
-        display: none;
-    }
+    /*.option-for-game-mode {*/
+    /*    display: none;*/
+    /*}*/
 
     .config-number-input {
         background: rgba(255, 255, 255, 0.2);
@@ -432,11 +446,19 @@
     #game-progress-div {
         width: 75%;
     }
+
+    #key-and-string-container {
+        column-gap: 100px;
+    }
 }
 
 @media (min-width: 961px) {
     header > div {
         width: 50%;
+    }
+
+    main {
+        gap: 40px;
     }
 
     #game-progress-div {

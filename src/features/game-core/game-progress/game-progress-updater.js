@@ -1,5 +1,4 @@
-import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=0.6";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js";
+import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=1.0";
 
 /**
  * Progress update for games that use the metronome and have challenging
@@ -14,11 +13,10 @@ export class GameProgressUpdater {
      */
     constructor(noteDisplayCoordinator) {
         this.noteDisplayCoordinator = noteDisplayCoordinator;
-        this.gameProgressVisualizer = new GameProgressVisualizer(this);
     }
 
     updateGameStats() {
-        this.gameProgressVisualizer.displayGameStats(
+        GameProgressVisualizer.displayGameStats(
             this.noteDisplayCoordinator.correctCount,
             this.noteDisplayCoordinator.incorrectCount,
             this.maxWrongCombinations
@@ -68,7 +66,11 @@ export class GameProgressUpdater {
             progressBarRightSideLabel = '0';
         }
 
-        this.gameProgressVisualizer.updateGameProgress(percentage, movingBarLabel, progressBarRightSideLabel);
+        if (percentage === 100){
+            document.querySelector('header div').style.borderBottomColor = 'green';
+        }
+
+        GameProgressVisualizer.updateGameProgress(percentage, movingBarLabel, progressBarRightSideLabel);
     }
 
 

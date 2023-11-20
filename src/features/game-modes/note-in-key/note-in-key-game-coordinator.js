@@ -1,14 +1,10 @@
-import {NoteInKeyGenerator} from "./note-in-key-generator.js";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.0";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.0";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.0";
 
 export class NoteInKeyGameCoordinator {
     string;
     key;
-    interval;
-
-    // allNotes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭']
-    allNotes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B']
-
 
     possibleKeysOnStrings = {
         // String name: [possible keys for string]
@@ -16,72 +12,77 @@ export class NoteInKeyGameCoordinator {
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
     };
 
+    // Class responsible for displaying the note and the string with all the verification and progress logic
     noteDisplayer;
+    // Instance created in initialization
+    noteInKeyGenerator;
 
+    gameIsRunning = false;
 
     constructor() {
+        // Setup this game mode
+        this.noteInkeyGameInitializer = new NoteInKeyGameInitializer(this);
+        // Note in key generator initialized here in case the user clicks "pause" and wants to continue the game
+        this.noteInKeyGenerator = new NoteInKeyGenerator(this.possibleKeysOnStrings);
+        // Instantiate object with note displayer function that will be called when a new note should be displayed
+        // after a correct one has been played.
+        this.noteDisplayer = new PracticeNoteDisplayer(this.noteInKeyGenerator);
+        this.noteInkeyGameInitializer.addHtmlComponents();
+        // Has to be reloaded added after html component range slider as its value is needed
+        this.reloadKeyAndString();
+        this.noteInkeyGameInitializer.initNoteInKeyGame();
     }
 
-
     play() {
-        const noteInKeyGenerator = new NoteInKeyGenerator(this.possibleKeysOnStrings);
-        let {keyString, keyNote} = noteInKeyGenerator.getNewStringAndKey();
+        this.gameIsRunning = true;
 
-        document.getElementById('info-above-string-and-key').innerHTML =
-            `<img src="src/assets/images/reload-icon.svg" class="icon" alt="reload" id="reload-key-btn">String: <b>${keyString}</b> Key: <b>${keyNote}</b>`;
+        // Show current key and string
+        document.querySelector('#current-key-and-string').style.display = 'block';
 
-        // Reload key button event listener
-        document.getElementById('reload-key-btn').addEventListener('click', this.reloadKey);
-
-        // Prepare the attribute containing the notes on strings that may be displayed (diatonic to key, difficulty)
-        noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
-
-        // Instantiate object with note displayer function that will be called when new note should be displayed
-        // after a correct one has been played.
-        this.noteDisplayer = new PracticeNoteDisplayer(noteInKeyGenerator);
         // After the correct number has been played, replace number with note name - or not
         this.noteDisplayer.detectedNoteVerifier.displayCorrectNoteName = false;
 
         // Manually call displayNotes because the first combination should be the note of the key
-        this.noteDisplayer.displayNotes({stringName: keyString, noteName: {noteName: keyNote, number: 1}});
-
-        // Level up event listener
-        document.addEventListener('leveled-up', this.levelUp.bind(this));
+        this.displayFirstNoteOfKey();
 
         // Init event listeners that will automatically call displayNotes() when correct note has been played
         this.noteDisplayer.beingGame();
     }
 
     stop() {
-        this.noteDisplayer.endGame();
+        this.noteDisplayer?.endGame();
+        this.gameIsRunning = false;
+        // Hide current key and string
+        document.querySelector('#current-key-and-string').style.display = 'none';
     }
 
-    levelUp() {
-
+    destroy() {
+        this.noteInkeyGameInitializer.destroy();
     }
-
-    reloadKey() {
-        document.dispatchEvent(new Event('game-stop'));
-        document.dispatchEvent(new Event('game-start'));
-    }
-
-    //
-    // beingGame() {
-    //     // Event fired on each metronome beat
-    //     document.addEventListener('metronome-beat', this.displayRandomNotesHandler);
-    //     // Custom event when played note was detected
-    //     document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
-    // }
-    //
-    // endGame() {
-    //     document.removeEventListener('metronome-beat', this.displayRandomNotesHandler);
-    //     document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
-    // }
-
 
     /**
-     * game manager
+     * Manually call displayNotes because the first combination should be the note of the key
      */
+    displayFirstNoteOfKey() {
+        // Manually call displayNotes because the first combination should be the note of the key
+        this.noteDisplayer.displayNotes({stringName: this.keyString, noteName: {noteName: this.keyNote, number: 1}});
+    }
 
+    reloadKeyAndString() {
+        // Get new string and key
+        let {keyString, keyNote} = this.noteInKeyGenerator.getNewStringAndKey();
+        this.keyNote = keyNote;
+        this.keyString = keyString;
+        // Prepare the attribute containing the notes on strings that may be displayed (diatonic to key, difficulty)
+        this.noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
+        console.log('key reloaded');
+        // Display current key and string
+        document.getElementById('current-key-and-string').innerHTML =
+            `String: <b>${this.keyString}</b> Key: <b>${this.keyNote}</b>`;
+        document.dispatchEvent(new Event('reset-game-progress'));
 
+        // if (this.gameIsRunning){
+        //     this.displayFirstNoteOfKey();
+        // }
+    }
 }

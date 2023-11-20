@@ -1,6 +1,6 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=0.6";
-import {GameConfigurationManager} from "./game-configuration-manager.js";
-import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.0";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.0";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1.0";
 
 export class GameInitializer {
     constructor() {
@@ -17,35 +17,22 @@ export class GameInitializer {
     initGame(){
         // Init start stop button
         this.initGameStartStopEventListeners();
-        // Init bpm input listeners
-        GameConfigurationManager.initBpmInputChangeListener(this.coreGameCoordinationInitializer.coreGameCoordinator);
+
         // Init pause / resume game on visibility change
         this.initPauseAndResumeGameOnVisibilityChange();
-        this.initSettings();
+        // Init settings toggle btn
+        document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
+                    GameConfigurationManager.toggleSettingsExpand();
+                });
+        // Init game mode selection
+        GameConfigurationManager.initGameModeSelection();
 
-        // Set the correct game coordinator for the selected game mode (has to be after initSettings)
+        // Set the correct game coordinator for the selected game mode (has to be after initGameModeSelection)
         this.coreGameCoordinationInitializer.setCorrectAndInitGameCoordinator();
-        // Init start stop
 
         document.addEventListener('game-mode-change', (e) => {
             this.coreGameCoordinationInitializer.setCorrectAndInitGameCoordinator();
         });
-        document.addEventListener('click', e => {
-            // Event delegation as modal is removed and added dynamically
-            console.log(e.target, e.target.id);
-        });
-    }
-
-    /**
-     * Init behaviour of configuration (settings) area
-     */
-    initSettings() {
-        // Settings toggle button
-        document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
-            GameConfigurationManager.toggleSettingsExpand();
-        });
-
-        GameConfigurationManager.storeAndLoadConfigValuesInLocalStorage();
     }
 
     initGameStartStopEventListeners() {
@@ -60,12 +47,6 @@ export class GameInitializer {
             if ((e.target === document.body || e.target.closest('main'))
                 && (e.target.id !== 'modal' && !e.target.closest('#modal'))) {
                 self.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
-            }
-        });
-        // Start with Enter key press on bpm input
-        document.querySelector('#bpm-input').addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                this.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
             }
         });
     }
@@ -89,11 +70,11 @@ export class GameInitializer {
                     let htmlString = `<div id="modal">
                           <div id="modal-box">
                           <div id="modal-header">Time before restart</div>
-                          <div id="modal-body"><h1 id="countdown">3s</h1></div>
+                          <div id="modal-body"><h1 id="countdown">2s</h1></div>
                           </div></div>`;
                     // Insert at end of page content which is in <main></main>
                     document.getElementById('score').insertAdjacentHTML('beforeend', htmlString);
-                    let secondsRemainingUntilStart = 3;
+                    let secondsRemainingUntilStart = 2;
                     countdownInterval = setInterval(() => {
                         secondsRemainingUntilStart--;
                         if (secondsRemainingUntilStart > 0) {
@@ -112,12 +93,4 @@ export class GameInitializer {
             }
         });
     }
-
-    hideGameElementsAndDisplayInstructions() {
-        document.querySelectorAll('.visible-when-game-on').forEach(element => {
-            element.style.display = 'none';
-        });
-        document.querySelector('#game-start-instruction').style.display = 'block';
-    }
-
 }
