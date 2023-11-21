@@ -1,5 +1,5 @@
-import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.1";
-import {NoteCombinationVisualizer} from "../../game-core/game-ui/note-combination-visualizer.js?v=1.1";
+import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.0.2";
+import {NoteCombinationVisualizer} from "../../game-core/game-ui/note-combination-visualizer.js?v=1.0.2";
 
 export class FretboardNoteGameCombinationGenerator {
     constructor(strings, notes) {

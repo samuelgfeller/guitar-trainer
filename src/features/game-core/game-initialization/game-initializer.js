@@ -1,6 +1,6 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1";
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.1";
-import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1.1";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.0.2";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.0.2";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1.0.2";
 
 export class GameInitializer {
     constructor() {

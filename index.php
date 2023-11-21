@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/JsImportVersionAdder.php';
-(new JsImportVersionAdder())->addVersionToJsImports('1.2');
+(new JsImportVersionAdder())->addVersionToJsImports('1.0.2');
 ?>
 <!doctype html>
 <html lang="en">
@@ -9,12 +9,12 @@ require __DIR__ . '/JsImportVersionAdder.php';
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="src/assets/styles/modal.css?v=0.9">
-    <link rel="stylesheet" href="src/assets/styles/style.css?v=0.9">
-    <link rel="stylesheet" href="src/assets/styles/note-in-key.css">
-    <link rel="stylesheet" href="src/assets/styles/fretboard-note-game.css">
-    <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=0.9">
-    <link rel="stylesheet" href="src/assets/styles/range-slider.css">
+    <link rel="stylesheet" href="src/assets/styles/modal.css?v=<?= mt_rand(1, 1000) ?>">
+    <link rel="stylesheet" href="src/assets/styles/style.css?v=<?= mt_rand(1, 1000) ?>">
+    <link rel="stylesheet" href="src/assets/styles/note-in-key.css<?= mt_rand(1, 1000) ?>">
+    <link rel="stylesheet" href="src/assets/styles/fretboard-note-game.css<?= mt_rand(1, 1000) ?>">
+    <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=<?= mt_rand(1, 1000) ?>">
+    <link rel="stylesheet" href="src/assets/styles/range-slider.css<?= mt_rand(1, 1000) ?>">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>

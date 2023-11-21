@@ -1,5 +1,5 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.1";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.0.2";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.0.2";
 
 export class NoteInKeyGameInitializer {
 
