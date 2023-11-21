@@ -56,7 +56,7 @@ export class NoteInKeyGameInitializer {
             <p>For example, if the key is C, the note number 4 is F. If the key is G, number 4 is C. <br>
             Refer to the fretboard roadmap below.</p>
             <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
-            <p>After successfully playing 20 notes, a new key is suggested. The key can be changed anytime
+            <p>After successfully playing 20 notes, a new key is suggested. The key can also be changed anytime
             with the "reload" button.</p>
             <p>In the settings icon, you can adjust the difficulty among three levels that affect the 
             distance between the requested notes and note number 1 on the fretboard.</p>

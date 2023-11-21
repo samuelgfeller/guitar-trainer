@@ -53,8 +53,8 @@ export class FretboardNoteGameInitializer {
             <p>When you fail to play a note correctly, it gets added to the challenging notes list.</p>
             <p>The challenging notes have a higher chance of reappearing in the game to help you focus on learning
                 them.</p>
-            <p>The progress bar represents the number of challenging notes that still need to be "learned"
-                correctly.</p>
+            <p>The progress bar represents (on the left side) the number of challenging notes that still need to be 
+            "learned" correctly until reaching 0 (on the right side). </p>
             <p>Each time you play a challenging note correctly 3 times, the progress bar advances.</p>
             <p>After mastering all challenging notes, 10 additional notes have to be played correctly to fill the
                 progress bar to 100% and complete the level.</p>
