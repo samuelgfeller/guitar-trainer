@@ -466,9 +466,7 @@
     #key-and-string-container {
         column-gap: 100px;
     }
-    .note-value-span.note-value-span {
-        font-size: 130px;
-    }
+
     #treble-clef-output {
         width: 200px;
         height: auto;
@@ -480,6 +478,16 @@
     #key-and-string-container > div {
         /* Treble clef staff is 200px wide */
         width: 200px;
+    }
+}
+@media (max-height: 500px) {
+    #detected-note {
+        margin-top: 0;
+    }
+}
+@media (min-width: 641px) and (min-height: 600px) {
+    .note-value-span.note-value-span {
+        font-size: 130px;
     }
 }
 
@@ -499,17 +507,19 @@
         width: 60%;
     }
 }
+
 /*Has to be after min-width 961 */
+@media (max-height: 600px) {
+    /*main {*/
+    /*    gap: 0;*/
+    /*}*/
+}
 @media (max-height: 660px) {
     main {
         gap: 20px;
     }
 }
-@media (max-height: 600px) {
-    main {
-        gap: 0;
-    }
-}
+
 @media (min-height: 720px) {
     main {
         gap: 50px;
