@@ -1,5 +1,5 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.0";
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=1.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=1.1";
 
 export class GameConfigurationManager {
 

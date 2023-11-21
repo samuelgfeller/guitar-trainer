@@ -1,6 +1,6 @@
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.0";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.0";
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.1";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.1";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.1";
 
 export class NoteInKeyGameCoordinator {
     string;

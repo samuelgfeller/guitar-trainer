@@ -31,6 +31,9 @@
         /*background: white;*/
         color: #919191;
     }
+    a{
+        color: saddlebrown;
+    }
 
     header, #config-div {
         display: flex;
@@ -145,8 +148,38 @@
         filter: invert(70%);
     }
 
+    #key-and-string-container {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        /*column-gap: 50px;*/
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    #key-and-string-container > div {
+        height: 100%;
+        width: 45%;
+    }
+    .note-value-span{
+        height: 100%;
+        /*Set line height to more than 100% to compensate ♭ char that takes up more space than regular letters*/
+        line-height: 130%;
+    }
+
+    /* Class name twice to increase specificity */
+    .note-value-span.note-value-span {
+        font-size: 100px;
+        font-weight: bold;
+        color: #bcbcbc;
+    }
+    #string-span.treble-clef-enabled{
+        height: 200px;
+        line-height: 200px;
+    }
+
     #treble-clef-output {
-        width: 200px;
+        height: 200px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -165,7 +198,7 @@
         text-align: center;
         gap: 0;
         max-width: 975px;
-        margin-top: 10px;
+        /*margin-top: 10px;*/
     }
 
     #game-start-instruction p {
@@ -175,6 +208,11 @@
     #game-start-instruction details {
         width: 100%;
         margin-top: 20px;
+    }
+
+    #game-start-instruction img{
+        width: 100%;
+        margin: 10px auto;
     }
 
     details summary {
@@ -216,13 +254,6 @@
         width: 100%;
         /*So that they are on top of each other inside div*/
         display: block;
-    }
-
-    /* Class name twice to increase specificity */
-    .note-value-span.note-value-span {
-        font-size: 130px;
-        font-weight: bold;
-        color: #bcbcbc;
     }
 
     .label {
@@ -366,22 +397,7 @@
         display: none !important;
     }
 
-    #key-and-string-container {
-        display: flex;
-        align-items: stretch;
-        justify-content: center;
-        /*column-gap: 50px;*/
-        flex-wrap: wrap;
-    }
 
-    #key-and-string-container > div {
-        /* Treble clef is 200px wide */
-        width: 200px;
-        height: 100%;
-    }
-    #key-and-string-container > div .note-value-span{
-        height: 100%;
-    }
 
     /*#current-key-and-string .icon {*/
     /*    width: 20px;*/
@@ -450,6 +466,21 @@
     #key-and-string-container {
         column-gap: 100px;
     }
+    .note-value-span.note-value-span {
+        font-size: 130px;
+    }
+    #treble-clef-output {
+        width: 200px;
+        height: auto;
+    }
+    #string-span.treble-clef-enabled {
+        height: 260px;
+        line-height: 260px;
+    }
+    #key-and-string-container > div {
+        /* Treble clef staff is 200px wide */
+        width: 200px;
+    }
 }
 
 @media (min-width: 961px) {
@@ -460,11 +491,31 @@
     main {
         gap: 40px;
     }
+    #game-start-instruction img{
+        width: 70%;
+    }
 
     #game-progress-div {
         width: 60%;
     }
 }
+/*Has to be after min-width 961 */
+@media (max-height: 660px) {
+    main {
+        gap: 20px;
+    }
+}
+@media (max-height: 600px) {
+    main {
+        gap: 0;
+    }
+}
+@media (min-height: 720px) {
+    main {
+        gap: 50px;
+    }
+}
+
 
 @media (min-width: 1250px) {
     #game-progress-div {

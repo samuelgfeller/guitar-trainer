@@ -1,6 +1,6 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.0";
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.0";
-import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.1";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1.1";
 
 export class GameInitializer {
     constructor() {
@@ -41,6 +41,7 @@ export class GameInitializer {
         // Self has to be used in the following as we loose the "this" context in the event listener anonymous func
         let self = this;
         // Start on double click anywhere in the body
+
         document.addEventListener('dblclick', function (e) {
             // Check if the target is <body> or if a parent of the target is <main> (to avoid catching dblclicks in
             // header, but only if the modal is not open)

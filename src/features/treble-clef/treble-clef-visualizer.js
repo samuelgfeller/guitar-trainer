@@ -1,6 +1,6 @@
 export class TrebleClefVisualizer {
 
-    static displayCombinationInTrebleClef(stringName, noteName) {
+    static displayCombinationInTrebleClef(stringName, noteName, alsoDisplayNoteName = false) {
 
         // document.getElementById('note-span').innerHTML = noteName;
         // Empty output
@@ -57,7 +57,7 @@ export class TrebleClefVisualizer {
         // Draw it!
         vf.draw();
 
-        if (document.querySelector('#fretboard-note-game-treble-clef-and-name input')?.checked) {
+        if (alsoDisplayNoteName) {
             output.innerHTML = output.innerHTML + originalNoteName;
         }
     }

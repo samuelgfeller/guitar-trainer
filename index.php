@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/JsImportVersionAdder.php';
-(new JsImportVersionAdder())->addVersionToJsImports('1.0');
+(new JsImportVersionAdder())->addVersionToJsImports('1.2');
 ?>
 <!doctype html>
 <html lang="en">

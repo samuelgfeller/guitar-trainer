@@ -1,5 +1,5 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.0";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.1";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1";
 
 export class NoteInKeyGameInitializer {
 
@@ -48,17 +48,31 @@ export class NoteInKeyGameInitializer {
 
         // Game instructions
         document.querySelector('#game-start-instruction').querySelector('h3').innerHTML =
-            `Play notes in key practice`;
+            `Practice diatonic notes in any key`;
         document.querySelector('#game-instruction-text').innerHTML = `
-            <p>A random string and key will be generated and displayed.</p>
+            <p>A random string and major key will be generated and displayed.</p>
             <p>The note on the given string will be the note number 1 of the key.</p>
-            <p>The goal is to play the given note number diatonic to the key, on the given string.</p>
-            <p>For example, if the key is C, the note number 4 will be F.</p>
-            <p>Each time you play the note correctly, a new string and note number will be displayed.<p>
-            <p>After 20 correctly played notes, a new key is suggested, but it can be reloaded with the "reload" button</p>
-            <p>On the setting icon, the difficulty can be changed between three levels. They affect
-            the distance between the requested notes on the fretboard.</p>
-            <p>Click "Play to start or resume the game or double-click this instruction.</p>
+            <p>The goal is to play the note number diatonic to the key, on the given string.</p>
+            <p>For example, if the key is C, the note number 4 is F. If the key is G, number 4 is C. <br>
+            Refer to the fretboard roadmap below.</p>
+            <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
+            <p>After successfully playing 20 notes, a new key is suggested. The key can be changed anytime
+            with the "reload" button.</p>
+            <p>In the settings icon, you can adjust the difficulty among three levels that affect the 
+            distance between the requested notes and note number 1 on the fretboard.</p>
+            <p>Click "Play" to start or resume the game or double-tap this instruction.</p>
+            <h3>Roadmaps</h3>
+            <p>Low E string roadmap for the G key 
+            (<a href="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">Source</a>):            
+            <img src="https://i.imgur.com/fXpX6Uh.png" alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450"></p>
+            <p>A string roadmap for the D key 
+            (<a href="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623">Source</a>):            
+            <img src="https://i.imgur.com/x3ROkRE.png" alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
+            <p>I also recommend watching Paul Davids 
+            <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">
+            Music Theory episodes</a>.</p>
+            <p>And <a href="https://www.youtube.com/watch?v=kmAK4tRmLec">this video</a>
+            on how to find the chords to any song on guitar from Andrew Clarke.</p>
             `;
     }
     reloadKeyAndStringEventHandler() {
