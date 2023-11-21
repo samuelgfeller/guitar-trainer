@@ -80,7 +80,6 @@ export class GameConfigurationManager {
                 }
                 // Set up the event listener that saves the value when range value is changed
                 gameModeRangeInput.addEventListener('input', () => {
-                    console.log(gameModeRangeInput.value);
                     localStorage.setItem(gameModeOption.id, gameModeRangeInput.value);
                 });
             }

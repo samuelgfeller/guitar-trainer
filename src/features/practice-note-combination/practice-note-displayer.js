@@ -10,9 +10,8 @@ import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-v
  */
 export class PracticeNoteDisplayer {
 
-    // Start with -1 because it is incremented already on the first displayNotes() call
     correctNoteCount = 0;
-    notesAmountForFullProgressBar = 20;
+    notesAmountForFullProgressBar = 30;
 
     /**
      *
@@ -91,14 +90,10 @@ export class PracticeNoteDisplayer {
         // If there are no more challenging notes, calculate the percentage via the amount of notes played correctly in a row
 
         // percentage = this.lastNotesCorrectCount / this.requiredCorrectLastNotes * 100;
-        console.log('correctNoteCount before percentage calc', this.correctNoteCount);
         percentage = this.correctNoteCount / this.notesAmountForFullProgressBar * 100;
         movingBarLabel = this.correctNoteCount;
         // Set the right side of the progress bar to the amount or required correct notes
         progressBarRightSideLabel = this.notesAmountForFullProgressBar;
-        console.log(progressBarRightSideLabel);
-
-        console.log('updating progress bar with percentage', percentage);
         GameProgressVisualizer.updateGameProgress(percentage, movingBarLabel, progressBarRightSideLabel);
     }
 

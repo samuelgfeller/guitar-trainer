@@ -1,17 +1,15 @@
 export class NoteInKeyGenerator {
     notesOnStrings;
-    /**
-     *
-     * @param possibleStringsAndKeys
-     */
-    constructor(possibleStringsAndKeys) {
-        this.possibleStringsAndKeys = possibleStringsAndKeys;
+    possibleStringsAndKeys;
+
+    constructor() {
     }
 
     /**
      * Return random string and random key from that string
      */
     getNewStringAndKey() {
+        console.log(this.possibleStringsAndKeys);
         const strings = Object.keys(this.possibleStringsAndKeys);
         this.string = strings[Math.floor(Math.random() * strings.length)];
         // Keys for given string
@@ -35,10 +33,27 @@ export class NoteInKeyGenerator {
 
         // const keyIndex = this.possibleKeysOnStrings[keyString].indexOf(keyNote);
         const difficulty = parseInt(document.getElementById('difficulty-range-slider').value) ?? 1;
+        console.log(document.getElementById('difficulty-range-slider').value);
 
-        // Get index of key-note on string with newly created diatonicNotesOnStrings
+        // Get index of note that is key on string from freshly created diatonicNotesOnStrings
         const keyIndex = diatonicNotesOnStrings[keyString].findIndex(noteObject => noteObject.noteName === keyNote);
 
+        console.debug(`Diatonic notes for string ${keyString} key ${keyNote}`, diatonicNotesOnStrings);
+        // E - A, E - B
+        let possibleNotesOnStrings = [];
+        // Remove notes that are hard to reach, according to the difficulty level,
+        // Calculate the start and end indices for the slice method
+        let start = Math.max(0, keyIndex - difficulty);
+        let end = keyIndex + difficulty;
+        console.log(`Key index ${keyIndex} Start ${start} End ${end}`);
+
+        for (let string in diatonicNotesOnStrings) {
+            // Use the slice method to get the nearby notes +1 because the end index is not included in the slice
+            possibleNotesOnStrings[string] = diatonicNotesOnStrings[string].slice(start, end + 1);
+        }
+        console.debug(`String ${keyString} Key ${keyNote} Difficulty ${difficulty}`, possibleNotesOnStrings);
+        this.notesOnStrings = possibleNotesOnStrings;
+        return possibleNotesOnStrings;
         // Remove notes that are not nearby the key note, according to the difficulty level
         this.notesOnStrings = this.removeNotesAccordingToDifficultyLevel(diatonicNotesOnStrings, keyIndex, difficulty);
     }

@@ -4,7 +4,8 @@
     #modal {
         position: fixed; /* Stay in place */
         z-index: 100; /* Sit on top of content placeholder but below .flash */
-        padding: 200px 0; /* Location of the box */
+        /*padding: 200px 0; !* Location of the box *!*/
+        padding: 20vh 0;
         left: 0;
         top: 0;
         width: 100%;

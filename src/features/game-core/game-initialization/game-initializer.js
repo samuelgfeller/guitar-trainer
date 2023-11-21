@@ -74,7 +74,7 @@ export class GameInitializer {
                           <div id="modal-body"><h1 id="countdown">2s</h1></div>
                           </div></div>`;
                     // Insert at end of page content which is in <main></main>
-                    document.getElementById('score').insertAdjacentHTML('beforeend', htmlString);
+                    document.querySelector('main').insertAdjacentHTML('beforeend', htmlString);
                     let secondsRemainingUntilStart = 2;
                     countdownInterval = setInterval(() => {
                         secondsRemainingUntilStart--;

@@ -1,16 +1,8 @@
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.0.2";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.0.2";
 import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.0.2";
 
 export class NoteInKeyGameCoordinator {
     string;
     key;
-
-    possibleKeysOnStrings = {
-        // String name: [possible keys for string]
-        'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
-        'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
-    };
 
     // Class responsible for displaying the note and the string with all the verification and progress logic
     noteDisplayer;
@@ -22,14 +14,7 @@ export class NoteInKeyGameCoordinator {
     constructor() {
         // Setup this game mode
         this.noteInkeyGameInitializer = new NoteInKeyGameInitializer(this);
-        // Note in key generator initialized here in case the user clicks "pause" and wants to continue the game
-        this.noteInKeyGenerator = new NoteInKeyGenerator(this.possibleKeysOnStrings);
-        // Instantiate object with note displayer function that will be called when a new note should be displayed
-        // after a correct one has been played.
-        this.noteDisplayer = new PracticeNoteDisplayer(this.noteInKeyGenerator);
-        this.noteInkeyGameInitializer.addHtmlComponents();
-        // Has to be reloaded added after html component range slider as its value is needed
-        this.reloadKeyAndString();
+
         this.noteInkeyGameInitializer.initNoteInKeyGame();
     }
 
