@@ -3,9 +3,9 @@ export class NoteShuffler {
         strings = ['E2', 'B', 'G', 'D', 'A', 'E'],
         notes = ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
     ) {
-        // Initialize the notesList, shuffledNotes, and currentIndex properties
+        // Initialize the notesList, shuffledCombinations, and currentIndex properties
         this.notesList = [];
-        this.shuffledNotes = [];
+        this.shuffledCombinations = [];
         this.currentIndex = 0;
         this.shuffledAmount = 0;
         this.strings = strings;
@@ -41,7 +41,7 @@ export class NoteShuffler {
         // Create a copy of the notesList using the spread operator
         let notesListCopy = [...this.notesList];
 
-        this.shuffledNotes = [];
+        this.shuffledCombinations = [];
 
         let previousNoteCombination = null;
         // Counter how many times a note could not be added to the shuffled notes array
@@ -78,8 +78,8 @@ export class NoteShuffler {
             // Check if the current note combination is the first one or if there is no halftone difference between the previous and current note
             if ((previousNoteCombination === null || !this.isHalfToneDifference(previousNoteCombination, noteCombination))
                 || addNotesEvenIfNotHalfToneAppart === true) {
-                // Add the current note combination to the shuffledNotes array
-                this.shuffledNotes.push(noteCombination);
+                // Add the current note combination to the shuffledCombinations array
+                this.shuffledCombinations.push(noteCombination);
 
                 // Update the previousNoteCombination variable with the current note combination
                 previousNoteCombination = noteCombination;
@@ -100,8 +100,8 @@ export class NoteShuffler {
         // played right and then the odds choose the only existing challenging note B|F♯ which is also not played
         // because the next in the line would be the third one G|F♯ meaning that the choice is G|F♯ or B|F♯ which have
         // the same note.
-        // this.shuffledNotes = "B|F♯,B|C♯,G|F♯,G|E,B|G,A|D,G|C,A|C♯,B|D,A|F,G|D♯,G|B,A|G,D|A♯,E|F,B|E,E|B,G|G♯,D|C♯,E|G,D|G♯,E|A♯,G|D,B|C,D|F,E|C♯,A|B,D|E,E|A,A|A♯,E|C,D|A,B|G♯,E|D♯,B|F,B|A♯,D|G,G|C♯,D|B,E|D,D|C,A|G♯,A|C,D|F♯,A|E,B|D♯,G|A♯,B|A,E|G♯,A|D♯,G|F,E|F♯,G|A,D|D♯,A|F♯".split(",");
-        console.debug('Shuffled combinations: ' + this.shuffledNotes);
+        // this.shuffledCombinations = "B|F♯,B|C♯,G|F♯,G|E,B|G,A|D,G|C,A|C♯,B|D,A|F,G|D♯,G|B,A|G,D|A♯,E|F,B|E,E|B,G|G♯,D|C♯,E|G,D|G♯,E|A♯,G|D,B|C,D|F,E|C♯,A|B,D|E,E|A,A|A♯,E|C,D|A,B|G♯,E|D♯,B|F,B|A♯,D|G,G|C♯,D|B,E|D,D|C,A|G♯,A|C,D|F♯,A|E,B|D♯,G|A♯,B|A,E|G♯,A|D♯,G|F,E|F♯,G|A,D|D♯,A|F♯".split(",");
+        console.debug('Shuffled combinations: ' + this.shuffledCombinations);
     }
 
 
@@ -139,12 +139,12 @@ export class NoteShuffler {
      */
     getNextNoteCombination() {
         // Get the next note from the shuffled list
-        return this.shuffledNotes[this.currentIndex];
+        return this.shuffledCombinations[this.currentIndex];
         // The index is incremented in function prepareNextCombination
     }
 
-    incrementShuffledNotesIndex() {
+    incrementShuffledCombinationsIndex() {
         // Increment the index and wrap around if necessary
-        this.currentIndex = (this.currentIndex + 1) % this.shuffledNotes.length;
+        this.currentIndex = (this.currentIndex + 1) % this.shuffledCombinations.length;
     }
 }

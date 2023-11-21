@@ -1,6 +1,12 @@
+import {ArrayShuffler} from "../../shuffler/array-shuffler.js?v=1.0.2";
+
 export class NoteInKeyGenerator {
     notesOnStrings;
     possibleStringsAndKeys;
+    combinationsToBeShuffled = [];
+    shuffledCombinations;
+    // Index of the current combination to be displayed from the shuffledCombinations array
+    currentIndex = 0;
 
     constructor() {
     }
@@ -9,7 +15,7 @@ export class NoteInKeyGenerator {
      * Return random string and random key from that string
      */
     getNewStringAndKey() {
-        console.log(this.possibleStringsAndKeys);
+        console.log(`All available strings and notes`, this.possibleStringsAndKeys);
         const strings = Object.keys(this.possibleStringsAndKeys);
         this.string = strings[Math.floor(Math.random() * strings.length)];
         // Keys for given string
@@ -25,7 +31,7 @@ export class NoteInKeyGenerator {
      * @param keyString
      * @param keyNote
      */
-    loadNotesAndStrings(keyString, keyNote) {
+    loadShuffledCombinations(keyString, keyNote) {
         // Convert the range of possibleKeysOnStrings to the diatonic scale of the given keyNote
         let diatonicNotesOnStrings = this.getPossibleStringsAndKeysInDiatonicScale(
             keyNote, this.possibleStringsAndKeys
@@ -33,32 +39,56 @@ export class NoteInKeyGenerator {
 
         // const keyIndex = this.possibleKeysOnStrings[keyString].indexOf(keyNote);
         const difficulty = parseInt(document.getElementById('difficulty-range-slider').value) ?? 1;
-        console.log(document.getElementById('difficulty-range-slider').value);
 
         // Get index of note that is key on string from freshly created diatonicNotesOnStrings
         const keyIndex = diatonicNotesOnStrings[keyString].findIndex(noteObject => noteObject.noteName === keyNote);
+        console.debug(`String ${keyString} Key ${keyNote}`);
+        console.debug(`Diatonic notes`, diatonicNotesOnStrings);
 
-        console.debug(`Diatonic notes for string ${keyString} key ${keyNote}`, diatonicNotesOnStrings);
-        // E - A, E - B
-        let possibleNotesOnStrings = [];
-        // Remove notes that are hard to reach, according to the difficulty level,
-        // Calculate the start and end indices for the slice method
-        let start = Math.max(0, keyIndex - difficulty);
-        let end = keyIndex + difficulty;
-        console.log(`Key index ${keyIndex} Start ${start} End ${end}`);
-
-        for (let string in diatonicNotesOnStrings) {
-            // Use the slice method to get the nearby notes +1 because the end index is not included in the slice
-            possibleNotesOnStrings[string] = diatonicNotesOnStrings[string].slice(start, end + 1);
-        }
-        console.debug(`String ${keyString} Key ${keyNote} Difficulty ${difficulty}`, possibleNotesOnStrings);
-        this.notesOnStrings = possibleNotesOnStrings;
-        return possibleNotesOnStrings;
         // Remove notes that are not nearby the key note, according to the difficulty level
         this.notesOnStrings = this.removeNotesAccordingToDifficultyLevel(diatonicNotesOnStrings, keyIndex, difficulty);
+        // Fill the combinationsToBeShuffled array with all possible combinations
+        this.createArrayWithCombinationsToBeShuffled();
+
+        // Shuffle the array with the combinations
+        this.shuffledCombinations = ArrayShuffler.shuffleArray(this.combinationsToBeShuffled);
     }
 
+    /**
+     * Shuffles the notes from each string with the note shuffler
+     * and puts them into the shuffledCombinations attribute
+     */
+    createArrayWithCombinationsToBeShuffled() {
+        this.combinationsToBeShuffled = [];
+        // Shuffle the notes on each string
+        for (let string in this.notesOnStrings) {
+            // Fretboard game mote shuffler cannot be taken as it shuffles creates combinations with all strings with
+            // every note.
+            // We want combinations with only specific notes going with each string.
+            this.combinationsToBeShuffled.push(...this.notesOnStrings[string].map(noteObject => [string, noteObject.noteName]));
+        }
+        console.debug('Combinations to be shuffled', this.combinationsToBeShuffled);
+    }
+
+
     getNextCombination() {
+        // The note shuffler returns a string with the format 'string|note'
+        let [string, note] = this.shuffledCombinations[this.currentIndex];
+
+        // If the current index is reached, re shuffle all the notes and reset it to 0
+        if (this.currentIndex === this.shuffledCombinations.length - 1) {
+            // replace the shuffled combinations with a freshly shuffled array
+            this.shuffledCombinations = ArrayShuffler.shuffleArray(this.combinationsToBeShuffled);
+            this.currentIndex = 0;
+        } else {
+            this.currentIndex++;
+        }
+        // Split the string into an array containing the string and the note
+        // let [string, note] = combination.split('|');
+        // Get the note number from the note object
+        let noteNumber = this.notesOnStrings[string].find(noteObject => noteObject.noteName === note).number;
+        return {stringName: string, noteName: {noteName: note, number: noteNumber}};
+
         const strings = Object.keys(this.notesOnStrings);
         const stringToPlayNote = strings[Math.floor(Math.random() * strings.length)];
 
@@ -72,7 +102,6 @@ export class NoteInKeyGenerator {
 
     getPossibleStringsAndKeysInDiatonicScale(keyNote, possibleKeysOnStrings) {
         let diatonicScale = this.generateDiatonicScale(keyNote);
-        console.log(diatonicScale);
         let diatonicNotesOnStrings = [];
         // For each string, filter-out notes that should not be playable
         for (let string in possibleKeysOnStrings) {
@@ -99,12 +128,15 @@ export class NoteInKeyGenerator {
         // Remove notes that are hard to reach, according to the difficulty level,
         // Calculate the start and end indices for the slice method
         let start = Math.max(0, keyIndex - difficulty);
-        let end = keyIndex + difficulty + 1; // +1 because the end index is not included in the slice
+        let end = keyIndex + difficulty;
+        console.log(`Key index ${keyIndex} Start ${start} End ${end}`);
 
         for (let string in diatonicNotesOnStrings) {
-            // Use the slice method to get the nearby notes
-            possibleNotesOnStrings[string] = diatonicNotesOnStrings[string].slice(start, end);
+            // Use the slice method to get the nearby notes +1 because the end index is not included in the slice
+            possibleNotesOnStrings[string] = diatonicNotesOnStrings[string].slice(start, end + 1);
         }
+        console.debug(`Notes after removal. Difficulty ${difficulty}`, possibleNotesOnStrings);
+        this.notesOnStrings = possibleNotesOnStrings;
         return possibleNotesOnStrings;
     }
 

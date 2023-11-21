@@ -102,7 +102,6 @@ export class PracticeNoteDisplayer {
         // call display notes to refresh key and progress bar
         // this.displayNotes();
         console.log('reset game progress called');
-        console.trace();
     }
 
 }

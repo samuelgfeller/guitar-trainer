@@ -59,7 +59,7 @@ export class NoteInKeyGameCoordinator {
         this.keyNote = keyNote;
         this.keyString = keyString;
         // Prepare the attribute containing the notes on strings that may be displayed (diatonic to key, difficulty)
-        this.noteInKeyGenerator.loadNotesAndStrings(keyString, keyNote);
+        this.noteInKeyGenerator.loadShuffledCombinations(keyString, keyNote);
         console.log('key reloaded');
         // Display current key and string
         document.getElementById('current-key-and-string').innerHTML =

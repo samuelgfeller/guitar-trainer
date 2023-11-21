@@ -25,7 +25,7 @@ export class FretboardNoteGameCombinationGenerator {
         // in an infinite loop caused by the challenging note and next combination being the same or
         // other reasons that I may not have predicted.
         if (this.attemptToDisplayNextCombinationCount > 200) {
-            this.noteShuffler.incrementShuffledNotesIndex();
+            this.noteShuffler.incrementShuffledCombinationsIndex();
             console.debug(`There were over 200 failed attempts to display next combination. \n`
                 + `The shuffled notes index was incremented.`);
             return this.getNextCombination(combinations, previousCombination);
@@ -77,7 +77,7 @@ export class FretboardNoteGameCombinationGenerator {
         if (currentCombinationIsChallenging === false) {
             // Otherwise and if the combination stems from noteShuffler, the index is incremented
             // or wrapped around if necessary
-            this.noteShuffler.incrementShuffledNotesIndex();
+            this.noteShuffler.incrementShuffledCombinationsIndex();
         } else {
             // Color spans to orange
             NoteCombinationVisualizer.setNoteSpanColorToIndicateChallenging();
