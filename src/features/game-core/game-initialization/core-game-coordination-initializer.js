@@ -29,6 +29,8 @@ export class CoreGameCoordinationInitializer {
         }
         // Remove game mode options from previous game mode
         document.querySelector('#game-mode-options').innerHTML = '';
+        // Make sure that the start button is enabled
+        document.querySelector('#start-stop-btn').disabled = false;
 
         // Figure out which game mode should be started
         if (document.querySelector('#metronome-game-mode input').checked) {
