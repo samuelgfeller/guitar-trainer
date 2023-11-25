@@ -26,9 +26,11 @@ export class GameElementsVisualizer {
         document.querySelector('#key-and-string-container').style.display = null;
     }
 
-    static showGameProgress(scoreEnabled) {
-        // Remove "display:none" on game progress and score
-        document.querySelector('#game-progress-div').style.display = null;
+    static showGameProgress(progressBarEnabled, scoreEnabled) {
+        if (progressBarEnabled) {
+            // Remove "display:none" on game progress and score
+            document.querySelector('#game-progress-div').style.display = null;
+        }
         if (scoreEnabled) {
             document.querySelector('#score').style.display = null;
         }

@@ -11,15 +11,16 @@ import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-v
 export class PracticeNoteDisplayer {
 
     correctNoteCount = 0;
-    notesAmountForFullProgressBar = 30;
 
     /**
      *
      * @param noteGenerator instance that contains a getNextCombination() method
+     * @param notesAmountForFullProgressBar
      */
-    constructor(noteGenerator) {
+    constructor(noteGenerator, notesAmountForFullProgressBar = 30) {
         this.noteGenerator = noteGenerator;
         this.detectedNoteVerifier = new DetectedNoteVerifier();
+        this.notesAmountForFullProgressBar = notesAmountForFullProgressBar;
 
         // Create class-level arrow function properties for event listeners so that they can be removed
         this.displayNotesHandler = this.displayNotes.bind(this);

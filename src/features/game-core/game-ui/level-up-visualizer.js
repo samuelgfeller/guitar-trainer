@@ -1,8 +1,8 @@
 
 export class LevelUpVisualizer {
-    static displayLeveledUpModal(bodyText, confirmButtonText, goToNextLevelEventHandler, restartLevelEventHandler) {
+    static stopGameAndDisplayLeveledUpModal(bodyText, confirmButtonText, goToNextLevelEventHandler, restartLevelEventHandler) {
         // Stop the game in the form of an event to avoid a circular dependency with core-game-coordinator
-        document.dispatchEvent(new Event('game-stop'));
+        document.dispatchEvent(new CustomEvent('game-stop', {'detail': 'level-up'})); // add details
 
         // this.gameProgressVisualizer.alreadyLeveledUp = true;
 

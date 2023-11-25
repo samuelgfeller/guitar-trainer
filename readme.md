@@ -47,7 +47,7 @@ For example, if the key is C, the note number 4 is F. If the key is G, number 4 
 
 Upon correctly playing the note, a new string and note number will be displayed.
 
-After successfully playing 20 notes, a new key is suggested. The key can also be changed anytime
+After successfully playing 30 notes, a new key is suggested. The key can also be changed anytime
 with the "reload" button.
 
 In the settings icon, you can adjust the difficulty among three levels that affect the

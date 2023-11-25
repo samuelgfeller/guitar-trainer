@@ -87,7 +87,7 @@ export class FretboardNoteGameInitializer {
         let level = document.getElementById('bpm-input').value;
         GameLevelTracker.addAccomplishedLevel(level, this.levelLocalStorageKey);
         // Fire game-stop event and display modal
-        LevelUpVisualizer.displayLeveledUpModal(
+        LevelUpVisualizer.stopGameAndDisplayLeveledUpModal(
             'Level completed!',
             'Go to next level',
             this.goToNextLevel.bind(this),

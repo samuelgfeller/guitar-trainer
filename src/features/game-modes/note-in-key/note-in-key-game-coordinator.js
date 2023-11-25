@@ -11,6 +11,9 @@ export class NoteInKeyGameCoordinator {
 
     gameIsRunning = false;
 
+    timer = 0;
+    timerInterval = null;
+
     constructor() {
         // Setup this game mode
         this.noteInkeyGameInitializer = new NoteInKeyGameInitializer(this);
@@ -32,9 +35,16 @@ export class NoteInKeyGameCoordinator {
 
         // Init event listeners that will automatically call displayNotes() when correct note has been played
         this.noteDisplayer.beingGame();
+        // Start the timer
+        this.timerInterval = setInterval(() => {
+            this.timer += 1;
+        }, 1000);
     }
 
     stop() {
+        // Pause timer
+        clearInterval(this.timerInterval);
+
         this.noteDisplayer?.endGame();
         this.gameIsRunning = false;
         // Hide current key and string
@@ -65,9 +75,5 @@ export class NoteInKeyGameCoordinator {
         document.getElementById('current-key-and-string').innerHTML =
             `String: <b>${this.keyString}</b> Key: <b>${this.keyNote}</b>`;
         document.dispatchEvent(new Event('reset-game-progress'));
-
-        // if (this.gameIsRunning){
-        //     this.displayFirstNoteOfKey();
-        // }
     }
 }

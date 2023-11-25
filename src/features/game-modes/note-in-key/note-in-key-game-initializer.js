@@ -44,7 +44,9 @@ export class NoteInKeyGameInitializer {
 
         // Instantiate object with note displayer function that will be called when a new note should be displayed
         // after a correct one has been played.
-        this.noteInKeyGameCoordinator.noteDisplayer = new PracticeNoteDisplayer(this.noteInKeyGameCoordinator.noteInKeyGenerator);
+        this.noteInKeyGameCoordinator.noteDisplayer = new PracticeNoteDisplayer(
+            this.noteInKeyGameCoordinator.noteInKeyGenerator, 5
+        );
         // Has to be reloaded added after html component range slider as its value is needed
         this.noteInKeyGameCoordinator.reloadKeyAndString();
 
@@ -86,13 +88,18 @@ export class NoteInKeyGameInitializer {
 
     levelUp() {
         document.querySelector('#current-key-and-string').style.display = 'block';
+        const minutes = Math.floor(this.noteInKeyGameCoordinator.timer / 60);
+        // Outputs the rest of seconds that could not be added to full minutes
+        const seconds = this.noteInKeyGameCoordinator.timer % 60;
 
         // Fire game-stop event and display modal
-        LevelUpVisualizer.displayLeveledUpModal(
-            'Practice completed!',
+        LevelUpVisualizer.stopGameAndDisplayLeveledUpModal(
+            `Practice completed in ${minutes} min and ${seconds} sec!`,
             'Go to next key',
             this.goToNextKey.bind(this),
             this.restartKey);
+        // Reset timer
+        this.noteInKeyGameCoordinator.timer = 0;
     }
 
     goToNextKey() {
@@ -166,7 +173,7 @@ export class NoteInKeyGameInitializer {
             <p>For example, if the key is C, the note number 4 is F. If the key is G, number 4 is C. <br>
             Refer to the fretboard roadmap below.</p>
             <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
-            <p>After successfully playing 20 notes, a new key is suggested. The key can also be changed anytime
+            <p>After successfully playing 30 notes, a new key is suggested. The key can also be changed anytime
             with the "reload" button.</p>
             <p>In the settings icon, you can adjust the difficulty among three levels that affect the 
             distance between the requested notes and note number 1 on the fretboard.</p>
@@ -176,10 +183,11 @@ export class NoteInKeyGameInitializer {
             <h3>Roadmaps</h3>
             <p>Low E string roadmap for the G key 
             (<a href="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">Source</a>):            
-            <img src="https://i.imgur.com/fXpX6Uh.png" alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450"></p>
+            <img src="src/assets/images/LowE-Gmajor-roadmap.png" alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">
+            </p>
             <p>A string roadmap for the D key 
             (<a href="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623">Source</a>):            
-            <img src="https://i.imgur.com/x3ROkRE.png" alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
+            <img src="src/assets/images/A-Dmajor-roadmap.png" alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
             <p>These can be shifted up and down depending on the key.</p>
             <p>I also recommend watching Paul Davids 
             <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">
