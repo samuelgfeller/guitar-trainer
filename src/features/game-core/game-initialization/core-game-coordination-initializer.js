@@ -1,11 +1,11 @@
-import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=1.1.1";
+import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=1.1.2";
 import {
     FretboardNoteGameCoordinator
-} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=1.1.1";
-import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=1.1.1";
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.1.1";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.1";
-import {MetronomeCoordinator} from "../../game-modes/metronome/metronome-coordinator.js?v=1.1.1";
+} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=1.1.2";
+import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=1.1.2";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.1.2";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.2";
+import {MetronomeCoordinator} from "../../game-modes/metronome/metronome-coordinator.js?v=1.1.2";
 
 export class CoreGameCoordinationInitializer {
 
@@ -33,9 +33,10 @@ export class CoreGameCoordinationInitializer {
         // Make sure that the start button is enabled
         document.querySelector('#start-stop-btn').disabled = false;
 
+        // Default values
         // Enable tuner that detects note to true as default value
         this.coreGameCoordinator.noteDetectorEnabled = true;
-        // Default values
+        // Enable that when the game is started, visibility change pauses it
         this.coreGameCoordinator.stopAndResumeAfterVisibilityChange = true;
 
         // Figure out which game mode should be started
@@ -85,9 +86,6 @@ export class CoreGameCoordinationInitializer {
             this.coreGameCoordinator.stopAndResumeAfterVisibilityChange = false;
             // Game stop event
             document.dispatchEvent(new Event('game-stop'));
-            // Hide game elements and display instructions not inside stopGame() so that they are
-            // still visible in the background when level is accomplished
-            GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
         }
     }
 }

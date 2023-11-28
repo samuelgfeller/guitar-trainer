@@ -1,5 +1,3 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.1";
-
 export class VisibilityChangeHandler {
 
     /**
@@ -16,25 +14,26 @@ export class VisibilityChangeHandler {
         */
        initPauseAndResumeGameOnVisibilityChange() {
         let countdownInterval;
+        console.log('initPauseAndResumeGameOnVisibilityChange');
         document.addEventListener('visibilitychange', (e) => {
             // In case visibility change event was fired multiple times before count down finished
             clearInterval(countdownInterval);
             // Remove existing visibility change modal if there was one
             document.querySelector('#modal.visibility-change-modal')?.remove();
             // If not only metronome is playing (meaning the normal game)
-            console.log(this.coreGameCoordinator.stopAndResumeAfterVisibilityChange);
-            if (this.coreGameCoordinator.stopAndResumeAfterVisibilityChange === true) {
+            if (this.coreGameCoordinator.stopAndResumeAfterVisibilityChange === true &&
+                this.coreGameCoordinator.gameRunning === true) {
                 // When visible after a visibility change event, start game after 3s and request wake lock
                 if (document.visibilityState === 'visible') {
                     // Display time before restart modal box
                     let htmlString = `<div id="modal" class="visibility-change-modal">
                              <div id="modal-box">
                              <div id="modal-header">Time before restart</div>
-                             <div id="modal-body"><h1 id="countdown">2s</h1></div>
+                             <div id="modal-body"><h1 id="countdown">1s</h1></div>
                              </div></div>`;
                     // Insert at end of page content which is in <main></main>
                     document.querySelector('main').insertAdjacentHTML('beforeend', htmlString);
-                    let secondsRemainingUntilStart = 2;
+                    let secondsRemainingUntilStart = 1;
                     countdownInterval = setInterval(() => {
                         secondsRemainingUntilStart--;
                         if (secondsRemainingUntilStart > 0) {
@@ -51,8 +50,7 @@ export class VisibilityChangeHandler {
                     // When not visible after visibility change event, pause game and disable wake lock
                     // this.coreGameCoordinationInitializer.coreGameCoordinator.stopGame();
                     // Stop game event
-                    document.dispatchEvent(new Event('game-stop'));
-                    GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+                    document.dispatchEvent(new CustomEvent('game-stop', {'detail': 'visibility-change'}));
                 }
             }
         });

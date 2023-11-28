@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.1.1";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1.1.1";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.1.1";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.1";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.1.1";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.1.2";
+import {TuneOperator} from "../tuner/tune-operator.js?v=1.1.2";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.1.2";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.2";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.1.2";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -20,6 +20,7 @@ export class CoreGameCoordinator {
 
     // When only metronome should be played and not the whole game (when sound on before pressing start)
     stopAndResumeAfterVisibilityChange = true;
+    gameRunning = false;
 
 
     /**
@@ -42,6 +43,8 @@ export class CoreGameCoordinator {
 
         // Start game module
         this.gameCoordinator.play();
+
+        this.gameRunning = true;
 
         if (this.metronomeEnabled) {
             // This gets the game moving and has to be after the game module has been properly started
@@ -70,9 +73,16 @@ export class CoreGameCoordinator {
         if (this.gameCoordinator !== null) {
             this.gameCoordinator.stop();
         }
-
+        console.log(event.detail);
+        if (!event.detail?.includes('visibility-change') && !event.detail?.includes('level-up')) {
+            // Hide game elements and display instructions only when not after level up or visibility change
+            GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+        }
         if (event.detail?.includes('level-up')) {
             this.stopAndResumeAfterVisibilityChange = false;
+        }
+        if (!event.detail?.includes('visibility-change')) {
+            this.gameRunning = false;
         }
 
         document.querySelector('#start-stop-btn').innerText = 'Play';
