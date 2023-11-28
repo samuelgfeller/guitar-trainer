@@ -1,4 +1,4 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.1";
 
 export class VisibilityChangeHandler {
 
