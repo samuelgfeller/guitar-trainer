@@ -1,4 +1,4 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.2";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.3";
 
 export class MetronomeCoordinator{
 
