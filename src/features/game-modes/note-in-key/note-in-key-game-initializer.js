@@ -1,9 +1,9 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.1.3";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.3";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.3";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.1.3";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.1.3";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.1.3";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=489";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=489";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=489";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=489";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=489";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=489";
 
 export class NoteInKeyGameInitializer {
 

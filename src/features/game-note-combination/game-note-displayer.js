@@ -1,7 +1,7 @@
-import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=1.1.2";
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.1.2";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.1.2";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.1.2";
+import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=489";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=489";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=489";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=489";
 
 /**
  * Note display coordinator when playing the "game" which
@@ -180,7 +180,7 @@ export class GameNoteDisplayer {
     }
 
     resetGameProgress() {
-        this.noteGenerator.combinations = new Map();
+        this.challengingCombinations = new Map();
         this.gameProgressUpdater.maxWrongCombinations = 0;
         this.incorrectCount = 0;
         this.correctCount = 0;

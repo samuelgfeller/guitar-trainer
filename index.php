@@ -1,7 +1,8 @@
 <?php
 
 require __DIR__ . '/JsImportVersionAdder.php';
-(new JsImportVersionAdder())->addVersionToJsImports('1.1.3');
+(new JsImportVersionAdder())->addVersionToJsImports('1.1.4');
+// (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
 ?>
 <!doctype html>
 <html lang="en">
@@ -15,6 +16,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
     <link rel="stylesheet" href="src/assets/styles/fretboard-note-game.css?v=<?= mt_rand(1, 1000) ?>">
     <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=<?= mt_rand(1, 1000) ?>">
     <link rel="stylesheet" href="src/assets/styles/range-slider.css?v=<?= mt_rand(1, 1000) ?>">
+    <link rel="stylesheet" href="src/assets/styles/metronome-practice.css?v=<?= mt_rand(1, 1000) ?>">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>

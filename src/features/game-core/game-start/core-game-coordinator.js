@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.1.3";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1.1.3";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.1.3";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.3";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.1.3";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=489";
+import {TuneOperator} from "../tuner/tune-operator.js?v=489";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=489";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=489";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=489";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -46,10 +46,13 @@ export class CoreGameCoordinator {
 
         this.gameRunning = true;
 
-        if (this.metronomeEnabled) {
-            // This gets the game moving and has to be after the game module has been properly started
-            this.metronomeOperator.startMetronome();
-        }
+        // Start metronome only if tuner is fully started (if it needs to)
+        this.startTuner().then(() => {
+            if (this.metronomeEnabled) {
+                // This gets the game moving and has to be after the game module has been properly started
+                this.metronomeOperator.startMetronome();
+            }
+        });
 
         document.querySelector('#start-stop-btn').innerText = 'Pause';
         // In case settings div is expanded, collapse it
@@ -73,7 +76,6 @@ export class CoreGameCoordinator {
         if (this.gameCoordinator !== null) {
             this.gameCoordinator.stop();
         }
-        console.log(event.detail);
         if (!event.detail?.includes('visibility-change') && !event.detail?.includes('level-up')) {
             // Hide game elements and display instructions only when not after level up or visibility change
             GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
@@ -90,6 +92,20 @@ export class CoreGameCoordinator {
         this.screenWakeLocker.releaseWakeLock();
     }
 
+    startTuner() {
+        if (this.noteDetectorEnabled) {
+            // Start tuner
+            this.tuneOperator.initGetUserMedia();
+            const promise = this.tuneOperator.start();
+            // Set frequencyData instance variable
+            let frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
+            new FrequencyBarsController(frequencyData).updateFrequencyBars(this.tuneOperator);
+            return promise;
+        }
+        // If noteDetectorEnabled is false, return a resolved promise
+        return Promise.resolve();
+    }
+
     /**
      * Start metronome for the rhythm and note detector
      */
@@ -102,14 +118,6 @@ export class CoreGameCoordinator {
         this.coreGameCoordinationInitializer.gameInitializer.stopAndResumeAfterVisibilityChange = false;
 
         if (this.noteDetectorEnabled) {
-            // Start tuner
-            this.tuneOperator.initGetUserMedia();
-            this.tuneOperator.start();
-
-            // Set frequencyData instance variable
-            let frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
-            new FrequencyBarsController(frequencyData).updateFrequencyBars(this.tuneOperator);
-
             GameElementsVisualizer.showGameElementsAndHideInstructions();
 
             // Prevent screen from getting dark on mobile

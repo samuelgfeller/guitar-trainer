@@ -1,11 +1,9 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.3";
+import {MetronomePracticeInitializer} from "./metronome-practice-initializer.js?v=489";
 
 export class MetronomeCoordinator{
 
     constructor() {
-        document.querySelector('#game-start-instruction').querySelector('h3').innerHTML = `Metronome`;
-        document.querySelector('#game-instruction-text').innerHTML = `Click "Play" to start the metronome.`;
-        GameConfigurationManager.showBpmInput();
+        new MetronomePracticeInitializer().initMetronomePractice();
     }
 
     play(){
@@ -15,6 +13,6 @@ export class MetronomeCoordinator{
 
     }
     destroy(){
-
+        document.querySelector('#exercise-container').remove();
     }
 }

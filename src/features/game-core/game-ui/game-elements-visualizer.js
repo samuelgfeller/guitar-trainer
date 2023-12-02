@@ -1,11 +1,10 @@
-import {GameLevelTracker} from "../game-progress/game-level-tracker.js?v=1.1.3";
+import {GameLevelTracker} from "../game-progress/game-level-tracker.js?v=489";
 
 export class GameElementsVisualizer {
     static hideGameElementsAndDisplayInstructions() {
         document.querySelectorAll('.visible-when-game-on').forEach(element => {
             element.style.display = 'none';
         });
-        console.log('hideGameElementsAndDisplayInstructions');
         document.querySelector('#key-and-string-container').style.display = 'none';
 
         document.querySelector('#game-start-instruction').style.display = 'block';

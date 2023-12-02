@@ -31,6 +31,9 @@
         /*background: white;*/
         color: #919191;
     }
+    h3, h4{
+        color: #c0c0c0;
+    }
     a{
         color: saddlebrown;
     }
@@ -264,11 +267,11 @@
         display: none;
     }
 
-    #previous-lvl-btn {
+    #lower-bpm-btn {
         /*transform: rotate(90deg);*/
     }
 
-    #next-lvl-btn {
+    #higher-bpm-input {
         /*transform: rotate(-90deg);*/
     }
 

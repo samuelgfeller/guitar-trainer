@@ -136,27 +136,27 @@ export class TuneOperator {
     };
 
     start() {
-        this.audioContext = new window.AudioContext();
-        this.analyser = this.audioContext.createAnalyser();
-        // Uses ScriptProcessorNode which is deprecated. Couldn't make it work with chat gpt so this issue
-        // https://github.com/qiuxiang/tuner/issues/18 is ignored for now as long as it works
-        this.scriptProcessor = this.audioContext.createScriptProcessor(
-            this.bufferSize,
-            1,
-            1
-        );
-
-        const self = this;
-
-
-        aubio().then(function (aubio) {
-            self.pitchDetector = new aubio.Pitch(
-                "default",
-                self.bufferSize,
+        return new Promise((resolve, reject) => {
+            this.audioContext = new window.AudioContext();
+            this.analyser = this.audioContext.createAnalyser();
+            this.scriptProcessor = this.audioContext.createScriptProcessor(
+                this.bufferSize,
                 1,
-                self.audioContext.sampleRate
+                1
             );
-            self.startRecord();
+
+            const self = this;
+
+            aubio().then(function (aubio) {
+                self.pitchDetector = new aubio.Pitch(
+                    "default",
+                    self.bufferSize,
+                    1,
+                    self.audioContext.sampleRate
+                );
+                self.startRecord();
+                resolve();
+            }).catch(reject);
         });
     };
 

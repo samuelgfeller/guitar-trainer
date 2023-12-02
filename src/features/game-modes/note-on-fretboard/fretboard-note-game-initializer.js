@@ -1,26 +1,18 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.1.2";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.1.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.2";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.2";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=489";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=489";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=489";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=489";
 
 export class FretboardNoteGameInitializer {
     constructor() {
-        this.levelLocalStorageKey = 'fretboard-note-game-level';
+        this.levelLocalStorageKey = 'fretboard-note-game-accomplished-levels';
         // Needs to be in an attribute like this to have .bind(this) and be able to remove event listener
         this.levelUpEventHandler = this.levelUp.bind(this);
     }
 
     init() {
         GameConfigurationManager.showBpmInput();
-
-        // Set bpmInput value to current level for this game mode
-        const bpmInput = document.querySelector('#bpm-input');
-
-        // Set bpm input to the current level which is always one higher than the last completed or the default value
-        bpmInput.value = GameLevelTracker.getCurrentLevel(this.levelLocalStorageKey);
-
-        // Update color to indicate that level is accomplished on bpm change event
-        bpmInput.addEventListener('change', this.updateIsLevelAccomplishedColor);
+        this.initBpmInputForFretboardNoteGame();
 
         document.addEventListener('leveled-up', this.levelUpEventHandler);
 
@@ -78,10 +70,6 @@ export class FretboardNoteGameInitializer {
 
     }
 
-    updateIsLevelAccomplishedColor() {
-        GameElementsVisualizer.updateIsLevelAccomplishedColor('fretboard-note-game-level');
-    }
-
     levelUp() {
         // Store accomplished game level
         let level = document.getElementById('bpm-input').value;
@@ -112,4 +100,24 @@ export class FretboardNoteGameInitializer {
         document.dispatchEvent(new Event('reset-game-progress'));
     }
 
+
+    initBpmInputForFretboardNoteGame() {
+        const bpmInput = document.querySelector('#bpm-input');
+
+        // Set bpm input to the current level which is always one higher than the last completed or the default value
+        bpmInput.value = GameLevelTracker.getCurrentLevel(this.levelLocalStorageKey);
+
+
+        // Level change event listener and handler
+        bpmInput.addEventListener('change', (e) => {
+            document.dispatchEvent(new Event('game-stop'));
+            GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+            // Reset game progress in the form of an event to avoid having to need game progress instance here
+            document.dispatchEvent(new Event('reset-game-progress'));
+            document.querySelector('#start-stop-btn').innerText = 'Play';
+
+            // Update color to indicate that level is accomplished on bpm change event
+            GameElementsVisualizer.updateIsLevelAccomplishedColor(this.levelLocalStorageKey);
+        });
+    }
 }

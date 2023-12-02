@@ -14,7 +14,6 @@ export class VisibilityChangeHandler {
         */
        initPauseAndResumeGameOnVisibilityChange() {
         let countdownInterval;
-        console.log('initPauseAndResumeGameOnVisibilityChange');
         document.addEventListener('visibilitychange', (e) => {
             // In case visibility change event was fired multiple times before count down finished
             clearInterval(countdownInterval);

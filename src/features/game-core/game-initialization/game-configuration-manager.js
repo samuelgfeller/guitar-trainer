@@ -1,5 +1,4 @@
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.2";
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=1.1.2";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=489";
 
 export class GameConfigurationManager {
 
@@ -92,34 +91,19 @@ export class GameConfigurationManager {
      */
     static showBpmInput() {
         document.querySelector('#header-center-container').innerHTML =
-            `<img src="src/assets/images/arrow-left-icon.svg" alt="<" id="previous-lvl-btn" class="icon lvl-icon">
+            `<img src="src/assets/images/arrow-left-icon.svg" alt="<" id="lower-bpm-btn" class="icon lvl-icon">
              <input type="number" min="0" value="60" id="bpm-input">
-             <img src="src/assets/images/arrow-right-icon.svg" alt="<" id="next-lvl-btn" class="icon lvl-icon">`;
-        this.initBpmInputChangeListener()
-    }
+             <img src="src/assets/images/arrow-right-icon.svg" alt="<" id="higher-bpm-input" class="icon lvl-icon">`;
 
-    static initBpmInputChangeListener() {
+        // Add event listeners to step up or down input
         const bpmInput = document.querySelector('#bpm-input');
-
-        // Set bpm input to the current level which is always one higher than the last completed or the default value
-        // bpmInput.value = GameLevelTracker.getCurrentLevel();
-
-        // Level change event listener and handler
-        bpmInput.addEventListener('change', (e) => {
-            document.dispatchEvent(new Event('game-stop'));
-            GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
-            // Reset game progress in the form of an event to avoid having to need game progress instance here
-            document.dispatchEvent(new Event('reset-game-progress'));
-            document.querySelector('#start-stop-btn').innerText = 'Play';
-        });
-
         // stepUp and stepDown on input type number don't automatically fire the "change" event
         const changeEvent = new Event('change');
-        document.getElementById('next-lvl-btn').addEventListener('click', () => {
+        document.getElementById('higher-bpm-input').addEventListener('click', () => {
             bpmInput.stepUp();
             bpmInput.dispatchEvent(changeEvent);
         });
-        document.getElementById('previous-lvl-btn').addEventListener('click', () => {
+        document.getElementById('lower-bpm-btn').addEventListener('click', () => {
             bpmInput.stepDown();
             bpmInput.dispatchEvent(changeEvent);
         });

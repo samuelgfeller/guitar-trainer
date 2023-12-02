@@ -1,0 +1,47 @@
+/* mobile first min-width sets base and content is adapted to computers. */
+@media (min-width: 100px) {
+    #exercise-container details{
+        width: 100%;
+    }
+    .exercise-grid {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+        /*border: 1px solid #ccc;*/
+    }
+    .exercise-grid > div{
+        background: rgba(255,255,255,.1);
+        border-radius: 20px;
+        padding: 15px;
+        /*width: 100%;*/
+    }
+    .exercise-grid > div:hover{
+        background: rgba(255,255,255,.15);
+        cursor: pointer;
+    }
+    .exercise-grid h4{
+        margin: 0px 0 10px 5px;
+        /*color: #d5d5d5;*/
+        text-align: left;
+    }
+    .exercise-grid > div video{
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 10px;
+    }
+    .selected-exercise{
+        outline: 3px solid saddlebrown;
+    }
+}
+
+@media (min-width: 641px) {
+}
+@media (min-width: 800px) {
+    #exercise-container{
+        width: 80%;
+    }
+}
