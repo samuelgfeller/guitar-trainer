@@ -1,6 +1,6 @@
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=489";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=489";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=489";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=256";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=256";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=256";
 
 /**
  * Note displayer for "practice" mode, which means
@@ -40,6 +40,7 @@ export class PracticeNoteDisplayer {
         document.addEventListener('correct-note-played', this.increaseCorrectNoteCountHandler);
         // Custom event when played note was detected
         document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
+        // Event removed in destroy function of the game coordinator
         document.addEventListener('reset-game-progress', this.resetGameProgressHandler);
     }
 
@@ -102,7 +103,7 @@ export class PracticeNoteDisplayer {
         this.correctNoteCount = 0;
         // call display notes to refresh key and progress bar
         // this.displayNotes();
-        console.log('reset game progress called');
+        console.debug('reset game progress for note in key game called');
     }
 
 }

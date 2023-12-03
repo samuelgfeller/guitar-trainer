@@ -1,11 +1,11 @@
-import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=489";
+import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=256";
 import {
     FretboardNoteGameCoordinator
-} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=489";
-import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=489";
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=489";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=489";
-import {MetronomeCoordinator} from "../../game-modes/metronome/metronome-coordinator.js?v=489";
+} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=256";
+import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=256";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=256";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=256";
+import {MetronomePracticeCoordinator} from "../../game-modes/metronome/metronome-practice-coordinator.js?v=256";
 
 export class CoreGameCoordinationInitializer {
 
@@ -36,15 +36,12 @@ export class CoreGameCoordinationInitializer {
         // Default values
         // Enable tuner that detects note to true as default value
         this.coreGameCoordinator.noteDetectorEnabled = true;
-        // Enable that when the game is started, visibility change pauses it
-        this.coreGameCoordinator.stopAndResumeAfterVisibilityChange = true;
 
         // Figure out which game mode should be started
         // All game coordinators MUST implement a play() and stop() method.
         // Initialization is done in the constructor
         if (document.querySelector('#metronome-game-mode input').checked) {
-            this.coreGameCoordinator.gameCoordinator = new MetronomeCoordinator();
-            this.coreGameCoordinator.stopAndResumeAfterVisibilityChange = false;
+            this.coreGameCoordinator.gameCoordinator = new MetronomePracticeCoordinator();
             this.coreGameCoordinator.noteDetectorEnabled = false;
             this.coreGameCoordinator.metronomeEnabled = true;
             this.coreGameCoordinator.scoreEnabled = false;
@@ -74,16 +71,16 @@ export class CoreGameCoordinationInitializer {
      * Executed on click of start or stop button
      */
     startOrStopButtonActionHandler() {
-        this.startStopButton = document.querySelector('#start-stop-btn');
+        const startStopButton = document.querySelector('#start-stop-btn');
 
         // If the game is not running, start it. Otherwise, stop.
-        if (this.startStopButton.innerText === 'Play') {
+        if (startStopButton.src.includes('play') && startStopButton.disabled !== true) {
             // Start game event
             document.dispatchEvent(new Event('game-start'));
-            this.coreGameCoordinator.stopAndResumeAfterVisibilityChange = true;
+            this.coreGameCoordinator.manuallyPaused = false;
         } else {
             // When manually paused, don't start game again on visibility change
-            this.coreGameCoordinator.stopAndResumeAfterVisibilityChange = false;
+            this.coreGameCoordinator.manuallyPaused = true;
             // Game stop event
             document.dispatchEvent(new Event('game-stop'));
         }

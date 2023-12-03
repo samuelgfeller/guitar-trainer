@@ -1,11 +1,10 @@
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=489";
-import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=489";
-import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=489";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=256";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=256";
+import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=256";
 
 export class GameInitializer {
     constructor() {
         this.coreGameCoordinationInitializer = new CoreGameCoordinationInitializer(this);
-        this.startStopButton = document.querySelector('#start-stop-btn');
     }
 
     /**
@@ -34,7 +33,9 @@ export class GameInitializer {
 
     initGameStartStopBtnEventListeners() {
         // Start / stop button event listener
-        this.startStopButton.addEventListener('click', this.coreGameCoordinationInitializer.startOrStopButtonActionHandler.bind(this.coreGameCoordinationInitializer));
+        document.querySelector('#start-stop-btn').addEventListener('click',
+            this.coreGameCoordinationInitializer.startOrStopButtonActionHandler.bind(this.coreGameCoordinationInitializer)
+        );
         // Self has to be used in the following as we loose the "this" context in the event listener anonymous func
         let self = this;
         // Start on double click anywhere in the body

@@ -122,27 +122,27 @@
         padding: 5px 10px;
         width: 90px;
     }
-
-    .start-stop-btn {
-        padding: 8px 8px;
-        border: none;
-        background: transparent;
-        border-radius: 10px;
-        color: #c0c0c0;
-        font-size: 17px;
-        box-sizing: border-box;
-        cursor: pointer;
-    }
-
-    .start-stop-btn:hover {
-        /*border-bottom: 2px dotted #8a8a8a;*/
-        background: rgba(255, 255, 255, .1);
-    }
-
     .icon {
         width: 30px;
         /*height: 30px;*/
         filter: invert(70%);
+    }
+    #game-start-instruction .icon {
+        width: 20px;
+        margin: 0 5px;
+    }
+
+    #start-stop-btn {
+        padding: 8px 8px;
+        border-radius: 10px;
+        cursor: pointer;
+        width: 40px;
+        margin-right: 10px;
+    }
+
+    #start-stop-btn:hover {
+        /*border-bottom: 2px dotted #8a8a8a;*/
+        background: rgba(255, 255, 255, .1);
     }
 
     .button-icon {
@@ -213,7 +213,7 @@
         margin-top: 20px;
     }
 
-    #game-start-instruction img{
+    .roadmap-image{
         width: 100%;
         margin: 10px auto;
     }
@@ -461,6 +461,9 @@
         /*justify-content: center;*/
         /*column-gap: 60px;*/
     }
+    #start-stop-btn {
+        margin-right: 0;
+    }
 
     #game-progress-div {
         width: 75%;
@@ -502,7 +505,7 @@
     main {
         gap: 40px;
     }
-    #game-start-instruction img{
+    .roadmap-image{
         width: 70%;
     }
 

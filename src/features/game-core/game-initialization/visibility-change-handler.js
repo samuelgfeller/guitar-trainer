@@ -21,6 +21,7 @@ export class VisibilityChangeHandler {
             document.querySelector('#modal.visibility-change-modal')?.remove();
             // If not only metronome is playing (meaning the normal game)
             if (this.coreGameCoordinator.stopAndResumeAfterVisibilityChange === true &&
+                this.coreGameCoordinator.manuallyPaused === false &&
                 this.coreGameCoordinator.gameRunning === true) {
                 // When visible after a visibility change event, start game after 3s and request wake lock
                 if (document.visibilityState === 'visible') {
@@ -32,6 +33,9 @@ export class VisibilityChangeHandler {
                              </div></div>`;
                     // Insert at end of page content which is in <main></main>
                     document.querySelector('main').insertAdjacentHTML('beforeend', htmlString);
+                    document.getElementById('string-span').innerHTML = '';
+                    document.getElementById('note-span').innerHTML = '';
+
                     let secondsRemainingUntilStart = 1;
                     countdownInterval = setInterval(() => {
                         secondsRemainingUntilStart--;

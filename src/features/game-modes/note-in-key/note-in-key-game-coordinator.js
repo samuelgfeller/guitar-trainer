@@ -1,4 +1,4 @@
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=489";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=256";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -64,6 +64,7 @@ export class NoteInKeyGameCoordinator {
     }
 
     reloadKeyAndString() {
+        console.log('reload key and string in note in key game');
         // Get new string and key
         let {keyString, keyNote} = this.noteInKeyGenerator.getNewStringAndKey();
         this.keyNote = keyNote;

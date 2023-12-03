@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=489";
-import {TuneOperator} from "../tuner/tune-operator.js?v=489";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=489";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=489";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=489";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=256";
+import {TuneOperator} from "../tuner/tune-operator.js?v=256";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=256";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=256";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=256";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -21,14 +21,9 @@ export class CoreGameCoordinator {
     // When only metronome should be played and not the whole game (when sound on before pressing start)
     stopAndResumeAfterVisibilityChange = true;
     gameRunning = false;
+    manuallyPaused = false;
 
-
-    /**
-     * @param {CoreGameCoordinationInitializer} coreGameCoordinationInitializer
-     */
-    constructor(coreGameCoordinationInitializer) {
-        // Inject instance as an attribute there is changed
-        this.coreGameCoordinationInitializer = coreGameCoordinationInitializer;
+    constructor() {
 
         // Listen for game stop event to stop game
         document.addEventListener('game-stop', this.stopGame.bind(this));
@@ -40,7 +35,6 @@ export class CoreGameCoordinator {
     startGame() {
         // Init game core game logic such as metronome, note detector
         this.startCoreGameFunctionalities();
-
         // Start game module
         this.gameCoordinator.play();
 
@@ -54,7 +48,8 @@ export class CoreGameCoordinator {
             }
         });
 
-        document.querySelector('#start-stop-btn').innerText = 'Pause';
+        GameElementsVisualizer.togglePlayPauseButton('start');
+
         // In case settings div is expanded, collapse it
         document.getElementById('config-div').classList.remove('expanded');
         // Display progress bar and score
@@ -81,13 +76,14 @@ export class CoreGameCoordinator {
             GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
         }
         if (event.detail?.includes('level-up')) {
-            this.stopAndResumeAfterVisibilityChange = false;
+            // Game should not be started automatically after visibility change on level up
+            this.manuallyPaused = true;
         }
         if (!event.detail?.includes('visibility-change')) {
             this.gameRunning = false;
         }
 
-        document.querySelector('#start-stop-btn').innerText = 'Play';
+        GameElementsVisualizer.togglePlayPauseButton('stop');
 
         this.screenWakeLocker.releaseWakeLock();
     }
@@ -96,11 +92,11 @@ export class CoreGameCoordinator {
         if (this.noteDetectorEnabled) {
             // Start tuner
             this.tuneOperator.initGetUserMedia();
-            const promise = this.tuneOperator.start();
-            // Set frequencyData instance variable
-            let frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
-            new FrequencyBarsController(frequencyData).updateFrequencyBars(this.tuneOperator);
-            return promise;
+            return this.tuneOperator.start().then(() => {
+                // Set frequencyData instance variable
+                let frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
+                new FrequencyBarsController(frequencyData).updateFrequencyBars(this.tuneOperator);
+            });
         }
         // If noteDetectorEnabled is false, return a resolved promise
         return Promise.resolve();
@@ -115,16 +111,15 @@ export class CoreGameCoordinator {
             this.metronomeOperator.setupAudioContext();
         }
         // Default value
-        this.coreGameCoordinationInitializer.gameInitializer.stopAndResumeAfterVisibilityChange = false;
-
+        this.stopAndResumeAfterVisibilityChange = false;
         if (this.noteDetectorEnabled) {
             GameElementsVisualizer.showGameElementsAndHideInstructions();
 
             // Prevent screen from getting dark on mobile
             void this.screenWakeLocker.requestWakeLock();
 
-            // Set if the game should start automatically after visibility change event
-            this.coreGameCoordinationInitializer.gameInitializer.stopAndResumeAfterVisibilityChange = true;
+            // If note detector enabled, game should start automatically after visibility change event
+            this.stopAndResumeAfterVisibilityChange = true;
         }
     }
 }

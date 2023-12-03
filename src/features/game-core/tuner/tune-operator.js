@@ -63,18 +63,23 @@ export class TuneOperator {
 
     startRecord() {
         const self = this;
-        navigator.mediaDevices
-            .getUserMedia({audio: true})
-            .then(function (stream) {
-                self.stream = stream; // Keep stream to remove mic access later
-                self.audioContext.createMediaStreamSource(stream).connect(self.analyser);
-                self.analyser.connect(self.scriptProcessor);
-                self.scriptProcessor.connect(self.audioContext.destination);
-                self.scriptProcessor.addEventListener("audioprocess", self.processAudio.bind(self));
-            })
-            .catch(function (error) {
-                alert(error.name + ": " + error.message);
-            });
+        return new Promise((resolve, reject) => {
+            navigator.mediaDevices
+                .getUserMedia({audio: true})
+                .then(function (stream) {
+                    self.stream = stream; // Keep stream to remove mic access later
+                    self.audioContext.createMediaStreamSource(stream).connect(self.analyser);
+                    self.analyser.connect(self.scriptProcessor);
+                    self.scriptProcessor.connect(self.audioContext.destination);
+                    self.scriptProcessor.addEventListener("audioprocess", self.processAudio.bind(self));
+                    // Resolve when recording started
+                    resolve();
+                })
+                .catch(function (error) {
+                    alert(error.name + ": " + error.message);
+                    reject(error);
+                });
+        });
     };
 
     processAudio(event) {
@@ -154,8 +159,7 @@ export class TuneOperator {
                     1,
                     self.audioContext.sampleRate
                 );
-                self.startRecord();
-                resolve();
+                self.startRecord().then(resolve).catch(reject);
             }).catch(reject);
         });
     };

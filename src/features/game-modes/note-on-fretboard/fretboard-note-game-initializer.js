@@ -1,13 +1,15 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=489";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=489";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=489";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=489";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=256";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=256";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=256";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=256";
 
 export class FretboardNoteGameInitializer {
     constructor() {
         this.levelLocalStorageKey = 'fretboard-note-game-accomplished-levels';
         // Needs to be in an attribute like this to have .bind(this) and be able to remove event listener
         this.levelUpEventHandler = this.levelUp.bind(this);
+        // Needs to be in an attribute like this to have .bind(this) and be able to remove event listener
+        this.bpmInputChangeEventHandlerVar = this.bpmInputChangeEventHandler.bind(this);
     }
 
     init() {
@@ -30,7 +32,7 @@ export class FretboardNoteGameInitializer {
                         </div>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="challenging-notes-preset">
-                        <input type="checkbox" class="start-stop-btn" alt="Preset challenging notes">
+                        <input type="checkbox" alt="Preset challenging notes">
                         <img src="src/assets/images/challenging-icon.svg" class="button-icon">
                     </label>`;
 
@@ -50,7 +52,8 @@ export class FretboardNoteGameInitializer {
             <p>Each time you play a challenging note correctly 3 times, the progress bar advances.</p>
             <p>After mastering all challenging notes, 10 additional notes have to be played correctly to fill the
                 progress bar to 100% and complete the level.</p>
-            <p>Click "Play" to start or resume the game, or double-click anywhere on the screen.</p>
+            <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game, 
+            or double-click a blank area.</p>
             `;
     }
 
@@ -59,7 +62,7 @@ export class FretboardNoteGameInitializer {
      */
     destroy() {
         document.querySelector('#bpm-input')
-            .removeEventListener('change', this.updateIsLevelAccomplishedColor);
+            .removeEventListener('change', this.bpmInputChangeEventHandlerVar);
         // Remove leveled up event handler
         document.removeEventListener('leveled-up', this.levelUpEventHandler);
         document.querySelector('header div').style.borderBottomColor = null;
@@ -109,15 +112,17 @@ export class FretboardNoteGameInitializer {
 
 
         // Level change event listener and handler
-        bpmInput.addEventListener('change', (e) => {
-            document.dispatchEvent(new Event('game-stop'));
-            GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
-            // Reset game progress in the form of an event to avoid having to need game progress instance here
-            document.dispatchEvent(new Event('reset-game-progress'));
-            document.querySelector('#start-stop-btn').innerText = 'Play';
+        bpmInput.addEventListener('change', this.bpmInputChangeEventHandlerVar);
+    }
 
-            // Update color to indicate that level is accomplished on bpm change event
-            GameElementsVisualizer.updateIsLevelAccomplishedColor(this.levelLocalStorageKey);
-        });
+    bpmInputChangeEventHandler(){
+        document.dispatchEvent(new Event('game-stop'));
+        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+        GameElementsVisualizer.togglePlayPauseButton('stop');
+        // Reset game progress in the form of an event to avoid having to need game progress instance here
+        document.dispatchEvent(new Event('reset-game-progress'));
+
+        // Update color to indicate that level is accomplished on bpm change event
+        GameElementsVisualizer.updateIsLevelAccomplishedColor(this.levelLocalStorageKey);
     }
 }

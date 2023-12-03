@@ -1,9 +1,9 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=489";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=489";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=489";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=489";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=489";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=489";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=256";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=256";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=256";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=256";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=256";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=256";
 
 export class NoteInKeyGameInitializer {
 
@@ -28,6 +28,8 @@ export class NoteInKeyGameInitializer {
         this.noteInKeyGameCoordinator = noteInKeyGameCoordinator;
         // Needs to be in an attribute like this to have .bind(this) and be able to remove event listener
         this.levelUpEventHandler = this.levelUp.bind(this);
+        // Needs to be in an attribute like this to have .bind(this) and be able to remove event listener
+        this.reloadKeyAndStringEventHandlerVar = this.reloadKeyAndStringEventHandler.bind(this);
     }
 
     initNoteInKeyGame() {
@@ -45,7 +47,7 @@ export class NoteInKeyGameInitializer {
         // Instantiate object with note displayer function that will be called when a new note should be displayed
         // after a correct one has been played.
         this.noteInKeyGameCoordinator.noteDisplayer = new PracticeNoteDisplayer(
-            this.noteInKeyGameCoordinator.noteInKeyGenerator, 30
+            this.noteInKeyGameCoordinator.noteInKeyGenerator, 3
         );
         // Has to be reloaded added after html component range slider as its value is needed
         this.noteInKeyGameCoordinator.reloadKeyAndString();
@@ -56,7 +58,9 @@ export class NoteInKeyGameInitializer {
 
 
     reloadKeyAndStringEventHandler() {
+        console.trace('reloadKeyAndStringEventHandler');
         const gameIsRunning = this.noteInKeyGameCoordinator.gameIsRunning;
+        console.log(this, this.noteInKeyGameCoordinator.gameIsRunning);
         // Pause game
         document.dispatchEvent(new Event('game-stop'));
         // Load new key on string
@@ -82,8 +86,11 @@ export class NoteInKeyGameInitializer {
         document.removeEventListener('reset-game-progress',
             this.noteInKeyGameCoordinator.noteDisplayer.resetGameProgressHandler);
 
-        // Event listeners that were tied to html components don't need to be removed as the components are
-        // removed or replaced when the game mode is changed
+        document.getElementById('header-center-container').removeEventListener('click',
+            this.reloadKeyAndStringEventHandlerVar);
+
+        // Event listeners that were tied to html components that are not removed or replaced on game mode change
+        // don't need to be removed as that removes the event listeners from the html components as well
     }
 
     levelUp() {
@@ -91,6 +98,7 @@ export class NoteInKeyGameInitializer {
         const minutes = Math.floor(this.noteInKeyGameCoordinator.timer / 60);
         // Outputs the rest of seconds that could not be added to full minutes
         const seconds = this.noteInKeyGameCoordinator.timer % 60;
+        console.debug('Level up note in key game')
 
         // Fire game-stop event and display modal
         LevelUpVisualizer.stopGameAndDisplayLeveledUpModal(
@@ -161,7 +169,7 @@ export class NoteInKeyGameInitializer {
         const reloadKeyButton = document.getElementById('header-center-container');
         reloadKeyButton.style.cursor = "pointer";
         // Reload key button event listener
-        reloadKeyButton.addEventListener('click', this.reloadKeyAndStringEventHandler.bind(this));
+        reloadKeyButton.addEventListener('click', this.reloadKeyAndStringEventHandlerVar);
 
         // Game instructions
         document.querySelector('#game-start-instruction').querySelector('h3').innerHTML =
@@ -179,15 +187,18 @@ export class NoteInKeyGameInitializer {
             distance between the requested notes and note number 1 on the fretboard.</p>
             <p>The second option in the settings is to enable notes after C on the E string and F on the A
             string which are impractical for chord grips on classical guitar </p>
-            <p>Click "Play" to start or resume the game or double-tap this instruction.</p>
+            <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game 
+            or double-tap this instruction.</p>
             <h3>Roadmaps</h3>
             <p>Low E string roadmap for the G key 
             (<a href="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">Source</a>):            
-            <img src="src/assets/images/LowE-Gmajor-roadmap.png" alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">
+            <img src="src/assets/images/LowE-Gmajor-roadmap.png" class="roadmap-image"
+                alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">
             </p>
             <p>A string roadmap for the D key 
             (<a href="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623">Source</a>):            
-            <img src="src/assets/images/A-Dmajor-roadmap.png" alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
+            <img src="src/assets/images/A-Dmajor-roadmap.png" class="roadmap-image"
+                alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
             <p>These can be shifted up and down depending on the key.</p>
             <p>I also recommend watching Paul Davids 
             <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">

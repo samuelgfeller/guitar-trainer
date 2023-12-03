@@ -1,9 +1,11 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=489";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=256";
 
 export class GameConfigurationManager {
 
     static toggleSettingsExpand() {
         document.getElementById('config-div').classList.toggle('expanded');
+        // Scroll to the top
+        window.scrollTo(0, 0);
     }
 
     static initGameModeSelection() {
@@ -41,10 +43,10 @@ export class GameConfigurationManager {
     static initGameModeOptions() {
         const gameModeOptions = document.querySelector('#game-mode-options');
         // Toggle visibility of game mode options title
-        if (gameModeOptions.children.length === 0){
+        if (gameModeOptions.children.length === 0) {
             document.querySelector('#options-title-span').style.display = 'none';
             return;
-        }else {
+        } else {
             document.querySelector('#options-title-span').style.display = null;
         }
 
@@ -55,7 +57,7 @@ export class GameConfigurationManager {
      * Sets up game mode options based on the user's previous choices stored in the local storage.
      * And if input is changed, it saves the new value in the local storage.
      */
-    static setupGameModeOptionsStateAndValue(gameModeOptions){
+    static setupGameModeOptionsStateAndValue(gameModeOptions) {
         // Loop over game mode options (children of #game-mode-options) that may contain inputs of different types
         for (const gameModeOption of gameModeOptions) {
             // Get the inputs of type checkbox
@@ -72,9 +74,9 @@ export class GameConfigurationManager {
             }
             // Set the range slider value with the one from local storage
             const gameModeRangeInput = gameModeOption.querySelector('input[type=range]');
-            if (gameModeRangeInput){
+            if (gameModeRangeInput) {
                 // Set the range input value to the one from local storage
-                if(localStorage.getItem(gameModeOption.id)) {
+                if (localStorage.getItem(gameModeOption.id)) {
                     gameModeRangeInput.value = localStorage.getItem(gameModeOption.id);
                 }
                 // Set up the event listener that saves the value when range value is changed

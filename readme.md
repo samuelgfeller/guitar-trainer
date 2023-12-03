@@ -10,7 +10,7 @@ Here's how it works:
 
 1. Visit [guitar.samuel-gfeller.ch](https://guitar.samuel-gfeller.ch).
 2. Click on the settings icon in the header to select a game mode.
-1. Click "Play" to start the game or practice session.
+1. Click on the play icon to start the game or practice session.
 
 ## Available Game Modes
 ### Fretboard Note Game

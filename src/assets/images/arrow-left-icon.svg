@@ -1,9 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="7" height="12">
-    <g fill="none">
-        <path
-                transform="scale(-1, 1) translate(-7, 0)"
-                d="M.29.71a.996.996 0 0 0 0 1.41L4.17 6 .29 9.88a.996.996 0 1 0 1.41 1.41L6.29 6.7a.996.996 0 0 0 0-1.41L1.7.7C1.32.32.68.32.29.71Z"
-                fill="black"/>
+<svg viewBox="9 6 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="SVGRepo_iconCarrier">
+        <path d="M15 7L10 12L15 17" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round"></path>
     </g>
 </svg>
-

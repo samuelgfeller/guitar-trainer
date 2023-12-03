@@ -1,8 +1,8 @@
 <?php
 
 require __DIR__ . '/JsImportVersionAdder.php';
-(new JsImportVersionAdder())->addVersionToJsImports('1.1.4');
-// (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
+// (new JsImportVersionAdder())->addVersionToJsImports('1.1.4');
+(new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
 ?>
 <!doctype html>
 <html lang="en">
@@ -57,7 +57,7 @@ require __DIR__ . '/JsImportVersionAdder.php';
             <!--  Content added at instantiation of game mode coordinator -->
             <p>Guitar Trainer</p>
         </div>
-        <button class="start-stop-btn" id="start-stop-btn">Play</button>
+        <img class="icon" id="start-stop-btn" src="src/assets/images/play-icon.svg">
     </div>
 </header>
 <main id="game-container">

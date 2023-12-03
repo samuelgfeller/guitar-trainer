@@ -1,15 +1,42 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=489";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=256";
 
 export class MetronomePracticeInitializer {
+    // Changed in metronome-practice-coordinator
+    gameRunning = false;
+
     initMetronomePractice() {
         document.querySelector('#game-start-instruction').querySelector('h3').innerHTML = `Metronome`;
         document.querySelector('#game-instruction-text').innerHTML =
-            `<p>Click "Play" or double tap blank space to start the metronome.</p>
+            `<p>Click <img class="icon" src="src/assets/images/play-icon.svg"> or double tap blank space to start the metronome.</p>
             <p>Select an exercise by clicking on the title. The metronome bpm value is stored for each exercise.</p>`
         GameConfigurationManager.showBpmInput();
         this.initBpmInputForMetronome();
         this.addExercisesHtml();
         this.addExerciseEventListeners();
+    }
+
+    /**
+     * Returns HTML for the exercise div
+     * @param {string} name lowercase name spaces separated by dashes
+     * @param {string} fileName name of the video file
+     * @return {string}
+     */
+    getExerciseDiv(name, fileName) {
+        // Capitalize name and remove dashes
+        const nameWithoutDashes = name.replace('-', ' ');
+        // Capitalize first letter and attach rest of the word to it
+        const nameCapitalized = nameWithoutDashes.charAt(0).toUpperCase() + nameWithoutDashes.slice(1);
+        return `<div tabindex="0" id="${name}-exercise">
+                    <h4>${nameCapitalized}</h4>
+                    <img src="src/assets/images/checkmark-icon.svg" alt="x">
+                    <div class="video-overlay">
+                       <h3 class="overlay-text">${nameCapitalized}</h3>
+                    </div>
+                    <video controls>
+                        <source src="src/assets/videos/exercises/${fileName}" type="video/mp4">
+                        Video not supported.
+                    </video>
+                </div>`;
     }
 
     addExercisesHtml() {
@@ -18,85 +45,31 @@ export class MetronomePracticeInitializer {
                 <details open>
                     <summary><h3>Right-hand exercises</h3></summary>
                     <div class="exercise-grid">
-                        <div tabindex="0" id="balancing-exercise">
-                            <h4>Balancing</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/1-balancing.mp4" type="video/mp4">
-                                Video not supported.
-                            </video>
-                        </div>
-                        <!--string-changing-->
-                        <div tabindex="0" id="string-changing-exercise">
-                            <h4>String changing</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/2-string-changing.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                        <!--highlighting-->
-                        <div tabindex="0" id="highlighting-exercise">
-                            <h4>Highlighting</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/3-highlighting.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                        <!--arpeggio-->
-                        <div tabindex="0" id="arpeggio-exercise">
-                            <h4>Arpeggio</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/4-arpeggio.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                        <div tabindex="0" id="rasgueado-exercise">
-                            <h4>Rasgueado</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/5-rasgueado.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                        <div tabindex="0" id="tremolo-exercise">
-                            <h4>Arpeggio</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/6-tremolo.mp4" type="video/mp4">
-                            </video>
-                        </div>                        
+                        ${this.getExerciseDiv('balancing', '1-balancing.mp4')}
+                        ${this.getExerciseDiv('string-changing', '2-string-changing.mp4')}
+                        ${this.getExerciseDiv('highlighting', '3-highlighting.mp4')}
+                        ${this.getExerciseDiv('arpeggio', '4-arpeggio.mp4')}
+                        ${this.getExerciseDiv('rasgueado', '5-rasgueado.mp4')}
+                        ${this.getExerciseDiv('tremolo', '6-tremolo.mp4')}         
                     </div>    
                 </details>
                 <details open>
                     <summary><h3>Left-hand exercises</h3></summary>
                     <div class="exercise-grid">
-                        <div tabindex="0" id="spider-walk-exercise">
-                            <h4>Spider walk</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/7-spider-walk.mp4" type="video/mp4">
-                            </video>
-                        </div>    
-                        <div tabindex="0" id="hammer-on-exercise">
-                            <h4>Hammer on</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/8-hammer-on.mp4" type="video/mp4">
-                            </video>
-                        </div>    
-                        <div tabindex="0" id="pull-of-exercise">
-                            <h4>Pull of</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/9-pull-off.mp4" type="video/mp4">
-                            </video>
-                        </div>    
-                        <div tabindex="0" id="bar-chords-exercise">
-                            <h4>Bar chords</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/10-bar-chords.mp4" type="video/mp4">
-                            </video>
-                        </div>    
-                        <div tabindex="0" id="stretching-exercise">
-                            <h4>Stretching</h4>
-                            <video controls>
-                                <source src="src/assets/videos/exercises/11-stretching.mp4" type="video/mp4">
-                            </video>
-                        </div>    
+                        ${this.getExerciseDiv('spider-walk', '7-spider-walk.mp4')}
+                        ${this.getExerciseDiv('hammer-on', '8-hammer-on.mp4')}
+                        ${this.getExerciseDiv('pull-of', '9-pull-off.mp4')}
+                        ${this.getExerciseDiv('bar-chords', '10-bar-chords.mp4')}
+                        ${this.getExerciseDiv('stretching', '11-stretching.mp4')}
                     </div>    
                 </details>
-                 
+                <details>
+                    <summary><h3>Source</h3></summary>
+                    The snippets are parts of the awesome video <a href="https://www.youtube.com/watch?v=zPiFuqT3XqU" 
+            target="_blank">The Only Exercises You Need</a> by BeatrixGuitar
+                </details>
             </div>
+
         `);
     }
 
@@ -106,26 +79,42 @@ export class MetronomePracticeInitializer {
         // Loop over exercises
         exerciseDivs.forEach((exercise) => {
             exercise.addEventListener('click', (e) => {
-                // Remove selected class from previously selected if there is one
+                if (e.target === exercise.querySelector('video')) {
+                    // If the user clicks on video tag, don't select exercise
+                    return;
+                }
+
+                // Remove selected class from the previously selected by default if there is one
                 const previouslySelected = document.querySelector('.selected-exercise')
                 previouslySelected?.classList.remove('selected-exercise');
-                // Check if user clicks on the same exercise that was already selected
+
+                // If another exercise was selected or the exercise was unselected,
+                // dispatch change event on bpm input and pause video
+                const dispatchChangeEventAndPauseVideo = () =>
+                {
+                    bpmInput.dispatchEvent(new Event('change'));
+                    // Pause video
+                    previouslySelected?.querySelector('video')?.pause();
+                }
+
+                // Check if user clicks on the same exercise that was already selected (except if it's the video tag)
+                // Add selected-exercise to the clicked exercise
                 if (!previouslySelected || previouslySelected.id !== exercise.id) {
                     // Only add selected class if there was either no previously selected exercise or if the user
-                    // clicked on other exercise (otherwise it should just stay unselected)
+                    // clicked on new exercise (otherwise it should just stay unselected)
                     exercise.classList.add('selected-exercise');
                     // Load BPM value for clicked exercise from localStorage
                     let savedBpm = localStorage.getItem(exercise.id + '-bpm');
                     if (savedBpm) {
                         bpmInput.value = savedBpm;
                     }
-                } else {
+                    dispatchChangeEventAndPauseVideo();
+                } else if (previouslySelected.id === exercise.id) {
                     // If already selected exercise is clicked, the selected class should not be added
-                    //  and the initial metronome bpm value loaded
+                    // and the initial metronome bpm value loaded
                     bpmInput.value = localStorage.getItem('metronome-bpm') ?? '60';
+                    dispatchChangeEventAndPauseVideo();
                 }
-
-
             });
         });
     }
@@ -143,6 +132,11 @@ export class MetronomePracticeInitializer {
             } else {
                 // Save current BPM value to localStorage
                 localStorage.setItem('metronome-bpm', e.target.value);
+            }
+            if (this.gameRunning) {
+                // Update metronome bpm
+                document.dispatchEvent(new Event('game-stop'));
+                document.dispatchEvent(new Event('game-start'));
             }
         });
     }

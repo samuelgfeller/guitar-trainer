@@ -1,47 +1,107 @@
 /* mobile first min-width sets base and content is adapted to computers. */
 @media (min-width: 100px) {
-    #exercise-container details{
+    #exercise-container{
+        margin-bottom: 40px;
+    }
+    #exercise-container details {
         width: 100%;
     }
+
     .exercise-grid {
-        display: grid;
+        display: inline-grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        /*display: flex;*/
+        /*flex-wrap: wrap;*/
         width: 100%;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
         justify-content: center;
         padding: 20px;
         /*border: 1px solid #ccc;*/
     }
-    .exercise-grid > div{
-        background: rgba(255,255,255,.1);
+
+    .exercise-grid > div {
+        /*background: rgba(255, 255, 255, .1);*/
+        background: rgba(180, 159, 145, 0.1);
         border-radius: 20px;
         padding: 15px;
         /*width: 100%;*/
+        position: relative;
     }
-    .exercise-grid > div:hover{
-        background: rgba(255,255,255,.15);
+
+    .exercise-grid > div:hover {
+        /*background: rgba(255, 255, 255, .15);*/
+        background: rgba(255, 193, 152, 0.1);
         cursor: pointer;
     }
-    .exercise-grid h4{
+
+    .exercise-grid h4 {
         margin: 0px 0 10px 5px;
         /*color: #d5d5d5;*/
         text-align: left;
     }
-    .exercise-grid > div video{
+
+    .exercise-grid > div video {
         width: 100%;
         height: auto;
         display: block;
         border-radius: 10px;
+        z-index: 1;
     }
-    .selected-exercise{
+
+    .exercise-grid > div img {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        width: 25px;
+        display: none; /* Hide the icon by default */
+    }
+
+    .exercise-grid .selected-exercise img {
+        display: block; /* Show the icon when the parent div has the selected-exercise class */
+    }
+
+    .selected-exercise {
         outline: 3px solid saddlebrown;
     }
+
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /*background: rgba(0, 0, 0, 0.9);*/
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        /*border: 2px solid #262626;*/
+        box-shadow: 0px 0px 15px #1f1f1f;
+        /* Add more styles as needed (color, opacity, etc.) */
+    }
+    .video-overlay:hover{
+        background: rgba(0, 0, 0, 0.8);
+    }
+    .video-overlay h3{
+        color: #c97339;
+        color: saddlebrown;
+        text-shadow: 0px 0px 10px black;
+    }
+
+    .selected-exercise .video-overlay {
+        display: none;
+    }
+
+
 }
 
 @media (min-width: 641px) {
 }
+
 @media (min-width: 800px) {
-    #exercise-container{
+    #exercise-container {
         width: 80%;
     }
 }
