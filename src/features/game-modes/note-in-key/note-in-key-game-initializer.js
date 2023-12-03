@@ -47,7 +47,7 @@ export class NoteInKeyGameInitializer {
         // Instantiate object with note displayer function that will be called when a new note should be displayed
         // after a correct one has been played.
         this.noteInKeyGameCoordinator.noteDisplayer = new PracticeNoteDisplayer(
-            this.noteInKeyGameCoordinator.noteInKeyGenerator, 3
+            this.noteInKeyGameCoordinator.noteInKeyGenerator, 30
         );
         // Has to be reloaded added after html component range slider as its value is needed
         this.noteInKeyGameCoordinator.reloadKeyAndString();
