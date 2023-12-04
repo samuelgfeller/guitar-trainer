@@ -1,4 +1,4 @@
-import {ArrayShuffler} from "../../shuffler/array-shuffler.js?v=256";
+import {ArrayShuffler} from "../../shuffler/array-shuffler.js?v=1.1.5";
 
 export class NoteInKeyGenerator {
     notesOnStrings;

@@ -216,6 +216,8 @@
     .roadmap-image{
         width: 100%;
         margin: 10px auto;
+        /*filter: invert(90%);*/
+        border-radius: 10px;
     }
 
     details summary {

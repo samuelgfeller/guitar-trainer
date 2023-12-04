@@ -1,8 +1,8 @@
 <?php
-
+$version = '1.1.5';
 require __DIR__ . '/JsImportVersionAdder.php';
-// (new JsImportVersionAdder())->addVersionToJsImports('1.1.4');
-(new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
+(new JsImportVersionAdder())->addVersionToJsImports($version);
+// (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
 ?>
 <!doctype html>
 <html lang="en">
@@ -10,13 +10,13 @@ require __DIR__ . '/JsImportVersionAdder.php';
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="src/assets/styles/modal.css?v=<?= mt_rand(1, 1000) ?>">
-    <link rel="stylesheet" href="src/assets/styles/style.css?v=<?= mt_rand(1, 1000) ?>">
-    <link rel="stylesheet" href="src/assets/styles/note-in-key.css?v=<?= mt_rand(1, 1000) ?>">
-    <link rel="stylesheet" href="src/assets/styles/fretboard-note-game.css?v=<?= mt_rand(1, 1000) ?>">
-    <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=<?= mt_rand(1, 1000) ?>">
-    <link rel="stylesheet" href="src/assets/styles/range-slider.css?v=<?= mt_rand(1, 1000) ?>">
-    <link rel="stylesheet" href="src/assets/styles/metronome-practice.css?v=<?= mt_rand(1, 1000) ?>">
+    <link rel="stylesheet" href="src/assets/styles/modal.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/style.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/note-in-key.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/fretboard-note-game.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/range-slider.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/metronome-practice.css?v=<?= $version ?>">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
@@ -112,8 +112,8 @@ require __DIR__ . '/JsImportVersionAdder.php';
     </div>
     <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>
-<script type="module" src="src/features/game-core/game-loader.js?v=<?= mt_rand(1, 1000) ?>"></script>
+<script type="module" src="src/features/game-core/game-loader.js?v=<?= $version ?>"></script>
 <!--<script type="module" src="js/test/tests-main.js?v=--><?php
-//= mt_rand(1, 1000) ?><!--"></script>-->
+//= $version ?><!--"></script>-->
 </body>
 </html>

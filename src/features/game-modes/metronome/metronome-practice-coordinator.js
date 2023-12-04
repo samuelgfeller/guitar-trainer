@@ -1,4 +1,4 @@
-import {MetronomePracticeInitializer} from "./metronome-practice-initializer.js?v=256";
+import {MetronomePracticeInitializer} from "./metronome-practice-initializer.js?v=1.1.5";
 
 export class MetronomePracticeCoordinator {
 

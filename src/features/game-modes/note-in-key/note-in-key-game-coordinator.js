@@ -1,4 +1,4 @@
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=256";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.1.5";
 
 export class NoteInKeyGameCoordinator {
     string;

@@ -1,4 +1,4 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=256";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.5";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
