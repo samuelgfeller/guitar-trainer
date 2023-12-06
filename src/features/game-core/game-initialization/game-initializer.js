@@ -44,7 +44,7 @@ export class GameInitializer {
             // Check if the target is <body> or if a parent of the target is <main> (to avoid catching dblclicks in
             // header, but only if the modal is not open)
             if ((e.target === document.body || e.target.closest('main'))
-                && (e.target.id !== 'modal' && !e.target.closest('#modal'))) {
+                && (e.target.id !== 'modal' && !e.target.closest('#modal') && e.target.nodeName !== 'INPUT')) {
                 self.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
             }
         });

@@ -1,5 +1,5 @@
 <?php
-$version = '1.1.5';
+$version = '1.1.6';
 require __DIR__ . '/JsImportVersionAdder.php';
 (new JsImportVersionAdder())->addVersionToJsImports($version);
 // (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));

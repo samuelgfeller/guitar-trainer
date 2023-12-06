@@ -1,4 +1,5 @@
 import {MetronomePracticeInitializer} from "./metronome-practice-initializer.js?v=1.1.5";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.1.5";
 
 export class MetronomePracticeCoordinator {
 
@@ -12,11 +13,14 @@ export class MetronomePracticeCoordinator {
 
         // When bpm is changed, the metronome is restarted if the game is running
         this.metronomePracticeInitializer.gameRunning = true;
+        // Start timer for selected exercise
+        MetronomePracticeTimer.startCountDownTimer();
     }
     stop(){
         this.metronomePracticeInitializer.gameRunning = false;
+        MetronomePracticeTimer.pauseCountDownTimer();
     }
     destroy(){
-        document.querySelector('#exercise-container').remove();
+        this.metronomePracticeInitializer.destroy();
     }
 }

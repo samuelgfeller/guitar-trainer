@@ -48,6 +48,21 @@
         z-index: 1;
     }
 
+    #exercise-timer-input{
+        background: transparent;
+        border: none;
+        border-bottom: 2px dashed #8a8a8a;
+        width: 50px;
+        color: #e5e5e5;
+        text-align: center;
+    }
+
+    .exercise-timer{
+        color: wheat;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
     .exercise-grid > div img {
         position: absolute;
         top: 12px;
@@ -57,7 +72,7 @@
     }
 
     .exercise-grid .selected-exercise img {
-        display: block; /* Show the icon when the parent div has the selected-exercise class */
+        display: block; /* Show the timer when the parent div has the selected-exercise class */
     }
 
     .selected-exercise {
@@ -71,7 +86,7 @@
         width: 100%;
         height: 100%;
         /*background: rgba(0, 0, 0, 0.9);*/
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.4);
         /*background: rgba(255, 255, 255, .1);*/
         backdrop-filter: blur(5px);
         z-index: 2;
@@ -86,20 +101,27 @@
         /* Add more styles as needed (color, opacity, etc.) */
     }
     .video-overlay:hover{
-        background: rgba(0, 0, 0, 0.6);
+        /*background: rgba(0, 0, 0, 0.3);*/
         /*background: rgba(255, 255, 255, .1);*/
         box-shadow: 0px 0px 15px #52290b;
 
     }
     .video-overlay:hover h3{
-        /*color: #707070;*/
-        color: saddlebrown;
+        /*color: #ffffff;*/
+        /*color: saddlebrown;*/
+        background: #9f531d;
     }
     .video-overlay h3{
         color: #a8a7a7;
-        color: #8a4f28;
+        color: saddlebrown;
+        color: black;
+        padding: 3px 10px;
+        /*color: #8a4f28;*/
 
-        text-shadow: 0px 0px 10px black;
+        /*text-shadow: 0px 0px 5px black;*/
+        background: black;
+        background: #9b9b9b;
+
     }
 
     .selected-exercise .video-overlay {

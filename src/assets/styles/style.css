@@ -116,7 +116,8 @@
         font-size: 20px;
         text-align: center;
         background: transparent;
-        color: #c0c0c0;
+        /*color: #c0c0c0;*/
+        color: wheat;
         border: none;
         border-bottom: 2px dashed #8a8a8a;
         padding: 5px 10px;
