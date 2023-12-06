@@ -1,6 +1,6 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.5";
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.1.5";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.5";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.7";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.1.7";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.7";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -33,7 +33,7 @@ export class MetronomePracticeInitializer {
         const selectedExercise = document.querySelector('.selected-exercise');
         // Restart timer
         const restartTimer = () => {
-            MetronomePracticeTimer.resetTimerForNewExercise(selectedExercise);
+            MetronomePracticeTimer.resetTimerForNewExercise(selectedExercise, true);
         }
 
         const goToNextExercise = () => {
@@ -58,13 +58,10 @@ export class MetronomePracticeInitializer {
         // Init change event listener for exercise timer input
         exerciseTimerInput.addEventListener('change', (e) => {
             // Reset timer for new exercise
-            MetronomePracticeTimer.resetTimerForNewExercise(document.querySelector('.selected-exercise'));
-            if (this.gameRunning) {
-                // Stop timer
-                MetronomePracticeTimer.pauseCountDownTimer();
-                // Update timer
-                MetronomePracticeTimer.startCountDownTimer();
-            }
+            MetronomePracticeTimer.resetTimerForNewExercise(
+                document.querySelector('.selected-exercise'), this.gameRunning
+            );
+
             // Save value to localStorage
             localStorage.setItem('exercise-timer', exerciseTimerInput.value);
         });
@@ -84,7 +81,7 @@ export class MetronomePracticeInitializer {
         const nameCapitalized = nameWithoutDashes.charAt(0).toUpperCase() + nameWithoutDashes.slice(1);
         return `<div tabindex="0" id="${name}-exercise">
                     <h4>${nameCapitalized}</h4>
-                    <img src="src/assets/images/checkmark-icon.svg" alt="x">
+                    <!--<img src="src/assets/images/checkmark-icon.svg" alt="x">-->
                    <span ></span>
                     <div class="video-overlay">
                        <h3 class="overlay-text">${nameCapitalized}</h3>
@@ -99,9 +96,9 @@ export class MetronomePracticeInitializer {
     addExercisesHtml() {
         document.querySelector('#game-start-instruction').insertAdjacentHTML('afterend', `
             <div id="exercise-container">
+                <span class="exercise-timer" id="exercise-timer"></span>
                 <details open>
                     <summary><h3>Right-hand exercises</h3></summary>
-                    <span class="exercise-timer" id="right-hand-exercise-timer"></span>
                     <div class="exercise-grid">
                         ${this.getExerciseDiv('balancing', '1-balancing.mp4')}
                         ${this.getExerciseDiv('string-changing', '2-string-changing.mp4')}
@@ -113,7 +110,6 @@ export class MetronomePracticeInitializer {
                 </details>
                 <details open>
                     <summary><h3>Left-hand exercises</h3></summary>
-                    <span class="exercise-timer" id="left-hand-exercise-timer"></span>
                     <div class="exercise-grid">
                         ${this.getExerciseDiv('spider-walk', '7-spider-walk.mp4')}
                         ${this.getExerciseDiv('hammer-on', '8-hammer-on.mp4')}
@@ -173,13 +169,13 @@ export class MetronomePracticeInitializer {
                 bpmInput.value = savedBpm;
             }
             dispatchChangeEventAndPauseVideo();
-            MetronomePracticeTimer.resetTimerForNewExercise(exercise);
+            MetronomePracticeTimer.resetTimerForNewExercise(exercise, this.gameRunning);
         } else if (previouslySelected.id === exercise.id) {
             // If already selected exercise is clicked, the selected class should not be added
             // and the initial metronome bpm value loaded
             bpmInput.value = localStorage.getItem('metronome-bpm') ?? '60';
             dispatchChangeEventAndPauseVideo();
-            MetronomePracticeTimer.resetTimerForNewExercise(null);
+            MetronomePracticeTimer.resetTimerForNewExercise(null, this.gameRunning);
         }
     }
 

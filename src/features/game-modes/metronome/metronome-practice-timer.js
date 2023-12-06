@@ -1,26 +1,34 @@
 export class MetronomePracticeTimer {
     timer = null;
 
-    static resetTimerForNewExercise(selectedExercise) {
+    static resetTimerForNewExercise(selectedExercise, gameRunning = false) {
         // Init var with as default value the timer for the right-hand exercises
-        let exerciseTimer = document.querySelector('#right-hand-exercise-timer');
-        // Remove timer for both hands
+        let exerciseTimer = document.querySelector('#exercise-timer');
+        // Remove timer
         exerciseTimer.innerHTML = '';
-        document.querySelector('#left-hand-exercise-timer').innerHTML = '';
+        // Pause timer
+        clearInterval(this.timer);
+
         if (selectedExercise === null) {
-            // Remove timer for both hands if no exercise is selected and stop timer
-            clearInterval(this.timer);
+            // Return after timer is removed if no selected exercise
             return;
         }
-        // If the left-hand exercise timer is closer to the selected exercise, use that one
-        if (selectedExercise.closest('details').querySelector('#left-hand-exercise-timer')) {
-            exerciseTimer = document.querySelector('#left-hand-exercise-timer');
-        }
+
+        // Place exercise timer above the selected exercise
+        // selectedExercise.parentNode.insertBefore(exerciseTimer, selectedExercise);
+        // Place exercise timer inside the selected exercise
+        selectedExercise.appendChild(exerciseTimer);
+
         // Set timer to the value from the input
         const exerciseTimerInputValue = document.querySelector('#exercise-timer-input').value;
 
         if (exerciseTimerInputValue && parseInt(exerciseTimerInputValue) !== 0) {
             exerciseTimer.innerHTML = exerciseTimerInputValue + ':00'
+        }
+
+        if (gameRunning) {
+            // Start timer for selected exercise
+            this.startCountDownTimer();
         }
     }
     static secondsToMinutesAndSeconds(seconds) {
@@ -41,7 +49,7 @@ export class MetronomePracticeTimer {
             return;
         }
         // Get the correct exercise timer
-        const exerciseTimer = selectedExercise.closest('details').querySelector('.exercise-timer');
+        const exerciseTimer = document.querySelector('#exercise-timer');
         const exerciseTimerValue = exerciseTimer.innerHTML;
 
         // If no timer is set, return
