@@ -1,7 +1,9 @@
 <?php
-$version = '1.1.7';
-require __DIR__ . '/JsImportVersionAdder.php';
-(new JsImportVersionAdder())->addVersionToJsImports($version);
+$version = '1.1.8';
+// Uncomment the following two lines and load any page of the app once before committing changes
+// require __DIR__ . '/JsImportVersionAdder.php';
+// (new JsImportVersionAdder())->addVersionToJsImports($version);
+
 // (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
 ?>
 <!doctype html>

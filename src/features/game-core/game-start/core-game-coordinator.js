@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.1.7";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1.1.7";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.1.7";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.7";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.1.7";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.1.8";
+import {TuneOperator} from "../tuner/tune-operator.js?v=1.1.8";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.1.8";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.1.8";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.1.8";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();

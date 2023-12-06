@@ -1,6 +1,6 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.7";
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.1.7";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.7";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.8";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.1.8";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.8";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -14,7 +14,7 @@ export class MetronomePracticeInitializer {
         document.querySelector('#game-start-instruction').querySelector('h3').innerHTML = `Metronome`;
         document.querySelector('#game-instruction-text').innerHTML =
             `<p>Click <img class="icon" src="src/assets/images/play-icon.svg"> or double tap blank space to start the metronome.</p>
-            <p>Select an exercise by clicking on the title. The metronome bpm value is stored for each exercise.</p>
+            <p>Select an exercise by clicking on the title. To start the timer, click on it.</p>
             <p>Exercise timer: <input id="exercise-timer-input" type="number">min</p>`
         GameConfigurationManager.showBpmInput();
         this.initBpmInputForMetronome();
@@ -135,12 +135,21 @@ export class MetronomePracticeInitializer {
             // Add event listener to each exercise (bind this and give exercise as first argument)
             exercise.addEventListener('click', this.handleExerciseChangeEvent.bind(this, exercise));
         });
+
+        // Dispatch game-start or game-stop event when click on exercise-timer
+        document.querySelector('#exercise-timer').addEventListener('click', () => {
+            if (this.gameRunning) {
+                document.dispatchEvent(new Event('game-stop'));
+            } else {
+                document.dispatchEvent(new Event('game-start'));
+            }
+        });
     }
 
     handleExerciseChangeEvent(exercise, e) {
         let bpmInput = document.querySelector('#bpm-input');
 
-        if (e.target === exercise.querySelector('video')) {
+        if (e.target === exercise.querySelector('video') || e.target === exercise.querySelector('#exercise-timer')) {
             // If the user clicks on video tag, don't deselect exercise
             return;
         }
@@ -174,6 +183,8 @@ export class MetronomePracticeInitializer {
             // If already selected exercise is clicked, the selected class should not be added
             // and the initial metronome bpm value loaded
             bpmInput.value = localStorage.getItem('metronome-bpm') ?? '60';
+            // Dispatch game-stop event
+            document.dispatchEvent(new Event('game-stop'));
             dispatchChangeEventAndPauseVideo();
             MetronomePracticeTimer.resetTimerForNewExercise(null, this.gameRunning);
         }
