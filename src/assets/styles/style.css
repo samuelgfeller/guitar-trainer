@@ -84,7 +84,7 @@
     }
 
     #config-div.expanded {
-        max-height: 240px;
+        max-height: 300px;
         /*overflow: hidden; !* Initially, hide the overflow *!*/
         /* Delayed animation to prevent showing the scrollbar while config-div is expanding */
         animation: enableScroll 0.5s ease 0.5s forwards;
@@ -415,6 +415,9 @@
     /*.option-for-game-mode {*/
     /*    display: none;*/
     /*}*/
+    .options-title-span{
+        width: 100%;
+    }
 
     .config-number-input {
         background: rgba(255, 255, 255, 0.2);

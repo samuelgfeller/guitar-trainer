@@ -1,6 +1,6 @@
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.1.8";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.1.8";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.1.8";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.2.0";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.2.0";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.2.0";
 
 /**
  * Note displayer for "practice" mode, which means

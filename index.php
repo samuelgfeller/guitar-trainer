@@ -1,9 +1,9 @@
 <?php
-$version = '1.1.8';
-// Uncomment the following two lines and load any page of the app once before committing changes
+$version = '1.2.0';
+// Uncomment the following 2 lines and load any page of the app once before committing changes
 // require __DIR__ . '/JsImportVersionAdder.php';
 // (new JsImportVersionAdder())->addVersionToJsImports($version);
-
+// Easier for development when testing on mobile often
 // (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
 ?>
 <!doctype html>
@@ -45,7 +45,7 @@ $version = '1.1.8';
                 <img src="src/assets/images/key-icon.png" class="button-icon">
             </label>
         </div>
-        <span class="normal-font-size label-text" id="options-title-span">Options</span>
+        <span class="normal-font-size label-text options-title-span">Options</span>
         <div id="game-mode-options">
             <!--  Options added at instantiation of game mode coordinator -->
         </div>

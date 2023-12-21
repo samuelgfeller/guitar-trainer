@@ -1,6 +1,6 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.8";
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.1.8";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.8";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.0";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.2.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.0";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -120,7 +120,7 @@ export class MetronomePracticeInitializer {
                 </details>
                 <details>
                     <summary><h3>Source</h3></summary>
-                    The snippets are parts of the awesome video <a href="https://www.youtube.com/watch?v=zPiFuqT3XqU" 
+                    The snippets are parts of the video <a href="https://www.youtube.com/watch?v=zPiFuqT3XqU" 
             target="_blank">The Only Exercises You Need</a> by BeatrixGuitar
                 </details>
             </div>

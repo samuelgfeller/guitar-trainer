@@ -1,9 +1,9 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.1.8";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.1.8";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.1.8";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.1.8";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.1.8";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.1.8";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.0";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.0";
 
 export class NoteInKeyGameInitializer {
 
@@ -11,11 +11,17 @@ export class NoteInKeyGameInitializer {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
+        'G': ['G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
+        'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G'],
+        'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
     };
     possibleKeysOnStringsFullFretboard = {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯'],
+        'G': ['G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯'],
+        'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯'],
+        'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
     };
 
 
@@ -37,6 +43,9 @@ export class NoteInKeyGameInitializer {
         this.addHtmlComponents();
         // Init game mode options here as the option value is needed for the next initialization steps
         GameConfigurationManager.initGameModeOptions();
+        // Init string options
+        GameConfigurationManager.initGameModeOptions('note-in-key-game-strings-div');
+        this.initStringOptionsEventListeners();
 
         // Init game components
         // Note in key generator initialized here in case the user clicks "pause" and wants to continue the game
@@ -56,6 +65,16 @@ export class NoteInKeyGameInitializer {
         document.addEventListener('leveled-up', this.levelUpEventHandler);
     }
 
+    initStringOptionsEventListeners() {
+        // call this.setPossibleKeysOnStrings(); each time a string option is changed
+        const stringOptions = document.querySelectorAll('#note-in-key-game-strings-div input');
+        stringOptions.forEach((stringOption) => {
+            stringOption.addEventListener('change', () => {
+                this.setPossibleKeysOnStrings();
+                this.reloadKeyAndStringEventHandler();
+            });
+        });
+    }
 
     reloadKeyAndStringEventHandler() {
         console.trace('reloadKeyAndStringEventHandler');
@@ -69,7 +88,7 @@ export class NoteInKeyGameInitializer {
         if (gameIsRunning) {
             // Resume the game with the new key
             document.dispatchEvent(new Event('game-start'));
-        } else{
+        } else {
             // If the game was not running, reset progress
             // Pause game, display instructions, hide current string and key and hide game progress
             // GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
@@ -88,6 +107,10 @@ export class NoteInKeyGameInitializer {
 
         document.getElementById('header-center-container').removeEventListener('click',
             this.reloadKeyAndStringEventHandlerVar);
+
+        // Remove string options
+        document.querySelector('#note-in-key-game-strings-div').remove();
+        document.querySelector('#string-option-title').remove();
 
         // Event listeners that were tied to html components that are not removed or replaced on game mode change
         // don't need to be removed as that removes the event listeners from the html components as well
@@ -122,9 +145,24 @@ export class NoteInKeyGameInitializer {
     }
 
     setPossibleKeysOnStrings() {
-        this.noteInKeyGameCoordinator.noteInKeyGenerator.possibleStringsAndKeys =
-            document.querySelector('#note-in-key-entire-fretboard-option input')?.checked ?
-                this.possibleKeysOnStringsFullFretboard : this.possibleKeysOnStrings;
+        let notesOnStrings;
+        if (document.querySelector('#note-in-key-entire-fretboard-option input')?.checked) {
+            notesOnStrings = this.possibleKeysOnStringsFullFretboard;
+        } else {
+            notesOnStrings = this.possibleKeysOnStrings
+        }
+        // Remove strings that were not selected from notesOnStrings
+        const strings = document.querySelectorAll('#note-in-key-game-strings-div input');
+
+        strings.forEach((string) => {
+            // Remove string and keys if the string was not selected
+            // Except if there are not more than 2 elements left in the object (2 strings required by generator)
+            if (!string.checked && Object.keys(notesOnStrings).length > 2) {
+                delete notesOnStrings[string.value];
+            }
+        });
+
+        this.noteInKeyGameCoordinator.noteInKeyGenerator.possibleStringsAndKeys = notesOnStrings;
     }
 
     /**
@@ -146,14 +184,41 @@ export class NoteInKeyGameInitializer {
                         <input type='checkbox'>
                         <!--<span class="normal-font-size"></span>-->
                         <img src="src/assets/images/entire-fretboard-icon.svg" class="button-icon">
-                    </label>`;
+                    </label>
+                    `;
+        document.querySelector('#game-mode-options').insertAdjacentHTML('afterend', `
+                    <span class="normal-font-size label-text options-title-span" id="string-option-title">Strings</span>
+                    <div id="note-in-key-game-strings-div">
+                    <label class='checkbox-button option-for-game-mode' id="note-in-key-e-string-option">
+                        <input type='checkbox' value="E">
+                        <span class="normal-font-size">E</span>
+                    </label>
+                    <label class='checkbox-button option-for-game-mode' id="note-in-key-a-string-option">
+                        <input type='checkbox' value="A">
+                        <span class="normal-font-size">A</span>
+                    </label>
+                    <label class='checkbox-button option-for-game-mode' id="note-in-key-g-string-option">
+                        <input type='checkbox' value="G">
+                        <span class="normal-font-size">G</span>
+                    </label>
+                    <label class='checkbox-button option-for-game-mode' id="note-in-key-b-string-option">
+                        <input type='checkbox' value="B">
+                        <span class="normal-font-size">B</span>
+                    </label>
+                    <label class='checkbox-button option-for-game-mode' id="note-in-key-e2-string-option">
+                        <input type='checkbox' value="E2">
+                        <span class="normal-font-size">E2</span>
+                    </label>
+                    </div>
+`);
+
         // Add difficulty range slider event listener
         document.querySelector('#difficulty-range-slider')
             .addEventListener('change', this.reloadKeyAndStringEventHandler.bind(this));
 
         // Add note in key entire fretboard option event listener
         document.querySelector('#note-in-key-entire-fretboard-option input')
-            .addEventListener('change', () =>{
+            .addEventListener('change', () => {
                 this.setPossibleKeysOnStrings();
                 this.reloadKeyAndStringEventHandler();
             });

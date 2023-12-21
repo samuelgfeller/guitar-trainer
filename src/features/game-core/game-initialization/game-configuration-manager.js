@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=1.1.8";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=1.2.0";
 
 export class GameConfigurationManager {
 
@@ -40,14 +40,14 @@ export class GameConfigurationManager {
      * Sets up game mode options based on the user's previous choices stored in the local storage.
      * And if input is changed, it saves the new value in the local storage.
      */
-    static initGameModeOptions() {
-        const gameModeOptions = document.querySelector('#game-mode-options');
+    static initGameModeOptions(optionsContainerId = 'game-mode-options') {
+        const gameModeOptions = document.getElementById(optionsContainerId);
         // Toggle visibility of game mode options title
         if (gameModeOptions.children.length === 0) {
-            document.querySelector('#options-title-span').style.display = 'none';
+            document.querySelector('.options-title-span').style.display = 'none';
             return;
         } else {
-            document.querySelector('#options-title-span').style.display = null;
+            document.querySelector('.options-title-span').style.display = null;
         }
 
         this.setupGameModeOptionsStateAndValue(gameModeOptions.children);
