@@ -1,9 +1,9 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.0";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.0";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.0";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.1";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.1";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.1";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.1";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.1";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.1";
 
 export class NoteInKeyGameInitializer {
 
@@ -147,9 +147,11 @@ export class NoteInKeyGameInitializer {
     setPossibleKeysOnStrings() {
         let notesOnStrings;
         if (document.querySelector('#note-in-key-entire-fretboard-option input')?.checked) {
-            notesOnStrings = this.possibleKeysOnStringsFullFretboard;
+            // Using the spread operator to create a copy of this.possibleKeysOnStrings otherwise it would
+            // be a reference, and the original object would be modified
+            notesOnStrings = {...this.possibleKeysOnStringsFullFretboard};
         } else {
-            notesOnStrings = this.possibleKeysOnStrings
+            notesOnStrings =  {...this.possibleKeysOnStrings};
         }
         // Remove strings that were not selected from notesOnStrings
         const strings = document.querySelectorAll('#note-in-key-game-strings-div input');
@@ -160,7 +162,9 @@ export class NoteInKeyGameInitializer {
             if (!string.checked && Object.keys(notesOnStrings).length > 2) {
                 delete notesOnStrings[string.value];
             }
+            console.log('string', string.value, string.checked);
         });
+        console.debug('Possible keys on strings', notesOnStrings);
 
         this.noteInKeyGameCoordinator.noteInKeyGenerator.possibleStringsAndKeys = notesOnStrings;
     }

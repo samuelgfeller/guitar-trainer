@@ -34,6 +34,10 @@ export class ArrayShuffler {
                 this.reShuffleAttempts++;
                 return this.shuffleArray(array);
             }
+            // Break out of the loop if already 20 times reshuffled
+            else {
+                break;
+            }
         }
 
         // If after 10 reshuffle attempts, there are still remaining elements, add them to the shuffled array
