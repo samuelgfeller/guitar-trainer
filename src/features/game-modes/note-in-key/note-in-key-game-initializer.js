@@ -1,9 +1,9 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.1";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.1";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.1";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.1";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.1";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.1";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.2";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.2";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.2";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.2";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.2";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.2";
 
 export class NoteInKeyGameInitializer {
 
@@ -162,7 +162,6 @@ export class NoteInKeyGameInitializer {
             if (!string.checked && Object.keys(notesOnStrings).length > 2) {
                 delete notesOnStrings[string.value];
             }
-            console.log('string', string.value, string.checked);
         });
         console.debug('Possible keys on strings', notesOnStrings);
 
@@ -259,17 +258,15 @@ export class NoteInKeyGameInitializer {
             <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game 
             or double-tap this instruction.</p>
             <h3>Roadmaps</h3>
-            <p>Low E string roadmap for the G key 
-            (<a href="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">Source</a>):            
-            <img src="src/assets/images/LowE-Gmajor-roadmap.png" class="roadmap-image"
+            <p>Roadmap for E and D strings with the G key:         
+            <img src="src/assets/images/G-Key-Fretboard.svg" class="roadmap-image"
                 alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">
             </p>
-            <p>A string roadmap for the D key 
-            (<a href="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623">Source</a>):            
-            <img src="src/assets/images/A-Dmajor-roadmap.png" class="roadmap-image"
+            <p>Roadmap for A, G and B strings with the D key::            
+            <img src="src/assets/images/D-Key-Fretboard.svg" class="roadmap-image"
                 alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
-            <p>These can be shifted up and down depending on the key.</p>
-            <p>I also recommend watching Paul Davids 
+            <p>These can be shifted up and down according to the key.</p>
+            <p>I recommend watching Paul Davids 
             <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">
             Music Theory episodes</a>.</p>
             <p>And <a href="https://www.youtube.com/watch?v=kmAK4tRmLec">this video</a>

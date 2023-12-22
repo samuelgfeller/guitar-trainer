@@ -1,8 +1,9 @@
 <?php
-$version = '1.2.1';
+$version = '1.2.2';
 // Uncomment the following 2 lines and load any page of the app once before committing changes
 // require __DIR__ . '/JsImportVersionAdder.php';
 // (new JsImportVersionAdder())->addVersionToJsImports($version);
+
 // Easier for development when testing on mobile often
 // (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
 ?>
