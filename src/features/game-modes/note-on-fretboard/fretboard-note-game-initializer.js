@@ -1,7 +1,7 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.2.2";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.2.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.2";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.2";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.2.3";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.2.3";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.3";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.3";
 
 export class FretboardNoteGameInitializer {
     constructor() {

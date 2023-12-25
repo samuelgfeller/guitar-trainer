@@ -1,9 +1,9 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.2";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.2";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.2";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.2";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.2";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.3";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.3";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.3";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.3";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.3";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.3";
 
 export class NoteInKeyGameInitializer {
 
@@ -11,6 +11,7 @@ export class NoteInKeyGameInitializer {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
+        'D': ['D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯'],
         'G': ['G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
         'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G'],
         'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
@@ -19,6 +20,7 @@ export class NoteInKeyGameInitializer {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯'],
+        'D': ['D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯'],
         'G': ['G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯'],
         'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯'],
         'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
@@ -199,6 +201,10 @@ export class NoteInKeyGameInitializer {
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-a-string-option">
                         <input type='checkbox' value="A">
                         <span class="normal-font-size">A</span>
+                    </label>
+                    <label class='checkbox-button option-for-game-mode' id="note-in-key-d-string-option">
+                        <input type='checkbox' value="D">
+                        <span class="normal-font-size">D</span>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-g-string-option">
                         <input type='checkbox' value="G">

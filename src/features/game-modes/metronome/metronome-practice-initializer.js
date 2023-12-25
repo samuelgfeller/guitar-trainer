@@ -1,6 +1,6 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.2";
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.2.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.2";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.3";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.2.3";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.3";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
