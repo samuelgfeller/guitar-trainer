@@ -4,6 +4,7 @@ import {GameConfigurationManager} from "../../game-core/game-initialization/game
 import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.3";
 import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.3";
 import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.3";
+import {NoteInKeyGameNoGuitarOption} from "./note-in-key-game-no-guitar-option.js";
 
 export class NoteInKeyGameInitializer {
 
@@ -65,6 +66,9 @@ export class NoteInKeyGameInitializer {
 
         // Level up event listener
         document.addEventListener('leveled-up', this.levelUpEventHandler);
+
+        // Init no guitar game option
+        new NoteInKeyGameNoGuitarOption().initNoGuitarGameOption();
     }
 
     initStringOptionsEventListeners() {
@@ -189,6 +193,13 @@ export class NoteInKeyGameInitializer {
                         <input type='checkbox'>
                         <!--<span class="normal-font-size"></span>-->
                         <img src="src/assets/images/entire-fretboard-icon.svg" class="button-icon">
+                    </label>
+                    <!-- For simplicity, the no-guitar option has the same id for all game modes and 
+                     the core-game-coordination-initializer sets the metronomeEnabled and noteDetectorEnabled values -->
+                    <label class='checkbox-button option-for-game-mode' id="no-guitar-option">
+                        <input type='checkbox'>
+                        <!--<span class="normal-font-size"></span>-->
+                        <img src="src/assets/images/no-guitar-icon.svg" class="button-icon">
                     </label>
                     `;
         document.querySelector('#game-mode-options').insertAdjacentHTML('afterend', `

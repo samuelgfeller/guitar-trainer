@@ -112,8 +112,8 @@ export class CoreGameCoordinator {
         }
         // Default value
         this.stopAndResumeAfterVisibilityChange = false;
-        if (this.noteDetectorEnabled) {
             GameElementsVisualizer.showGameElementsAndHideInstructions();
+        if (this.noteDetectorEnabled) {
 
             // Prevent screen from getting dark on mobile
             void this.screenWakeLocker.requestWakeLock();
