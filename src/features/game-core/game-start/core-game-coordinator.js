@@ -66,6 +66,7 @@ export class CoreGameCoordinator {
         }
         if (this.noteDetectorEnabled) {
             this.tuneOperator.stop();
+            FrequencyBarsController.removeFrequencyBarsAndDetectedNoteFromDom();
         }
         // Stop game if there is a game coordinator (not the case when changing level before game start)
         if (this.gameCoordinator !== null) {
@@ -93,6 +94,9 @@ export class CoreGameCoordinator {
             // Start tuner
             this.tuneOperator.initGetUserMedia();
             return this.tuneOperator.start().then(() => {
+                // Show frequency bars
+                FrequencyBarsController.addFrequencyBarsAndDetectedNoteToDom();
+                console.log('frequency bars added')
                 // Set frequencyData instance variable
                 let frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
                 new FrequencyBarsController(frequencyData).updateFrequencyBars(this.tuneOperator);

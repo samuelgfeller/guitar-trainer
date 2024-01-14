@@ -62,6 +62,7 @@ export class CoreGameCoordinationInitializer {
         }
         // All game coordinators MUST implement a play() and stop() method
 
+        // Disable metronome and note detector if no guitar option is selected
         this.noGuitarOption();
 
         // Init game mode options after they have been added via instantiation of the correct gameModeCoordinator above
@@ -72,16 +73,16 @@ export class CoreGameCoordinationInitializer {
         // Overwrite noteDetectorEnabled and metronomeEnabled if the user has selected "no guitar"
         const noGuitarCheckbox = document.querySelector('#no-guitar-option input');
         noGuitarCheckbox?.addEventListener('change', function () {
-            disableNoteDetector();
+            disableNoteDetectorIfNoGuitarChecked();
         });
         const self = this;
-        const disableNoteDetector = function() {
+        const disableNoteDetectorIfNoGuitarChecked = function() {
             if (noGuitarCheckbox?.checked) {
                 self.coreGameCoordinator.metronomeEnabled = false;
                 self.coreGameCoordinator.noteDetectorEnabled = false;
             }
         }
-        disableNoteDetector();
+        disableNoteDetectorIfNoGuitarChecked();
     }
 
 

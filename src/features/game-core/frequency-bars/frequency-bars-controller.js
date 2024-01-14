@@ -21,4 +21,15 @@ export class FrequencyBarsController {
         requestAnimationFrame(() => this.updateFrequencyBars(tuneOperator));
     };
 
+    static addFrequencyBarsAndDetectedNoteToDom() {
+        document.querySelector('#game-container').insertAdjacentHTML('beforeend',
+            `<div id="detected-note-div">
+                    <p id="detected-note"></p>
+                </div>
+                <canvas id="frequency-bars"></canvas>`);
+    }
+    static removeFrequencyBarsAndDetectedNoteFromDom() {
+        document.querySelector('#frequency-bars').remove();
+        document.querySelector('#detected-note-div').remove();
+    }
 }

@@ -60,7 +60,11 @@ export class NoteCombinationVisualizer {
     static resetAllColors() {
         document.querySelector('#note-span').style.color = null;
         document.querySelector('#string-span').style.color = null;
-        document.querySelector('#detected-note').style.color = null;
+        // Set the color of detected note to null if it exists
+        const detectedNoteDiv = document.querySelector('#detected-note');
+        if (detectedNoteDiv){
+            detectedNoteDiv.style.color = null;
+        }
 
         this.updateFrequencyBarsFillStyle('grey');
     }

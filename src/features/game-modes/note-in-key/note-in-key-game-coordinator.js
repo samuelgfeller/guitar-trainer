@@ -1,4 +1,5 @@
 import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.2.3";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -35,6 +36,9 @@ export class NoteInKeyGameCoordinator {
 
         // Init event listeners that will automatically call displayNotes() when correct note has been played
         this.noteDisplayer.beingGame();
+
+        NoteInKeyGameNoGuitar.playNoGuitarNoteInKey();
+
         // Start the timer
         this.timerInterval = setInterval(() => {
             this.timer += 1;
@@ -53,6 +57,7 @@ export class NoteInKeyGameCoordinator {
 
     destroy() {
         this.noteInkeyGameInitializer.destroy();
+        NoteInKeyGameNoGuitar.destroyNoGuitarGameOption();
     }
 
     /**
@@ -60,7 +65,10 @@ export class NoteInKeyGameCoordinator {
      */
     displayFirstNoteOfKey() {
         // Manually call displayNotes because the first combination should be the note of the key
-        this.noteDisplayer.displayNotes({stringName: this.keyString, noteName: {noteName: this.keyNote, number: 1}});
+        this.noteDisplayer.displayNotes({
+            stringName: this.keyString,
+            noteName: {noteName: this.keyNote, number: 1}
+        }, true);
     }
 
     reloadKeyAndString() {

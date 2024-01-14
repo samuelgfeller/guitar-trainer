@@ -20,6 +20,7 @@ $version = '1.2.3';
     <link rel="stylesheet" href="src/assets/styles/progress-bar.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/range-slider.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/metronome-practice.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/virtual-fretboard.css?v=<?= $version ?>">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
@@ -110,10 +111,6 @@ $version = '1.2.3';
             <div id="treble-clef-output"></div>
         </div>
     </div>
-    <div class="visible-when-game-on" id="detected-note-div">
-        <p id="detected-note"></p>
-    </div>
-    <canvas class="visible-when-game-on" id="frequency-bars"></canvas>
 </main>
 <script type="module" src="src/features/game-core/game-loader.js?v=<?= $version ?>"></script>
 <!--<script type="module" src="js/test/tests-main.js?v=--><?php

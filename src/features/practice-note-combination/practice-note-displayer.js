@@ -54,32 +54,43 @@ export class PracticeNoteDisplayer {
         this.correctNoteCount++;
     }
 
-    displayNotes(combination) {
+    displayNotes(combination, firstCall = false) {
         this.updateProgressBar();
-        if (this.correctNoteCount <= this.notesAmountForFullProgressBar) {
-            setTimeout(() => {
-                this.detectedNoteVerifier.correctNoteAccounted = false;
-                NoteCombinationVisualizer.resetAllColors();
+        // Function to display the note combination
+        const displayNoteCombination = () => {
+            this.detectedNoteVerifier.correctNoteAccounted = false;
+            NoteCombinationVisualizer.resetAllColors();
 
-                let stringName, noteName;
-                // Get the next combination
-                if (combination && typeof combination === 'object' && 'noteName' in combination) {
-                    ({stringName, noteName} = combination);
-                } else {
-                    ({stringName, noteName} = this.noteGenerator.getNextCombination());
-                }
-                // Note could be displayed as number
-                let noteNumber = null;
-                // Check if note is an object or a string
-                if (typeof noteName === 'object') {
-                    noteNumber = noteName.number;
-                    noteName = noteName.noteName;
-                }
-                // Display next note and string
-                NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
-                // console.debug(`Displaying combination ${stringName}|${noteName}`);
-                this.detectedNoteVerifier.noteToPlay = noteName;
-            }, 700);
+            let stringName, noteName;
+            // Get the next combination
+            if (combination && typeof combination === 'object' && 'noteName' in combination) {
+                ({stringName, noteName} = combination);
+            } else {
+                ({stringName, noteName} = this.noteGenerator.getNextCombination());
+            }
+            // Note could be displayed as number
+            let noteNumber = null;
+            // Check if note is an object or a string
+            if (typeof noteName === 'object') {
+                noteNumber = noteName.number;
+                noteName = noteName.noteName;
+            }
+            // Display next note and string
+            NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
+            // console.debug(`Displaying combination ${stringName}|${noteName}`);
+            this.detectedNoteVerifier.noteToPlay = noteName;
+        };
+
+        // If the progress bar is not full yet, display the next note combination instantly if it is the first call,
+        // otherwise wait 700ms before displaying the next note combination
+        if (this.correctNoteCount <= this.notesAmountForFullProgressBar) {
+            if (firstCall) {
+                displayNoteCombination();
+            } else {
+                setTimeout(() => {
+                    displayNoteCombination();
+                }, 700);
+            }
         }
     }
 

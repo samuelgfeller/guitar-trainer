@@ -4,7 +4,7 @@ import {GameConfigurationManager} from "../../game-core/game-initialization/game
 import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.3";
 import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.3";
 import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.3";
-import {NoteInKeyGameNoGuitarOption} from "./note-in-key-game-no-guitar-option.js";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js";
 
 export class NoteInKeyGameInitializer {
 
@@ -68,7 +68,11 @@ export class NoteInKeyGameInitializer {
         document.addEventListener('leveled-up', this.levelUpEventHandler);
 
         // Init no guitar game option
-        new NoteInKeyGameNoGuitarOption().initNoGuitarGameOption();
+        if (document.querySelector('#no-guitar-option input')?.checked) {
+            // Add no-guitar classname to game-container
+            document.querySelector('#game-container').classList.add('no-guitar');
+            NoteInKeyGameNoGuitar.initNoGuitarGameOption();
+        }
     }
 
     initStringOptionsEventListeners() {
@@ -157,7 +161,7 @@ export class NoteInKeyGameInitializer {
             // be a reference, and the original object would be modified
             notesOnStrings = {...this.possibleKeysOnStringsFullFretboard};
         } else {
-            notesOnStrings =  {...this.possibleKeysOnStrings};
+            notesOnStrings = {...this.possibleKeysOnStrings};
         }
         // Remove strings that were not selected from notesOnStrings
         const strings = document.querySelectorAll('#note-in-key-game-strings-div input');

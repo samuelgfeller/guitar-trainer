@@ -238,7 +238,7 @@
         cursor: pointer;
     }
 
-    main {
+    #game-container {
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -250,13 +250,13 @@
         gap: 30px;
     }
 
-    main > div {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
+    #game-container > div {
+        /*display: flex;*/
+        /*flex-wrap: wrap;*/
+        /*gap: 15px;*/
     }
 
-    main div span {
+    #game-container div span {
         width: 100%;
         /*So that they are on top of each other inside div*/
         display: block;
@@ -367,15 +367,14 @@
     #game-progress-div{
         width: 90%;
     }
-    #progress-bar-container{
-        width: 100%;
-    }
+
     #progress-bar-title-div {
         width: 100%;
         margin-bottom: 10px;
     }
 
-    #progress-bar-container {
+    #game-container #progress-bar-container {
+        width: 100%;
         display: flex;
         margin: auto;
         gap: 12px;
@@ -385,7 +384,7 @@
         color: #b6b6b6;
     }
 
-    #progress-bar-container span {
+    #game-container #progress-bar-container span {
         width: fit-content;
     }
 
@@ -455,7 +454,7 @@
 }
 
 @media (min-width: 641px) {
-    main {
+    #game-container {
         margin-top: 40px;
         justify-content: center;
         column-gap: 20vw;
@@ -475,7 +474,7 @@
         width: 75%;
     }
 
-    #key-and-string-container {
+    #game-container #key-and-string-container {
         column-gap: 100px;
     }
 
@@ -501,6 +500,9 @@
     .note-value-span.note-value-span {
         font-size: 130px;
     }
+    #game-container.no-guitar .note-value-span.note-value-span {
+        font-size: 100px;
+    }
 }
 
 @media (min-width: 961px) {
@@ -508,7 +510,7 @@
         width: 50%;
     }
 
-    main {
+    #game-container {
         gap: 40px;
     }
     .roadmap-image{
@@ -522,19 +524,22 @@
 
 /*Has to be after min-width 961 */
 @media (max-height: 600px) {
-    /*main {*/
+    /*#game-container {*/
     /*    gap: 0;*/
     /*}*/
 }
 @media (max-height: 660px) {
-    main {
+    #game-container {
         gap: 20px;
     }
 }
 
 @media (min-height: 720px) {
-    main {
+    #game-container {
         gap: 50px;
+    }
+    #game-container.no-guitar {
+        gap: 20px;
     }
 }
 
