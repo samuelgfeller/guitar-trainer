@@ -1,4 +1,4 @@
-import {FrequencyBarsVisualizer} from "./frequency-bars-visualizer.js?v=1.2.4";
+import {FrequencyBarsVisualizer} from "./frequency-bars-visualizer.js?v=1.2.5";
 
 export class FrequencyBarsController {
 
@@ -29,7 +29,7 @@ export class FrequencyBarsController {
                 <canvas id="frequency-bars"></canvas>`);
     }
     static removeFrequencyBarsAndDetectedNoteFromDom() {
-        document.querySelector('#frequency-bars').remove();
-        document.querySelector('#detected-note-div').remove();
+        document.querySelector('#frequency-bars')?.remove();
+        document.querySelector('#detected-note-div')?.remove();
     }
 }

@@ -1,11 +1,15 @@
 <?php
-$version = '1.2.4';
-// Uncomment the following 2 lines and load any page of the app once before committing changes
-// require __DIR__ . '/JsImportVersionAdder.php';
-// (new JsImportVersionAdder())->addVersionToJsImports($version);
 
-// Easier for development when testing on mobile often
-// (new JsImportVersionAdder())->addVersionToJsImports(mt_rand(1, 1000));
+$version = '1.2.5';
+
+// If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
+if (file_exists(__DIR__ . '/config/env.php')) {
+    $config = require __DIR__ . '/config/env.php';
+    if (array_key_exists('env', $config) && $config['env'] === 'dev') {
+        require __DIR__ . '/JsImportVersionAdder.php';
+        (new JsImportVersionAdder())->addVersionToJsImports($version);
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">

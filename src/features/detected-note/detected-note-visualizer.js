@@ -4,6 +4,10 @@ export class DetectedNoteVisualizer {
 
     static updateDetectedNoteAndCents(noteInfos) {
         const detectedNote = document.querySelector('#detected-note');
+        if (!detectedNote) {
+            // #detected-note is removed when game stops (e.g. when level up)
+            return;
+        }
         detectedNote.innerHTML = noteInfos.name;
         // Convert the cent value to a percentage for the bar width
         const percentage = Math.abs(noteInfos.cents) / 2;

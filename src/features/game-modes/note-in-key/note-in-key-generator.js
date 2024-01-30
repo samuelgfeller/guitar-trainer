@@ -1,4 +1,4 @@
-import {ArrayShuffler} from "../../shuffler/array-shuffler.js?v=1.2.4";
+import {ArrayShuffler} from "../../shuffler/array-shuffler.js?v=1.2.5";
 
 export class NoteInKeyGenerator {
     notesOnStrings;
@@ -72,6 +72,15 @@ export class NoteInKeyGenerator {
 
 
     getNextCombination() {
+        // Sometimes there is a bug after a few rounds where only the number 1 is displayed
+        // The error line 81 is Uncaught TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+        // Either the shuffledCombinations is undefined or the shuffledCombinations[currentIndex] is undefined
+        console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
+        // If this.shuffledCombinations[this.currentIndex] is undefined, inform user with alert
+        if (!this.currentIndex || !this.shuffledCombinations[this.currentIndex]) {
+            alert('There was an error. Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex +' | shuffledCombinations[currentIndex]: ' + this.shuffledCombinations[this.currentIndex]);
+        }
+
         // The note shuffler returns a string with the format 'string|note'
         let [string, note] = this.shuffledCombinations[this.currentIndex];
 

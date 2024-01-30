@@ -1,10 +1,10 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.4";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.4";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.4";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.4";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.4";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.4";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.2.4";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.5";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.5";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.5";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.5";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.5";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.5";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.2.5";
 
 export class NoteInKeyGameInitializer {
 
@@ -59,7 +59,7 @@ export class NoteInKeyGameInitializer {
         // Instantiate object with note displayer function that will be called when a new note should be displayed
         // after a correct one has been played.
         this.noteInKeyGameCoordinator.noteDisplayer = new PracticeNoteDisplayer(
-            this.noteInKeyGameCoordinator.noteInKeyGenerator, 30
+            this.noteInKeyGameCoordinator.noteInKeyGenerator, 3
         );
         // Has to be reloaded added after html component range slider as its value is needed
         this.noteInKeyGameCoordinator.reloadKeyAndString();
