@@ -77,7 +77,7 @@ export class NoteInKeyGenerator {
         // Either the shuffledCombinations is undefined or the shuffledCombinations[currentIndex] is undefined
         console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
         // If this.shuffledCombinations[this.currentIndex] is undefined, inform user with alert
-        if (!this.currentIndex || !this.shuffledCombinations[this.currentIndex]) {
+        if (this.currentIndex === undefined || !this.shuffledCombinations[this.currentIndex]) {
             alert('There was an error. Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex +' | shuffledCombinations[currentIndex]: ' + this.shuffledCombinations[this.currentIndex]);
         }
 
