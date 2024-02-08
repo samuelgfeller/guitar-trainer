@@ -1,6 +1,7 @@
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.2.6";
-import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1.2.6";
-import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=1.2.6";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.3.0";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1.3.0";
+import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=1.3.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.3.0";
 
 export class GameInitializer {
     constructor() {
@@ -27,6 +28,12 @@ export class GameInitializer {
         this.coreGameCoordinationInitializer.setCorrectAndInitGameCoordinator();
 
         document.addEventListener('game-mode-change', (e) => {
+            // Remove game mode specific elements / reset for new game mode
+            if (this.coreGameCoordinationInitializer.coreGameCoordinator.gameCoordinator !== null) {
+                this.coreGameCoordinationInitializer.coreGameCoordinator.gameCoordinator?.destroy();
+                // Reset game area
+                GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+            }
             this.coreGameCoordinationInitializer.setCorrectAndInitGameCoordinator();
         });
     }
@@ -44,7 +51,8 @@ export class GameInitializer {
             // Check if the target is <body> or if a parent of the target is <main> (to avoid catching dblclicks in
             // header, but only if the modal is not open)
             if ((e.target === document.body || e.target.closest('main'))
-                && (e.target.id !== 'modal' && !e.target.closest('#modal') && e.target.nodeName !== 'INPUT')) {
+                && (e.target.id !== 'modal' && !e.target.closest('#modal') && e.target.nodeName !== 'INPUT')
+                && !e.target.closest('#fretboard')) {
                 self.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
             }
         });

@@ -1,4 +1,4 @@
-import {TrebleClefVisualizer} from "../../treble-clef/treble-clef-visualizer.js?v=1.2.6";
+import {TrebleClefVisualizer} from "../../treble-clef/treble-clef-visualizer.js?v=1.3.0";
 
 export class NoteCombinationVisualizer {
 
@@ -11,7 +11,14 @@ export class NoteCombinationVisualizer {
         this.frequencyBarsController.updateFrequencyBarsFillStyle(color);
     }
 
-    static displayCombination(stringName, noteName, displayInTrebleClef = false, displayTrebleClefAndNoteName = false) {
+    static displayCombinationWithNoteNumber(stringName, noteNumber, noteName = null){
+        const noteSpan = document.getElementById('note-span');
+        noteSpan.dataset.noteName = noteName;
+        noteSpan.innerHTML = noteNumber;
+        document.getElementById('string-span').innerHTML = stringName;
+    }
+
+    static displayCombinationWithNoteName(stringName, noteName, displayInTrebleClef = false, displayTrebleClefAndNoteName = false) {
         // Adds the treble-clef-enabled class if displayInTrebleClef is truthy, removes it otherwise
         document.getElementById('string-span').classList
             .toggle('treble-clef-enabled', displayInTrebleClef || displayTrebleClefAndNoteName);

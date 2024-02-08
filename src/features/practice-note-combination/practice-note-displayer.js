@@ -1,6 +1,6 @@
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.2.6";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.2.6";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.2.6";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.3.0";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.3.0";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.3.0";
 
 /**
  * Note displayer for "practice" mode, which means
@@ -76,7 +76,7 @@ export class PracticeNoteDisplayer {
                 noteName = noteName.noteName;
             }
             // Display next note and string
-            NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName);
+            NoteCombinationVisualizer.displayCombinationWithNoteNumber(stringName, noteNumber ?? noteName, noteName);
             // console.debug(`Displaying combination ${stringName}|${noteName}`);
             this.detectedNoteVerifier.noteToPlay = noteName;
         };
@@ -87,6 +87,8 @@ export class PracticeNoteDisplayer {
             if (firstCall) {
                 displayNoteCombination();
             } else {
+                // Color spans and detected note in green when correct
+                document.querySelector('#note-span').style.color = 'green';
                 setTimeout(() => {
                     displayNoteCombination();
                 }, 700);

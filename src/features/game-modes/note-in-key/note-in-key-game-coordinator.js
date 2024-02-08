@@ -1,5 +1,5 @@
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.2.6";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.2.6";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.3.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.3.0";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -37,7 +37,8 @@ export class NoteInKeyGameCoordinator {
         // Init event listeners that will automatically call displayNotes() when correct note has been played
         this.noteDisplayer.beingGame();
 
-        NoteInKeyGameNoGuitar.playNoGuitarNoteInKey();
+        // Start no guitar game if no guitar option is checked
+        NoteInKeyGameNoGuitar.playNoGuitarNoteInKey(this.noteInKeyGenerator.diatonicNotesOnStrings, this.keyString, this.keyNote);
 
         // Start the timer
         this.timerInterval = setInterval(() => {
@@ -53,6 +54,9 @@ export class NoteInKeyGameCoordinator {
         this.gameIsRunning = false;
         // Hide current key and string
         document.querySelector('#current-key-and-string').style.display = 'none';
+        if (document.querySelector('#fretboard')) {
+            document.querySelector('#fretboard').style.display = 'none';
+        }
     }
 
     destroy() {

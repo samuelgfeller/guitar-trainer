@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.2.6";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1.2.6";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.2.6";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.2.6";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.2.6";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.3.0";
+import {TuneOperator} from "../tuner/tune-operator.js?v=1.3.0";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.3.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.3.0";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.3.0";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -23,8 +23,8 @@ export class CoreGameCoordinator {
     gameRunning = false;
     manuallyPaused = false;
 
-    constructor() {
-
+    constructor(coreGameInitializer) {
+        this.coreGameInitializer = coreGameInitializer;
         // Listen for game stop event to stop game
         document.addEventListener('game-stop', this.stopGame.bind(this));
         document.addEventListener('game-start', this.startGame.bind(this));
@@ -39,6 +39,9 @@ export class CoreGameCoordinator {
         this.gameCoordinator.play();
 
         this.gameRunning = true;
+
+        // Disable metronome and note detector if no guitar option is selected
+        this.noGuitarOption();
 
         // Start metronome only if tuner is fully started (if it needs to)
         this.startTuner().then(() => {
@@ -125,5 +128,23 @@ export class CoreGameCoordinator {
             // If note detector enabled, game should start automatically after visibility change event
             this.stopAndResumeAfterVisibilityChange = true;
         }
+    }
+    noGuitarOption(){
+        // Overwrite noteDetectorEnabled and metronomeEnabled if the user has selected "no guitar"
+        const noGuitarCheckbox = document.querySelector('#no-guitar-option input');
+        noGuitarCheckbox?.addEventListener('change', function () {
+            toggleNoteDetectorIfNoGuitarChecked();
+        });
+        const self = this;
+        const toggleNoteDetectorIfNoGuitarChecked = function() {
+            if (noGuitarCheckbox?.checked) {
+                self.metronomeEnabled = false;
+                self.noteDetectorEnabled = false;
+            } else {
+                // Init game core game logic such as metronome, note detector
+                self.coreGameInitializer.setNoteInKeyGameModeVariables();
+            }
+        }
+        toggleNoteDetectorIfNoGuitarChecked();
     }
 }

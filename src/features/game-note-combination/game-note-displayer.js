@@ -1,7 +1,7 @@
-import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=1.2.6";
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.2.6";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.2.6";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.2.6";
+import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=1.3.0";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.3.0";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.3.0";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.3.0";
 
 /**
  * Note display coordinator when playing the "game" which
@@ -98,7 +98,7 @@ export class GameNoteDisplayer {
         }
 
         // Display next note and string and if with treble clef
-        NoteCombinationVisualizer.displayCombination(stringName, noteNumber ?? noteName,
+        NoteCombinationVisualizer.displayCombinationWithNoteName(stringName, noteNumber ?? noteName,
             document.querySelector('#fretboard-note-game-treble-clef input').checked,
             document.querySelector('#fretboard-note-game-treble-clef-and-name input').checked
             );

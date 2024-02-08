@@ -1,11 +1,12 @@
 <?php
 
-$version = '1.2.6';
+$version = '1.3.0';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
     $config = require __DIR__ . '/config/env.php';
     if (array_key_exists('env', $config) && $config['env'] === 'dev') {
+        // $version = time();
         require __DIR__ . '/JsImportVersionAdder.php';
         (new JsImportVersionAdder())->addVersionToJsImports($version);
     }

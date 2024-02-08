@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.2.6";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.2.6";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.2.6";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.2.6";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.2.6";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.2.6";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.2.6";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.3.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.3.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.3.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.3.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.3.0";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.3.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.3.0";
 
 export class NoteInKeyGameInitializer {
-
-    possibleKeysOnStrings = {
+    // Possible keys
+    availableNotesOnStrings = {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
@@ -17,7 +17,7 @@ export class NoteInKeyGameInitializer {
         'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G'],
         'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
     };
-    possibleKeysOnStringsFullFretboard = {
+    availableNotesOnStringsFullFretboard = {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯'],
@@ -54,7 +54,7 @@ export class NoteInKeyGameInitializer {
         // Note in key generator initialized here in case the user clicks "pause" and wants to continue the game
 
         this.noteInKeyGameCoordinator.noteInKeyGenerator = new NoteInKeyGenerator();
-        this.setPossibleKeysOnStrings();
+        this.setAvailableNotesOnStrings();
 
         // Instantiate object with note displayer function that will be called when a new note should be displayed
         // after a correct one has been played.
@@ -68,10 +68,8 @@ export class NoteInKeyGameInitializer {
         document.addEventListener('leveled-up', this.levelUpEventHandler);
 
         // Init no guitar game option
-        if (document.querySelector('#no-guitar-option input')?.checked) {
-            // Add no-guitar classname to game-container
-            document.querySelector('#game-container').classList.add('no-guitar');
-            NoteInKeyGameNoGuitar.initNoGuitarGameOption();
+        if (document.querySelector('#no-guitar-option input')) {
+            NoteInKeyGameNoGuitar.initNoGuitarGameOption(this.noteInKeyGameCoordinator);
         }
     }
 
@@ -80,7 +78,7 @@ export class NoteInKeyGameInitializer {
         const stringOptions = document.querySelectorAll('#note-in-key-game-strings-div input');
         stringOptions.forEach((stringOption) => {
             stringOption.addEventListener('change', () => {
-                this.setPossibleKeysOnStrings();
+                this.setAvailableNotesOnStrings();
                 this.reloadKeyAndStringEventHandler();
             });
         });
@@ -154,14 +152,14 @@ export class NoteInKeyGameInitializer {
         document.dispatchEvent(new Event('game-start'));
     }
 
-    setPossibleKeysOnStrings() {
+    setAvailableNotesOnStrings() {
         let notesOnStrings;
         if (document.querySelector('#note-in-key-entire-fretboard-option input')?.checked) {
             // Using the spread operator to create a copy of this.possibleKeysOnStrings otherwise it would
             // be a reference, and the original object would be modified
-            notesOnStrings = {...this.possibleKeysOnStringsFullFretboard};
+            notesOnStrings = {...this.availableNotesOnStringsFullFretboard};
         } else {
-            notesOnStrings = {...this.possibleKeysOnStrings};
+            notesOnStrings = {...this.availableNotesOnStrings};
         }
         // Remove strings that were not selected from notesOnStrings
         const strings = document.querySelectorAll('#note-in-key-game-strings-div input');
@@ -175,7 +173,9 @@ export class NoteInKeyGameInitializer {
         });
         console.debug('Possible keys on strings', notesOnStrings);
 
-        this.noteInKeyGameCoordinator.noteInKeyGenerator.possibleStringsAndKeys = notesOnStrings;
+        this.noteInKeyGameCoordinator.noteInKeyGenerator.availableNotesOnStrings = notesOnStrings;
+        NoteInKeyGameNoGuitar.availableNotesOnStrings = notesOnStrings;
+
     }
 
     /**
@@ -243,7 +243,7 @@ export class NoteInKeyGameInitializer {
         // Add note in key entire fretboard option event listener
         document.querySelector('#note-in-key-entire-fretboard-option input')
             .addEventListener('change', () => {
-                this.setPossibleKeysOnStrings();
+                this.setAvailableNotesOnStrings();
                 this.reloadKeyAndStringEventHandler();
             });
 
@@ -252,6 +252,7 @@ export class NoteInKeyGameInitializer {
 
 
         // Has to be added before key and string are reloaded as they depend on this div existence
+        // Add current-key-and-string if it doesn't already exist
         document.querySelector('#game-progress-div').insertAdjacentHTML('afterend',
             `<span id="current-key-and-string"></span>`);
 
