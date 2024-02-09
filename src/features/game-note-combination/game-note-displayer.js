@@ -1,7 +1,7 @@
-import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=1.3.1";
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.3.1";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.3.1";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.3.1";
+import {GameProgressUpdater} from "../game-core/game-progress/game-progress-updater.js?v=1.3.2";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.3.2";
+import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.3.2";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.3.2";
 
 /**
  * Note display coordinator when playing the "game" which

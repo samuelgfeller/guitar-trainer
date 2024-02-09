@@ -1,7 +1,7 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.3.1";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.3.1";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.3.1";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.3.1";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.3.2";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.3.2";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.3.2";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.3.2";
 
 export class FretboardNoteGameInitializer {
     constructor() {
@@ -55,6 +55,18 @@ export class FretboardNoteGameInitializer {
             <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game, 
             or double-click a blank area.</p>
             `;
+        document.querySelector('main').insertAdjacentHTML('beforeend',
+            `<div id="key-and-string-container" style="display: none">
+                <div>
+                    <span class="label">String</span>
+                    <span class="note-value-span" id="string-span"></span>
+                </div>
+                <div>
+                    <span class="label">Note</span>
+                    <span class="note-value-span" id="note-span"></span>
+                    <div id="treble-clef-output"></div>
+                </div>
+            </div>`);
     }
 
     /**
@@ -66,6 +78,7 @@ export class FretboardNoteGameInitializer {
         // Remove leveled up event handler
         document.removeEventListener('leveled-up', this.levelUpEventHandler);
         document.querySelector('header div').style.borderBottomColor = null;
+        document.querySelector('#key-and-string-container').remove();
 
         // These would have to be changed to arrow attributes to be able to remove them levelUp.bind(this) doesnt work
         // document.removeEventListener('leveled-up', this.levelUp.bind(this));
@@ -115,7 +128,7 @@ export class FretboardNoteGameInitializer {
         bpmInput.addEventListener('change', this.bpmInputChangeEventHandlerVar);
     }
 
-    bpmInputChangeEventHandler(){
+    bpmInputChangeEventHandler() {
         document.dispatchEvent(new Event('game-stop'));
         GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
         GameElementsVisualizer.togglePlayPauseButton('stop');

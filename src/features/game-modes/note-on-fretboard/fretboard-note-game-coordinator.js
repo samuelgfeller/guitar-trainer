@@ -1,10 +1,10 @@
 // const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 // const strings = ['D', 'E', 'G', 'A', 'B'];
 
-import {GameNoteDisplayer} from "../../game-note-combination/game-note-displayer.js?v=1.3.1";
-import {FretboardGameChallengingNotesProvider} from "./fretboard-game-challenging-notes-provider.js?v=1.3.1";
-import {FretboardNoteGameCombinationGenerator} from "./fretboard-note-game-combination-generator.js?v=1.3.1";
-import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1.3.1";
+import {GameNoteDisplayer} from "../../game-note-combination/game-note-displayer.js?v=1.3.2";
+import {FretboardGameChallengingNotesProvider} from "./fretboard-game-challenging-notes-provider.js?v=1.3.2";
+import {FretboardNoteGameCombinationGenerator} from "./fretboard-note-game-combination-generator.js?v=1.3.2";
+import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1.3.2";
 
 /**
  * Game mode "note-on-fretboard" core logic

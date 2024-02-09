@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.3.1";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1.3.1";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.3.1";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.3.1";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.3.1";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.3.2";
+import {TuneOperator} from "../tuner/tune-operator.js?v=1.3.2";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.3.2";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.3.2";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.3.2";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -119,7 +119,7 @@ export class CoreGameCoordinator {
         }
         // Default value
         this.stopAndResumeAfterVisibilityChange = false;
-            GameElementsVisualizer.showGameElementsAndHideInstructions();
+        GameElementsVisualizer.showGameElementsAndHideInstructions();
         if (this.noteDetectorEnabled) {
 
             // Prevent screen from getting dark on mobile
@@ -129,14 +129,15 @@ export class CoreGameCoordinator {
             this.stopAndResumeAfterVisibilityChange = true;
         }
     }
-    noGuitarOption(){
+
+    noGuitarOption() {
         // Overwrite noteDetectorEnabled and metronomeEnabled if the user has selected "no guitar"
         const noGuitarCheckbox = document.querySelector('#no-guitar-option input');
         noGuitarCheckbox?.addEventListener('change', function () {
             toggleNoteDetectorIfNoGuitarChecked();
         });
         const self = this;
-        const toggleNoteDetectorIfNoGuitarChecked = function() {
+        const toggleNoteDetectorIfNoGuitarChecked = function () {
             if (noGuitarCheckbox?.checked) {
                 self.metronomeEnabled = false;
                 self.noteDetectorEnabled = false;

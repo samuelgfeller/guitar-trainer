@@ -1,10 +1,10 @@
-import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=1.3.1";
+import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=1.3.2";
 import {
     FretboardNoteGameCoordinator
-} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=1.3.1";
-import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=1.3.1";
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.3.1";
-import {MetronomePracticeCoordinator} from "../../game-modes/metronome/metronome-practice-coordinator.js?v=1.3.1";
+} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=1.3.2";
+import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=1.3.2";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=1.3.2";
+import {MetronomePracticeCoordinator} from "../../game-modes/metronome/metronome-practice-coordinator.js?v=1.3.2";
 
 export class CoreGameCoordinationInitializer {
 
@@ -47,24 +47,30 @@ export class CoreGameCoordinationInitializer {
     }
 
     setMetronomeGameModeVariables() {
-        this.coreGameCoordinator.noteDetectorEnabled = false;
-        this.coreGameCoordinator.metronomeEnabled = true;
-        this.coreGameCoordinator.scoreEnabled = false;
-        this.coreGameCoordinator.progressBarEnabled = false;
+        if (document.querySelector('#metronome-game-mode input').checked) {
+            this.coreGameCoordinator.noteDetectorEnabled = false;
+            this.coreGameCoordinator.metronomeEnabled = true;
+            this.coreGameCoordinator.scoreEnabled = false;
+            this.coreGameCoordinator.progressBarEnabled = false;
+        }
     }
 
     setFretboardNoteGameModeVariables() {
-        this.coreGameCoordinator.metronomeEnabled = true;
-        this.coreGameCoordinator.scoreEnabled = true;
-        this.coreGameCoordinator.progressBarEnabled = true;
-        this.coreGameCoordinator.noteDetectorEnabled = true;
+        if (document.querySelector('#fretboard-note-game-mode input').checked) {
+            this.coreGameCoordinator.metronomeEnabled = true;
+            this.coreGameCoordinator.scoreEnabled = true;
+            this.coreGameCoordinator.progressBarEnabled = true;
+            this.coreGameCoordinator.noteDetectorEnabled = true;
+        }
     }
 
     setNoteInKeyGameModeVariables() {
-        this.coreGameCoordinator.metronomeEnabled = false;
-        this.coreGameCoordinator.scoreEnabled = false;
-        this.coreGameCoordinator.progressBarEnabled = true;
-        this.coreGameCoordinator.noteDetectorEnabled = true;
+        if (document.querySelector('#note-in-key-game-mode input').checked) {
+            this.coreGameCoordinator.metronomeEnabled = false;
+            this.coreGameCoordinator.scoreEnabled = false;
+            this.coreGameCoordinator.progressBarEnabled = true;
+            this.coreGameCoordinator.noteDetectorEnabled = true;
+        }
     }
 
     /**

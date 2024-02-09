@@ -1,6 +1,6 @@
 <?php
 
-$version = '1.3.1';
+$version = '1.3.2';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
@@ -104,17 +104,6 @@ if (file_exists(__DIR__ . '/config/env.php')) {
 
             </div>
         </details>
-    </div>
-    <div id="key-and-string-container" style="display: none">
-        <div>
-            <span class="label">String</span>
-            <span class="note-value-span" id="string-span"></span>
-        </div>
-        <div>
-            <span class="label">Note</span>
-            <span class="note-value-span" id="note-span"></span>
-            <div id="treble-clef-output"></div>
-        </div>
     </div>
 </main>
 <script type="module" src="src/features/game-core/game-loader.js?v=<?= $version ?>"></script>
