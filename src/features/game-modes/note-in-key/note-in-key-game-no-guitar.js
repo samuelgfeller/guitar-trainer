@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.3.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.3.1";
 
 export class NoteInKeyGameNoGuitar {
     static diatonicNotesOnStrings;
@@ -142,8 +142,11 @@ export class NoteInKeyGameNoGuitar {
         // Clear the wrong color timeout
         clearTimeout(this.wrongColorTimeout);
 
+        console.log(event.target);
+        // If event.target contains a data-attribute note name take that as fret (either normal fret or open string)
+        const fret = event.target.dataset.noteName ? event.target : event.target.closest('.fret');
         // If fret indicator helper is clicked, get the note name from the parent fret
-        const noteName = event.target.dataset.noteName ?? event.target.closest('.fret').dataset.noteName;
+        const noteName = fret.dataset.noteName;
         const stringName = event.target.closest('.string').dataset.stringName;
         // Output note and string name to console
         console.log(`Note ${noteName} on string ${stringName} clicked`);
@@ -151,6 +154,10 @@ export class NoteInKeyGameNoGuitar {
         if (document.querySelector('#note-span').dataset.noteName === noteName
             && document.querySelector('#string-span').textContent === stringName) {
             document.dispatchEvent(new Event('correct-note-played'));
+            // Remove the fret-clicked class from previously clicked frets
+            document.querySelector('.fret-clicked')?.classList.remove('fret-clicked');
+            // Add the fret-clicked class to the clicked fret
+            fret.classList.add('fret-clicked');
         } else {
             // Color note-span orange for 700ms before reverting to default
             document.querySelector('#note-span').style.color = '#a96f00';

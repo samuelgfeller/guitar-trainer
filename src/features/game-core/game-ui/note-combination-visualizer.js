@@ -1,4 +1,4 @@
-import {TrebleClefVisualizer} from "../../treble-clef/treble-clef-visualizer.js?v=1.3.0";
+import {TrebleClefVisualizer} from "../../treble-clef/treble-clef-visualizer.js?v=1.3.1";
 
 export class NoteCombinationVisualizer {
 
