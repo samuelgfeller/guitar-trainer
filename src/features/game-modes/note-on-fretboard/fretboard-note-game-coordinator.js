@@ -1,29 +1,21 @@
-// const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
-// const strings = ['D', 'E', 'G', 'A', 'B'];
-
-import {GameNoteDisplayer} from "../../game-note-combination/game-note-displayer.js?v=1.3.2";
-import {FretboardGameChallengingNotesProvider} from "./fretboard-game-challenging-notes-provider.js?v=1.3.2";
-import {FretboardNoteGameCombinationGenerator} from "./fretboard-note-game-combination-generator.js?v=1.3.2";
-import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1.3.2";
+import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1.4.0";
+import {
+    NoteOnFretboardNoteHandler
+} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=1.4.0";
 
 /**
  * Game mode "note-on-fretboard" core logic
  */
 export class FretboardNoteGameCoordinator {
-    noteDisplayer;
+    // Create note displayer on note game coordinator init and not play() so that game can be paused and resumed
+    noteOnFretboardNoteHandler = new NoteOnFretboardNoteHandler();
 
     constructor() {
         // Is initialized in core game coordinator
-        this.fretboardNoteGameInitializer = new FretboardNoteGameInitializer();
+        this.fretboardNoteGameInitializer = new FretboardNoteGameInitializer(this);
         // Setup game components
         this.fretboardNoteGameInitializer.init();
-        // Create note displayer on note game coordinator init and not play() so that game can be paused and resumed
-        this.noteDisplayer = new GameNoteDisplayer(
-            new FretboardNoteGameCombinationGenerator(
-                ['E2', 'B', 'G', 'D', 'A', 'E'],
-                ['C', 'C♯', 'D', 'D♭', 'D♯', 'E', 'E♭', 'F', 'F♯', 'G', 'G♭', 'G♯', 'A', 'A♭', 'A♯', 'B', 'B♭'],
-            )
-        );
+
     }
 
     destroy(){
@@ -38,17 +30,18 @@ export class FretboardNoteGameCoordinator {
         // Add challenging combinations (if checkbox checked)
         if (document.querySelector('#challenging-notes-preset input').checked) {
             const getTrebleClefChallengingNotes = document.querySelector('#fretboard-note-game-treble-clef input').checked;
-            this.noteDisplayer.challengingCombinations =
-                FretboardGameChallengingNotesProvider.getChallengingNotes(getTrebleClefChallengingNotes);
+            // this.noteDisplayer.challengingCombinations =
+            //     FretboardGameChallengingNotesProvider.getChallengingNotes(getTrebleClefChallengingNotes);
         }
 
-        this.noteDisplayer.beingGame()
+        this.noteOnFretboardNoteHandler.beingGame();
+        this.noteOnFretboardNoteHandler.displayNotes(true);
     }
 
     stop() {
         // game stop event which calls this function may be called before game start (e.g. when levels are changed)
-        if (this.noteDisplayer) {
-            this.noteDisplayer.endGame();
+        if (this.noteOnFretboardNoteHandler) {
+            this.noteOnFretboardNoteHandler.endGame();
         }
     }
 

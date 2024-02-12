@@ -1,15 +1,15 @@
-import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=1.3.2";
+import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=1.4.0";
 
 /**
  * Progress update for games that use the metronome and have challenging
  * combinations
  */
-export class GameProgressUpdater {
+export class GameProgressUpdaterOld {
 
     maxWrongCombinations = 0;
 
     /**
-     * @param {GameNoteDisplayer} noteDisplayCoordinator
+     * @param {NoteOnFretboardNoteHandler} noteDisplayCoordinator
      */
     constructor(noteDisplayCoordinator) {
         this.noteDisplayCoordinator = noteDisplayCoordinator;
@@ -17,8 +17,8 @@ export class GameProgressUpdater {
 
     updateGameStats() {
         GameProgressVisualizer.displayGameStats(
-            this.noteDisplayCoordinator.correctCount,
-            this.noteDisplayCoordinator.incorrectCount,
+            this.noteDisplayCoordinator.correctNoteCount,
+            this.noteDisplayCoordinator.incorrectNoteCount,
             this.maxWrongCombinations
         );
     }

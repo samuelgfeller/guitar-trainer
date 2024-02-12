@@ -31,7 +31,7 @@ export class GameProgressVisualizer {
         }
     }
 
-    static resetProgress() {
+    static hideProgress() {
         document.querySelector('#game-progress-div').style.display = 'none';
         document.querySelector('#score').style.display = 'none';
     }

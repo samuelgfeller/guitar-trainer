@@ -1,9 +1,11 @@
-import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.3.2";
-import {NoteCombinationVisualizer} from "../../game-core/game-ui/note-combination-visualizer.js?v=1.3.2";
+import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.4.0";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.4.0";
 
-export class FretboardNoteGameCombinationGenerator {
-    constructor(strings, notes) {
-        this.noteShuffler = new NoteShuffler(strings, notes);
+export class NoteOnFretboardGenerator {
+    constructor() {
+        // The noteShuffler shuffles and stores the note combinations
+        // getNextNoteCombination() returns the next note combination from the noteShuffler or the next challenging note
+        this.noteShuffler = new NoteShuffler();
     }
 
     /**
@@ -56,7 +58,7 @@ export class FretboardNoteGameCombinationGenerator {
         }
 
         // Since we are mixing combinations from notesProvider and challenging combinations, there may be
-        // same consecutive notes or half a tone appart on the same string, so it's tested here and
+        // same consecutive notes or half a tone apart on the same string, so it's tested here and
         // if it's the case, the function is called again.
         if (previousCombination && this.noteShuffler.isHalfToneDifference(previousCombination, combination)) {
             console.debug(`Previous combination ${previousCombination} and current ${combination}` +
@@ -65,12 +67,12 @@ export class FretboardNoteGameCombinationGenerator {
             // To prevent infinite loops when e.g. the next note combination from note provider is A|D and the
             // only challenging note is also A|D, there is a count on how many times this function is called;
             // Once this count exceeds the given limit, the current combination is displayed regardless
-            // if it's the same note on a different string or not half a tone appart
+            // if it's the same note on a different string or not half a tone apart
             this.attemptToDisplayNextCombinationCount++;
             if (this.attemptToDisplayNextCombinationCount > 200) {
-                console.debug(`Next combination displayed even if not half tone appart or same note. Attempts over 200.`)
+                console.debug(`Next combination displayed even if not half tone apart or same note. Attempts over 200.`)
             } else {
-                // Call function again to try to find a combination that is half a tone appart (in challenging or vice versa)
+                // Call function again to try to find a combination that is half a tone apart (in challenging or vice versa)
                 return this.getNextCombination(combinations, previousCombination);
             }
         }
@@ -80,11 +82,22 @@ export class FretboardNoteGameCombinationGenerator {
             this.noteShuffler.incrementShuffledCombinationsIndex();
         } else {
             // Color spans to orange
-            NoteCombinationVisualizer.setNoteSpanColorToIndicateChallenging();
+            NoteDisplayer.setNoteSpanColorToIndicateChallenging();
         }
 
         // Reset the attempts to display next combination counter
         this.attemptToDisplayNextCombinationCount = 0;
-        return {stringName: stringName, noteName: noteName};
+        return {stringName: stringName, noteName: this.randomizeSharpAndFlat(noteName)};
+    }
+
+    // Randomly replace # with b to have a more balanced game
+    randomizeSharpAndFlat(noteName) {
+        if (noteName.includes('♯') && Math.random() < 0.5) {
+            // Get the note index from the note above the current note and wrap around if it's the last one
+            const noteAboveIndex = (this.noteShuffler.notes.indexOf(noteName) + 1) % this.noteShuffler.notes.length;
+            return this.noteShuffler.notes[noteAboveIndex].replace('♯', '♭');
+        }
+
+        return noteName;
     }
 }

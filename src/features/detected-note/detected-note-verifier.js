@@ -1,5 +1,5 @@
-import {DetectedNoteVisualizer} from "./detected-note-visualizer.js?v=1.3.2";
-import {NoteCombinationVisualizer} from "../game-core/game-ui/note-combination-visualizer.js?v=1.3.2";
+import {DetectedNoteVisualizer} from "./detected-note-visualizer.js?v=1.4.0";
+import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=1.4.0";
 
 export class DetectedNoteVerifier {
     // Variable is set in note-combination-coordinator each time new note is displayed
@@ -18,9 +18,9 @@ export class DetectedNoteVerifier {
         // console.log(`noteToPlay: ${this.noteToPlay} playedNote: ${playedNote}`);
         // C# and Db are the same note
         if (this.noteToPlay === sharp || this.noteToPlay === flat) {
-            console.log('Correct note played', this.noteToPlay);
+            console.log('Correct note played', this.noteToPlay,'string ');
             // Color spans and detected note in green when correct
-            NoteCombinationVisualizer.setColorsToIndicateCorrectlyPlayedNote();
+            NoteDisplayer.setColorsToIndicateCorrectlyPlayedNote();
 
             // A correct note should only be accounted once, but event listener catches the same note multiple times
             if (!this.correctNoteAccounted) {
@@ -34,7 +34,7 @@ export class DetectedNoteVerifier {
             }
         } else {
             // If an incorrect note is played, remove green color from frequency canvas and detected note
-            NoteCombinationVisualizer.resetDetectedNoteColor();
+            NoteDisplayer.resetDetectedNoteColor();
         }
         // Display the detected note in the GUI
         DetectedNoteVisualizer.updateDetectedNoteAndCents(event.detail);

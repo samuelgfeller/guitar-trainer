@@ -1,6 +1,6 @@
 <?php
 
-$version = '1.3.2';
+$version = '1.4.0';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
@@ -69,6 +69,7 @@ if (file_exists(__DIR__ . '/config/env.php')) {
         <img class="icon" id="start-stop-btn" src="src/assets/images/play-icon.svg">
     </div>
 </header>
+<!--<button id="simulate-correct-note" style="font-size: 16px; background: #3c4143;margin: 20px auto 0; display: block">Play correct note</button>-->
 <main id="game-container">
     <!--<div id="progress-bar-title-div">-->
     <!--    <span>Challenging notes count</span>-->

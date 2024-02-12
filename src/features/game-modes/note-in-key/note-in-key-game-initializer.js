@@ -1,10 +1,10 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.3.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.3.2";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.3.2";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.3.2";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.3.2";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.3.2";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.3.2";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.4.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.4.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.4.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.4.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.4.0";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.4.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.4.0";
 
 export class NoteInKeyGameInitializer {
     // Possible keys
@@ -101,7 +101,7 @@ export class NoteInKeyGameInitializer {
             // Pause game, display instructions, hide current string and key and hide game progress
             // GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
             // document.querySelector('#current-key-and-string').style.display = 'none';
-            GameProgressVisualizer.resetProgress();
+            GameProgressVisualizer.hideProgress();
         }
     }
 
@@ -120,7 +120,7 @@ export class NoteInKeyGameInitializer {
         document.querySelector('#note-in-key-game-strings-div').remove();
         document.querySelector('#string-option-title').remove();
 
-        document.querySelector('#key-and-string-container').remove();
+        document.querySelector('#note-and-string-container').remove();
 
         // Event listeners that were tied to html components that are not removed or replaced on game mode change
         // don't need to be removed as that removes the event listeners from the html components as well
@@ -298,7 +298,7 @@ export class NoteInKeyGameInitializer {
             to create this tool.</p>
             `;
         document.querySelector('main').insertAdjacentHTML('beforeend',
-            `<div id="key-and-string-container" style="display: none">
+            `<div id="note-and-string-container" style="display: none">
                 <div>
                     <span class="label">String</span>
                     <span class="note-value-span" id="string-span"></span>

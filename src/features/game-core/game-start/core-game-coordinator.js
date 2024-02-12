@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.3.2";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1.3.2";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.3.2";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.3.2";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.3.2";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.4.0";
+import {TuneOperator} from "../tuner/tune-operator.js?v=1.4.0";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.4.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.4.0";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.4.0";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -28,6 +28,8 @@ export class CoreGameCoordinator {
         // Listen for game stop event to stop game
         document.addEventListener('game-stop', this.stopGame.bind(this));
         document.addEventListener('game-start', this.startGame.bind(this));
+
+        this.boundCorrectNoteButtonEventHandler = this.correctNoteButtonEventHandler.bind(this);
 
         this.screenWakeLocker = new ScreenWakeLocker();
     }
@@ -57,6 +59,12 @@ export class CoreGameCoordinator {
         document.getElementById('config-div').classList.remove('expanded');
         // Display progress bar and score
         GameElementsVisualizer.showGameProgress(this.progressBarEnabled, this.scoreEnabled);
+
+        document.querySelector('#simulate-correct-note')?.addEventListener('click', this.boundCorrectNoteButtonEventHandler);
+    }
+
+    correctNoteButtonEventHandler() {
+        document.dispatchEvent(new Event('correct-note-played'));
     }
 
 
@@ -90,6 +98,8 @@ export class CoreGameCoordinator {
         GameElementsVisualizer.togglePlayPauseButton('stop');
 
         this.screenWakeLocker.releaseWakeLock();
+
+        document.querySelector('#simulate-correct-note')?.removeEventListener('click', this.boundCorrectNoteButtonEventHandler);
     }
 
     startTuner() {

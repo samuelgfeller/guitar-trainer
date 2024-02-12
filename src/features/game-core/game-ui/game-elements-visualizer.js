@@ -1,10 +1,10 @@
-import {GameLevelTracker} from "../game-progress/game-level-tracker.js?v=1.3.2";
+import {GameLevelTracker} from "../game-progress/game-level-tracker.js?v=1.4.0";
 
 export class GameElementsVisualizer {
     static hideGameElementsAndDisplayInstructions() {
         // Hide key and string container and remove notes from string and note span
-        if (document.querySelector('#key-and-string-container')) {
-            document.querySelector('#key-and-string-container').style.display = 'none';
+        if (document.querySelector('#note-and-string-container')) {
+            document.querySelector('#note-and-string-container').style.display = 'none';
             document.getElementById('string-span').innerHTML = '';
             document.getElementById('note-span').innerHTML = '';
         }
@@ -33,8 +33,8 @@ export class GameElementsVisualizer {
 
         // Display game elements and remove instructions
         document.querySelector('#game-start-instruction').style.display = 'none';
-        if (document.querySelector('#key-and-string-container')) {
-            document.querySelector('#key-and-string-container').style.display = null;
+        if (document.querySelector('#note-and-string-container')) {
+            document.querySelector('#note-and-string-container').style.display = null;
         }
     }
 

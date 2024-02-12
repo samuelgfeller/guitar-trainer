@@ -1,6 +1,6 @@
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.3.2";
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.3.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.3.2";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1.4.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.4.0";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=1.4.0";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -16,7 +16,7 @@ export class MetronomePracticeInitializer {
             `<p>Click <img class="icon" src="src/assets/images/play-icon.svg"> or double tap blank space to start the metronome.</p>
             <p>Select an exercise by clicking on the title. To start the timer, click on it.</p>
             <p>Exercise timer: <input id="exercise-timer-input" type="number">min</p>`
-        GameConfigurationManager.showBpmInput();
+        BpmInput.addBpmInput();
         this.initBpmInputForMetronome();
         this.initTimerInputForExercises();
         this.addExercisesHtml();

@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.3.2";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.4.0";
 
 export class NoteInKeyGameNoGuitar {
     static diatonicNotesOnStrings;
@@ -9,7 +9,7 @@ export class NoteInKeyGameNoGuitar {
             console.log('no guitar option changed');
 
             document.dispatchEvent(new Event('game-stop'));
-            GameProgressVisualizer.resetProgress();
+            GameProgressVisualizer.hideProgress();
             noteInKeyGameCoordinator.reloadKeyAndString();
 
             if (document.querySelector('#no-guitar-option input').checked) {
@@ -142,7 +142,6 @@ export class NoteInKeyGameNoGuitar {
         // Clear the wrong color timeout
         clearTimeout(this.wrongColorTimeout);
 
-        console.log(event.target);
         // If event.target contains a data-attribute note name take that as fret (either normal fret or open string)
         const fret = event.target.dataset.noteName ? event.target : event.target.closest('.fret');
         // If fret indicator helper is clicked, get the note name from the parent fret

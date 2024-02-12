@@ -1,8 +1,4 @@
 @media (min-width: 100px) {
-    #treble-clef-output {
-        display: none;
-    }
-
     #fretboard {
         display: flex;
         flex-direction: column;
