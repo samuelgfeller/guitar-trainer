@@ -1,9 +1,9 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.4.0";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.4.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.4.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.4.0";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=1.4.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.4.0";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.5.0";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.5.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.5.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.5.0";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=1.5.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.5.0";
 
 export class FretboardNoteGameInitializer {
 
@@ -76,6 +76,7 @@ export class FretboardNoteGameInitializer {
         document.querySelector('header div').style.borderBottomColor = null;
         document.querySelector('#note-and-string-container').remove();
         document.querySelector('#note-on-fretboard-game-strings-div').remove();
+        document.querySelector('#string-option-title').remove();
 
         // These would have to be changed to arrow attributes to be able to remove them levelUp.bind(this) doesnt work
         // document.removeEventListener('leveled-up', this.levelUp.bind(this));

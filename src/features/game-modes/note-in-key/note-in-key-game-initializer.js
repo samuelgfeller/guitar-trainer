@@ -1,10 +1,10 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.4.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.4.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.4.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.4.0";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.4.0";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.4.0";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.4.0";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.5.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.5.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.5.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.5.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.5.0";
+import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.5.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.5.0";
 
 export class NoteInKeyGameInitializer {
     // Possible keys
@@ -87,7 +87,6 @@ export class NoteInKeyGameInitializer {
     reloadKeyAndStringEventHandler() {
         console.trace('reloadKeyAndStringEventHandler');
         const gameIsRunning = this.noteInKeyGameCoordinator.gameIsRunning;
-        console.log(this, this.noteInKeyGameCoordinator.gameIsRunning);
         // Pause game
         document.dispatchEvent(new Event('game-stop'));
         // Load new key on string
@@ -119,6 +118,7 @@ export class NoteInKeyGameInitializer {
         // Remove string options
         document.querySelector('#note-in-key-game-strings-div').remove();
         document.querySelector('#string-option-title').remove();
+        document.querySelector('#scale-roadmaps').remove();
 
         document.querySelector('#note-and-string-container').remove();
 
@@ -207,6 +207,15 @@ export class NoteInKeyGameInitializer {
                         <!--<span class="normal-font-size"></span>-->
                         <img src="src/assets/images/no-guitar-icon.svg" class="button-icon">
                     </label>
+                    <label class='checkbox-button option-for-game-mode always-same-key-option' id="g-key-option">
+                        <input type='checkbox' data-string="E" data-key="G">
+                        <span class="normal-font-size">G key</span>
+                    </label>
+                    <label class='checkbox-button option-for-game-mode always-same-key-option' id="d-key-option">
+                        <input type='checkbox' data-string="A" data-key="D">
+                        <span class="normal-font-size">D key</span>
+                    </label>
+                    
                     `;
         document.querySelector('#game-mode-options').insertAdjacentHTML('afterend', `
                     <span class="normal-font-size label-text options-title-span" id="string-option-title">Strings</span>
@@ -248,6 +257,9 @@ export class NoteInKeyGameInitializer {
                 this.setAvailableNotesOnStrings();
                 this.reloadKeyAndStringEventHandler();
             });
+
+        // Add event listeners for always the same key options
+        this.addAlwaysSameKeyEventListeners();
 
         document.querySelector('#header-center-container').innerHTML =
             `<img src="src/assets/images/reload-icon.svg" id="reload-key-btn"> Reload key`;
@@ -297,6 +309,16 @@ export class NoteInKeyGameInitializer {
             on how to find the chords to any song on guitar from Andrew Clarke that motivated me
             to create this tool.</p>
             `;
+        document.querySelector('#game-start-instruction').insertAdjacentHTML('afterend',
+            `<div id="scale-roadmaps">
+                <details open>
+                    <summary><h3>Full scale roadmaps</h3></summary>
+                    <img src="src/assets/images/roadmaps/G-heptatonic-scale-numbered.svg" class="roadmap-image"
+                    alt="roadmap">
+                    <img src="src/assets/images/roadmaps/D-heptatonic-scale-numbered.svg" class="roadmap-image">
+                    </details>`);
+
+
         document.querySelector('main').insertAdjacentHTML('beforeend',
             `<div id="note-and-string-container" style="display: none">
                 <div>
@@ -308,5 +330,30 @@ export class NoteInKeyGameInitializer {
                     <span class="note-value-span" id="note-span"></span>
                 </div>
             </div>`);
+    }
+
+    addAlwaysSameKeyEventListeners() {
+        const alwaysSameKeyOptions = document.querySelectorAll('.always-same-key-option');
+        const self = this;
+        // If one of the key options is checked, the other should be unchecked
+        for (const option of alwaysSameKeyOptions) {
+            option.addEventListener('change', () => {
+                console.log(option.querySelector('input').checked);
+                // If the checkbox was not checked before
+                if (option.querySelector('input').checked) {
+
+                    // When one game mode is selected, uncheck all game modes
+                    for (const disabledOption of alwaysSameKeyOptions) {
+                        disabledOption.querySelector('input').checked = false;
+                        // Fire change event so that option value is stored in local storage
+                        disabledOption.querySelector('input').dispatchEvent(new Event('change'));
+                    }
+                    // The radio button that was clicked should be checked only if it was not checked before
+                    option.querySelector('input').checked = true;
+                    option.querySelector('input').dispatchEvent(new Event('change'));
+                }
+                this.reloadKeyAndStringEventHandler();
+            });
+        }
     }
 }

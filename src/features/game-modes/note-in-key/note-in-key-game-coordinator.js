@@ -1,5 +1,5 @@
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.4.0";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.4.0";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.5.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.5.0";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -40,6 +40,8 @@ export class NoteInKeyGameCoordinator {
         // Start no guitar game if no guitar option is checked
         NoteInKeyGameNoGuitar.playNoGuitarNoteInKey(this.noteInKeyGenerator.diatonicNotesOnStrings, this.keyString, this.keyNote);
 
+        document.querySelector('#scale-roadmaps').style.display = 'none';
+
         // Start the timer
         this.timerInterval = setInterval(() => {
             this.timer += 1;
@@ -57,6 +59,7 @@ export class NoteInKeyGameCoordinator {
         if (document.querySelector('#fretboard')) {
             document.querySelector('#fretboard').style.display = 'none';
         }
+        document.querySelector('#scale-roadmaps').style.display = null;
     }
 
     destroy() {
@@ -77,12 +80,24 @@ export class NoteInKeyGameCoordinator {
 
     reloadKeyAndString() {
         console.log('reload key and string in note in key game');
-        // Get new string and key
-        let {keyString, keyNote} = this.noteInKeyGenerator.getNewStringAndKey();
-        this.keyNote = keyNote;
-        this.keyString = keyString;
+
+        // Select the checked checkbox if there is one
+        const checkedCheckbox = document.querySelector('.always-same-key-option input[type="checkbox"]:checked');
+
+        // If a checkbox is checked
+        if (checkedCheckbox) {
+            // Use the data-string and data-key attributes of the checked checkbox
+            this.keyString = checkedCheckbox.getAttribute('data-string');
+            this.keyNote = checkedCheckbox.getAttribute('data-key');
+        }else{
+            // Get new string and key
+            const { keyString, keyNote } = this.noteInKeyGenerator.getNewStringAndKey();
+            this.keyString = keyString;
+            this.keyNote = keyNote;
+        }
+
         // Prepare the attribute containing the notes on strings that may be displayed (diatonic to key, difficulty)
-        this.noteInKeyGenerator.loadShuffledCombinations(keyString, keyNote);
+        this.noteInKeyGenerator.loadShuffledCombinations(this.keyString, this.keyNote);
         console.log('key reloaded');
         // Display current key and string
         document.getElementById('current-key-and-string').innerHTML =

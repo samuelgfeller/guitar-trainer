@@ -1,5 +1,5 @@
-import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.4.0";
-import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.4.0";
+import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.5.0";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.5.0";
 
 export class NoteOnFretboardGenerator {
     constructor() {
@@ -95,7 +95,7 @@ export class NoteOnFretboardGenerator {
         if (noteName.includes('♯') && Math.random() < 0.5) {
             // Get the note index from the note above the current note and wrap around if it's the last one
             const noteAboveIndex = (this.noteShuffler.notes.indexOf(noteName) + 1) % this.noteShuffler.notes.length;
-            return this.noteShuffler.notes[noteAboveIndex].replace('♯', '♭');
+            return this.noteShuffler.notes[noteAboveIndex] + '♭';
         }
 
         return noteName;
