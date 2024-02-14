@@ -1,5 +1,5 @@
-import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.6.0";
-import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.6.0";
+import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.6.1";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.6.1";
 
 export class NoteOnFretboardGenerator {
     constructor() {
