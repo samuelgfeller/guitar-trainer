@@ -1,12 +1,13 @@
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.5.0";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.5.0";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1.6.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.6.0";
 
 export class NoteInKeyGameCoordinator {
     string;
     key;
 
     // Class responsible for displaying the note and the string with all the verification and progress logic
-    noteDisplayer;
+    /** @var {NoteInKeyNoteHandler} */
+    noteHandler;
     // Instance created in initialization
     noteInKeyGenerator;
 
@@ -29,13 +30,13 @@ export class NoteInKeyGameCoordinator {
         document.querySelector('#current-key-and-string').style.display = 'block';
 
         // After the correct number has been played, replace number with note name - or not
-        this.noteDisplayer.detectedNoteVerifier.displayCorrectNoteName = false;
+        this.noteHandler.detectedNoteVerifier.displayCorrectNoteName = false;
 
         // Manually call displayNotes because the first combination should be the note of the key
         this.displayFirstNoteOfKey();
 
         // Init event listeners that will automatically call displayNotes() when correct note has been played
-        this.noteDisplayer.beingGame();
+        this.noteHandler.beingGame();
 
         // Start no guitar game if no guitar option is checked
         NoteInKeyGameNoGuitar.playNoGuitarNoteInKey(this.noteInKeyGenerator.diatonicNotesOnStrings, this.keyString, this.keyNote);
@@ -52,7 +53,7 @@ export class NoteInKeyGameCoordinator {
         // Pause timer
         clearInterval(this.timerInterval);
 
-        this.noteDisplayer?.endGame();
+        this.noteHandler?.endGame();
         this.gameIsRunning = false;
         // Hide current key and string
         document.querySelector('#current-key-and-string').style.display = 'none';
@@ -64,6 +65,7 @@ export class NoteInKeyGameCoordinator {
 
     destroy() {
         this.noteInkeyGameInitializer.destroy();
+        this.noteHandler.destroy();
         NoteInKeyGameNoGuitar.destroyNoGuitarGameOption();
     }
 
@@ -72,7 +74,7 @@ export class NoteInKeyGameCoordinator {
      */
     displayFirstNoteOfKey() {
         // Manually call displayNotes because the first combination should be the note of the key
-        this.noteDisplayer.displayNotes({
+        this.noteHandler.displayNotes({
             stringName: this.keyString,
             noteName: {noteName: this.keyNote, number: 1}
         }, true);

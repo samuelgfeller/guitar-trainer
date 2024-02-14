@@ -28,8 +28,8 @@ export class VisibilityChangeHandler {
                     // Display time before restart modal box
                     let htmlString = `<div id="modal" class="visibility-change-modal">
                              <div id="modal-box">
-                             <div id="modal-header">Time before restart</div>
-                             <div id="modal-body"><h1 id="countdown">1s</h1></div>
+                             <div id="modal-header"></div>
+                             <div id="modal-body">Time before restart<br><h1 id="countdown">1s</h1></div>
                              </div></div>`;
                     // Insert at end of page content which is in <main></main>
                     document.querySelector('main').insertAdjacentHTML('beforeend', htmlString);

@@ -383,10 +383,12 @@
         justify-content: space-between;
         flex-wrap: nowrap;
         color: #b6b6b6;
+        line-height: 1.1em;
     }
 
     #game-container #progress-bar-container span {
         width: fit-content;
+        height: 1em;
     }
 
     #progress-bar-container .meter {

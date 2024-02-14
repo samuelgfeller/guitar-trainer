@@ -104,9 +104,9 @@ export class NoteShuffler {
         // the same note.
         // this.shuffledCombinations = "B|F♯,B|C♯,G|F♯,G|E,B|G,A|D,G|C,A|C♯,B|D,A|F,G|D♯,G|B,A|G,D|A♯,E|F,B|E,E|B,G|G♯,D|C♯,E|G,D|G♯,E|A♯,G|D,B|C,D|F,E|C♯,A|B,D|E,E|A,A|A♯,E|C,D|A,B|G♯,E|D♯,B|F,B|A♯,D|G,G|C♯,D|B,E|D,D|C,A|G♯,A|C,D|F♯,A|E,B|D♯,G|A♯,B|A,E|G♯,A|D♯,G|F,E|F♯,G|A,D|D♯,A|F♯".split(",");
         console.debug('Shuffled combinations: ' + this.shuffledCombinations, `Amount: ${this.shuffledCombinations.length}`);
-        this.shuffledCombinations.forEach((combination, index) => {
-            console.debug(`${index}: ${combination}`);
-        });
+        // this.shuffledCombinations.forEach((combination, index) => {
+        //     console.debug(`${index}: ${combination}`);
+        // });
         return this.shuffledCombinations.length;
     }
 

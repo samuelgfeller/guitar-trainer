@@ -1,13 +1,14 @@
-import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1.5.0";
+import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1.6.0";
 import {
     NoteOnFretboardNoteHandler
-} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=1.5.0";
+} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=1.6.0";
 
 /**
  * Game mode "note-on-fretboard" core logic
  */
 export class FretboardNoteGameCoordinator {
     // Create note displayer on note game coordinator init and not play() so that game can be paused and resumed
+    /** @var {NoteOnFretboardNoteHandler} */
     noteOnFretboardNoteHandler = new NoteOnFretboardNoteHandler();
 
     constructor() {
@@ -20,6 +21,7 @@ export class FretboardNoteGameCoordinator {
 
     destroy(){
         this.fretboardNoteGameInitializer.destroy();
+        this.noteOnFretboardNoteHandler.destroy();
     }
 
     /**

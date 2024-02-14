@@ -1,5 +1,5 @@
-import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.5.0";
-import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.5.0";
+import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1.6.0";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.6.0";
 
 export class NoteOnFretboardGenerator {
     constructor() {
@@ -61,9 +61,10 @@ export class NoteOnFretboardGenerator {
         // same consecutive notes or half a tone apart on the same string, so it's tested here and
         // if it's the case, the function is called again.
         if (previousCombination && this.noteShuffler.isHalfToneDifference(previousCombination, combination)) {
-            console.debug(`Previous combination ${previousCombination} and current ${combination}` +
-                ` not over half a tone difference so a new combination is displayed. Challenging count: ${combinationAmount}`);
-
+            if(this.attemptToDisplayNextCombinationCount < 3) {
+                console.debug(`Previous combination ${previousCombination} and current ${combination}` +
+                    ` not over half a tone difference so a new combination is displayed. Challenging count: ${combinationAmount}`);
+            }
             // To prevent infinite loops when e.g. the next note combination from note provider is A|D and the
             // only challenging note is also A|D, there is a count on how many times this function is called;
             // Once this count exceeds the given limit, the current combination is displayed regardless

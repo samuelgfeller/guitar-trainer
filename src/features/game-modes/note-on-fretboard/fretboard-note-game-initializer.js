@@ -1,12 +1,15 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.5.0";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.5.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.5.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.5.0";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=1.5.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.5.0";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1.6.0";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.6.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.6.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.6.0";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=1.6.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.6.0";
 
 export class FretboardNoteGameInitializer {
 
+    /**
+     * @param {FretboardNoteGameCoordinator} fretboardNoteGameCoordinator
+     */
     constructor(fretboardNoteGameCoordinator) {
         this.fretboardNoteGameCoordinator = fretboardNoteGameCoordinator;
         this.levelLocalStorageKey = 'fretboard-note-game-accomplished-levels';
@@ -32,7 +35,7 @@ export class FretboardNoteGameInitializer {
         GameConfigurationManager.initGameModeOptions('note-on-fretboard-game-strings-div');
         this.initStringOptionsEventListeners();
         // Must be after the string options have been initialized
-        this.setAvailableStrings();
+        this.setAvailableStringsAndShuffleNotes();
     }
 
     initStringOptionsEventListeners() {
@@ -40,7 +43,7 @@ export class FretboardNoteGameInitializer {
         const stringOptions = document.querySelectorAll('#note-on-fretboard-game-strings-div input');
         stringOptions.forEach((stringOption) => {
             stringOption.addEventListener('change', () => {
-                this.setAvailableStrings();
+                this.setAvailableStringsAndShuffleNotes();
                 document.dispatchEvent(new Event('game-stop'));
                 GameProgressVisualizer.hideProgress();
                 document.dispatchEvent(new Event('reset-game-progress'));
@@ -48,7 +51,7 @@ export class FretboardNoteGameInitializer {
         });
     }
 
-    setAvailableStrings() {
+    setAvailableStringsAndShuffleNotes() {
         // Get the selected strings
         const selectedStringsCheckboxes = document.querySelectorAll('#note-on-fretboard-game-strings-div input:checked');
         const selectedStrings = Array.from(selectedStringsCheckboxes).map(input => input.value);
@@ -63,7 +66,7 @@ export class FretboardNoteGameInitializer {
 
         console.debug('Available strings', selectedStrings);
 
-        this.fretboardNoteGameCoordinator.noteOnFretboardNoteHandler.setAvailableStrings(selectedStrings);
+        this.fretboardNoteGameCoordinator.noteOnFretboardNoteHandler.setAvailableStringsAndShuffleNotesList(selectedStrings);
         // NoteInKeyGameNoGuitar.availableNotesOnStrings = notesOnStrings;
     }
 
@@ -77,11 +80,6 @@ export class FretboardNoteGameInitializer {
         document.querySelector('#note-and-string-container').remove();
         document.querySelector('#note-on-fretboard-game-strings-div').remove();
         document.querySelector('#string-option-title').remove();
-
-        // These would have to be changed to arrow attributes to be able to remove them levelUp.bind(this) doesnt work
-        // document.removeEventListener('leveled-up', this.levelUp.bind(this));
-        // document.removeEventListener('go-to-next-level', this.goToNextLevel.bind(this));
-
     }
 
     levelUp() {
@@ -89,13 +87,22 @@ export class FretboardNoteGameInitializer {
         let level = document.getElementById('bpm-input').value;
         GameLevelTracker.addAccomplishedLevel(level, this.levelLocalStorageKey);
 
+        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+        document.dispatchEvent(new Event('reset-game-progress'));
+
         // Fire game-stop event and display modal
         LevelUpVisualizer.stopGameAndDisplayLeveledUpModal(
             'Level completed!',
             'Go to next level',
             this.goToNextLevel.bind(this),
-            this.restartLevel
+            this.restartLevel.bind(this),
+            () => {this.setAvailableStringsAndShuffleNotes()}
         );
+    }
+
+    restartLevel() {
+        this.setAvailableStringsAndShuffleNotes();
+        document.dispatchEvent(new Event('game-start'));
     }
 
     goToNextLevel() {
@@ -110,12 +117,6 @@ export class FretboardNoteGameInitializer {
         GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
         // No need to call reset game progress here because it's called in the bpm input change event handler
     }
-
-    restartLevel() {
-        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
-        document.dispatchEvent(new Event('reset-game-progress'));
-    }
-
 
     initFretboardNoteGameLevelChangeEventListener() {
         const bpmInput = document.querySelector('#bpm-input');

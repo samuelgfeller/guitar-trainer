@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.5.0";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1.5.0";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.5.0";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.5.0";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.5.0";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1.6.0";
+import {TuneOperator} from "../tuner/tune-operator.js?v=1.6.0";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1.6.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1.6.0";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1.6.0";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -83,7 +83,7 @@ export class CoreGameCoordinator {
         if (this.gameCoordinator !== null) {
             this.gameCoordinator.stop();
         }
-        if (!event.detail?.includes('visibility-change') && !event.detail?.includes('level-up')) {
+        if (!event.detail?.includes('visibility-change')) {
             // Hide game elements and display instructions only when not after level up or visibility change
             GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
         }

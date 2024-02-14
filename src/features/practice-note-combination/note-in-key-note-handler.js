@@ -1,6 +1,6 @@
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.5.0";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.5.0";
-import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=1.5.0";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=1.6.0";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=1.6.0";
+import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=1.6.0";
 
 /**
  * Note displayer for "practice" mode, which means
@@ -8,9 +8,11 @@ import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=1
  * No time limit to play note and change happens after
  * the correct note has been played.
  */
-export class PracticeNoteDisplayer {
+export class NoteInKeyNoteHandler {
 
     correctNoteCount = 0;
+
+    notUpdateCorrectCount = false;
 
     /**
      *
@@ -32,42 +34,68 @@ export class PracticeNoteDisplayer {
         this.increaseCorrectNoteCountHandler = this.increaseCorrectNoteCount.bind(this);
     }
 
-
+    /**
+     * Resume or start game
+     */
     beingGame() {
-        // Event fired each time a correct note has been played
-        document.addEventListener('correct-note-played', this.displayNotesHandler);
         // Correct count has to be in separate function than displayNotes for the case the game is paused and resumed
         document.addEventListener('correct-note-played', this.increaseCorrectNoteCountHandler);
+        // Event fired each time a correct note has been played
+        document.addEventListener('correct-note-played', this.displayNotesHandler);
         // Custom event when played note was detected
         document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
-        // Event removed in destroy function of the game coordinator
+        // Event removed in destroy function and this is good enough as when pausing and resuming the game multiple
+        // times, js does not add multiple duplicate named event handlers
+        // https://www.js-craft.io/blog/javascript-addeventlistener-will-not-duplicate-named-functions/
         document.addEventListener('reset-game-progress', this.resetGameProgressHandler);
+
+        this.updateProgressBar();
     }
 
+    /**
+     * Pause game
+     */
     endGame() {
         document.removeEventListener('correct-note-played', this.displayNotesHandler);
         document.addEventListener('correct-note-played', this.increaseCorrectNoteCountHandler);
         document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
+        // rest-game-progress event listener is removed in destroy function
+        // https://www.js-craft.io/blog/javascript-addeventlistener-will-not-duplicate-named-functions/
+    }
+
+    /**
+     * When game mode is changed and everything has to be cleaned up
+     */
+    destroy(){
+        document.removeEventListener('reset-game-progress', this.resetGameProgressHandler);
     }
 
     increaseCorrectNoteCount() {
-        this.correctNoteCount++;
+        if (this.notUpdateCorrectCount === false) {
+            this.correctNoteCount++;
+        } else {
+            this.notUpdateCorrectCount = false;
+        }
+
+        this.updateProgressBar();
     }
 
-    displayNotes(combination, firstCall = false) {
-        this.updateProgressBar();
+    displayNotes(combination) {
+        // Determine the string and note to display
+        let stringName, noteName;
+        // Get the next combination
+        if (combination && typeof combination === 'object' && 'noteName' in combination) {
+            ({stringName, noteName} = combination);
+            // Not update correct count if the combination is given as it's the first one
+            this.notUpdateCorrectCount = true;
+        } else {
+            ({stringName, noteName} = this.noteGenerator.getNextCombination());
+        }
         // Function to display the note combination
         const displayNoteCombination = () => {
             this.detectedNoteVerifier.correctNoteAccounted = false;
             NoteDisplayer.resetAllColors();
 
-            let stringName, noteName;
-            // Get the next combination
-            if (combination && typeof combination === 'object' && 'noteName' in combination) {
-                ({stringName, noteName} = combination);
-            } else {
-                ({stringName, noteName} = this.noteGenerator.getNextCombination());
-            }
             // Note could be displayed as number
             let noteNumber = null;
             // Check if note is an object or a string
@@ -84,14 +112,16 @@ export class PracticeNoteDisplayer {
         // If the progress bar is not full yet, display the next note combination instantly if it is the first call,
         // otherwise wait 700ms before displaying the next note combination
         if (this.correctNoteCount <= this.notesAmountForFullProgressBar) {
-            if (firstCall) {
+            // If notUpdateCorrectCount is true, it means the combination is given as an argument, and thus
+            // it's the first combination and there should not be a delay
+            if (this.notUpdateCorrectCount) {
                 displayNoteCombination();
             } else {
                 // Color spans and detected note in green when correct
                 document.querySelector('#note-span').style.color = 'green';
                 setTimeout(() => {
                     displayNoteCombination();
-                }, 700);
+                }, 500);
             }
         }
     }
@@ -112,8 +142,9 @@ export class PracticeNoteDisplayer {
         GameProgressVisualizer.updateGameProgress(percentage, movingBarLabel, progressBarRightSideLabel);
     }
 
-    resetGameProgress() {
+    resetGameProgress(e) {
         this.correctNoteCount = 0;
+        // console.log(e.detail);
         // call display notes to refresh key and progress bar
         // this.displayNotes();
         console.debug('reset game progress for note in key game called');

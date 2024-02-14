@@ -1,8 +1,8 @@
-import {DetectedNoteVerifier} from "../../../features/detected-note/detected-note-verifier.js?v=1.5.0";
-import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.5.0";
-import {GameProgressVisualizer} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=1.5.0";
-import {NoteOnFretboardGenerator} from "./note-on-fretboard-generator.js?v=1.5.0";
-import {NoteOnFretboardProgressUpdater} from "./note-on-fretboard-progress-updater.js?v=1.5.0";
+import {DetectedNoteVerifier} from "../../../features/detected-note/detected-note-verifier.js?v=1.6.0";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1.6.0";
+import {GameProgressVisualizer} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=1.6.0";
+import {NoteOnFretboardGenerator} from "./note-on-fretboard-generator.js?v=1.6.0";
+import {NoteOnFretboardProgressUpdater} from "./note-on-fretboard-progress-updater.js?v=1.6.0";
 
 /**
  * Note display coordinator when playing the "game" which
@@ -32,46 +32,47 @@ export class NoteOnFretboardNoteHandler {
         this.noteOnFretboardProgressUpdater = new NoteOnFretboardProgressUpdater(this);
         this.noteGenerator = new NoteOnFretboardGenerator();
         this.detectedNoteVerifier = new DetectedNoteVerifier();
-        // Create class-level arrow function properties for event listeners so that they can be removed
-        this.displayRandomNotesHandler = this.displayNotes.bind(this);
         // Event handler that checks if note is correct. Updates attributes and calls functions of this coordinator.
         this.checkIfNoteCorrectHandler = this.detectedNoteVerifier.checkIfNoteIsCorrect.bind(this.detectedNoteVerifier);
         this.correctNoteEventHandler = this.correctNoteHandler.bind(this);
         // Reset game progress when level is reset or leveled up
         this.resetGameProgressHandler = this.resetGameProgress.bind(this);
-        this.levelCompletionEventListenerCleanupHandler =
-            this.removeResetGameProgressEventListenerAfterLevelCompletion.bind(this);
     }
-
+    /**
+     * Resume or start game
+     */
     beingGame() {
-        console.log('begin game called')
         // Event when the correct note was played
         document.addEventListener('correct-note-played', this.correctNoteEventHandler);
         // Custom event when played note was detected
         document.addEventListener('note-detected', this.checkIfNoteCorrectHandler);
-        // Event when game progress should be reset
+        // Event when game progress should be reset. Event removed in destroy function
         document.addEventListener('reset-game-progress', this.resetGameProgressHandler);
-        // Add event listener that removes the reset game progress event listener after the level completion modal
-        // is closed (either when going to the next level or restart the current one)
-        document.addEventListener('remove-progress-reset-event-listener-after-level-completion',
-            this.levelCompletionEventListenerCleanupHandler);
     }
-
+    /**
+     * Pause game
+     */
     endGame() {
-        console.log('removing da shit')
         document.removeEventListener('correct-note-played', this.correctNoteEventHandler);
         document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
         clearInterval(this.timerInterval);
-        // Reset game process event handler cannot be removed here because it's called from the level-up
-        // or reset functions that are called after the game is stopped.
-        // It's removed in the function removeResetGameProgressEventListenerAfterLevelCompletion()
+
+        // Event removed in destroy function and this is good enough as when pausing and resuming the game multiple
+        // times, js does not add multiple duplicate named event handlers
+        // https://www.js-craft.io/blog/javascript-addeventlistener-will-not-duplicate-named-functions/
     }
 
+    /**
+     * When game mode is changed and everything has to be cleaned up
+     */
+    destroy(){
+        document.removeEventListener('reset-game-progress', this.resetGameProgressHandler);
+    }
 
     /**
      * @param {object} strings strings as key and all notes of string as value
      */
-    setAvailableStrings(strings) {
+    setAvailableStringsAndShuffleNotesList(strings) {
         this.noteGenerator.noteShuffler.setStringsAndNotes(
             strings,
             ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B']
@@ -136,7 +137,7 @@ export class NoteOnFretboardNoteHandler {
             this.challengingCombinations,
             this.previousCombination
         );
-        console.log(`Displaying combination ${stringName}|${noteName}`)
+        // console.log(`Displaying combination ${stringName}|${noteName}`)
         // Display next note and string and if with treble clef
         NoteDisplayer.displayCombinationWithNoteName(stringName, noteName,
             document.querySelector('#fretboard-note-game-treble-clef input').checked,
@@ -157,7 +158,7 @@ export class NoteOnFretboardNoteHandler {
      * Update stats and progress on correct note
      */
     correctNoteHandler() {
-        console.log('handling correct note event')
+        // console.log('handling correct note event')
         // Combination was correct meaning that its count should be adjusted or removed if over 3 times correct
         this.adjustCombinationCorrectCount();
         this.correctNoteCount++;
@@ -216,20 +217,6 @@ export class NoteOnFretboardNoteHandler {
                 this.challengingCombinations.set(this.previousCombination, combinationStats);
             }
         }
-    }
-
-
-    /**
-     * Reset game progress event handler cannot be removed at the end of the game as the
-     * user clicks on "go to next level" in the modal box displayed after the game is stopped.
-     * The same goes for restart, the progress should be reset after endGame() is called.
-     */
-    removeResetGameProgressEventListenerAfterLevelCompletion() {
-        // Remove event listener after it's called once
-        document.removeEventListener('reset-game-progress', this.resetGameProgressHandler);
-        // Remove the handler that points to this function itself
-        document.removeEventListener('remove-progress-reset-event-listener-after-level-completion',
-            this.levelCompletionEventListenerCleanupHandler);
     }
 
     resetGameProgress() {

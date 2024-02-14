@@ -1,10 +1,11 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.5.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.5.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.5.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.5.0";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.5.0";
-import {PracticeNoteDisplayer} from "../../practice-note-combination/practice-note-displayer.js?v=1.5.0";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.5.0";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.6.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.6.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.6.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.6.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.6.0";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=1.6.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.6.0";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.6.0";
 
 export class NoteInKeyGameInitializer {
     // Possible keys
@@ -58,7 +59,7 @@ export class NoteInKeyGameInitializer {
 
         // Instantiate object with note displayer function that will be called when a new note should be displayed
         // after a correct one has been played.
-        this.noteInKeyGameCoordinator.noteDisplayer = new PracticeNoteDisplayer(
+        this.noteInKeyGameCoordinator.noteHandler = new NoteInKeyNoteHandler(
             this.noteInKeyGameCoordinator.noteInKeyGenerator, 30
         );
         // Has to be reloaded added after html component range slider as its value is needed
@@ -109,8 +110,6 @@ export class NoteInKeyGameInitializer {
         document.querySelector('#header-center-container').innerHTML = '';
 
         document.removeEventListener('leveled-up', this.levelUpEventHandler);
-        document.removeEventListener('reset-game-progress',
-            this.noteInKeyGameCoordinator.noteDisplayer.resetGameProgressHandler);
 
         document.getElementById('header-center-container').removeEventListener('click',
             this.reloadKeyAndStringEventHandlerVar);
@@ -131,7 +130,11 @@ export class NoteInKeyGameInitializer {
         const minutes = Math.floor(this.noteInKeyGameCoordinator.timer / 60);
         // Outputs the rest of seconds that could not be added to full minutes
         const seconds = this.noteInKeyGameCoordinator.timer % 60;
-        console.debug('Level up note in key game')
+        console.debug('Level up note in key game');
+
+        GameElementsVisualizer.hideGameElementsAndDisplayInstructions();
+        document.dispatchEvent(new CustomEvent('reset-game-progress'));
+        GameProgressVisualizer.hideProgress();
 
         // Fire game-stop event and display modal
         LevelUpVisualizer.stopGameAndDisplayLeveledUpModal(
@@ -150,7 +153,6 @@ export class NoteInKeyGameInitializer {
     }
 
     restartKey() {
-        document.dispatchEvent(new Event('reset-game-progress'));
         document.dispatchEvent(new Event('game-start'));
     }
 

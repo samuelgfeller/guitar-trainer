@@ -1,4 +1,4 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1.5.0";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1.6.0";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -75,23 +75,24 @@ export class NoteInKeyGenerator {
         // Sometimes there is a bug after a few rounds where only the number 1 is displayed
         // The error line 81 is Uncaught TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
         // Either the shuffledCombinations is undefined or the shuffledCombinations[currentIndex] is undefined
-        console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
+        // console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
         // If this.shuffledCombinations[this.currentIndex] is undefined, inform user with alert
-        if (this.currentIndex === undefined || !this.shuffledCombinations[this.currentIndex]) {
-            alert('There was an error. Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex +' | shuffledCombinations[currentIndex]: ' + this.shuffledCombinations[this.currentIndex]);
-        }
-
-        // The note shuffler returns a string with the format 'string|note'
-        let [string, note] = this.shuffledCombinations[this.currentIndex];
+        // if (this.currentIndex === undefined || !this.shuffledCombinations[this.currentIndex]) {
+        //     alert('There was an error. Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex +' | shuffledCombinations[currentIndex]: ' + this.shuffledCombinations[this.currentIndex]);
+        // }
+        // bug above fixed by setting it to null if this.shuffledCombinations[this.currentIndex] is invalid
 
         // If the current index is reached, re shuffle all the notes and reset it to 0
-        if (this.currentIndex === this.shuffledCombinations.length - 1) {
+        if (this.currentIndex >= this.shuffledCombinations.length - 1 || !this.shuffledCombinations[this.currentIndex]) {
             // replace the shuffled combinations with a freshly shuffled array
             this.shuffledCombinations = ArrayShuffler.shuffleArray(this.combinationsToBeShuffled);
             this.currentIndex = 0;
         } else {
             this.currentIndex++;
         }
+        // The note shuffler returns a string with the format 'string|note'
+        let [string, note] = this.shuffledCombinations[this.currentIndex];
+
         // Split the string into an array containing the string and the note
         // let [string, note] = combination.split('|');
         // Get the note number from the note object
