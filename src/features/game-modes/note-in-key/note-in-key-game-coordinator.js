@@ -57,8 +57,8 @@ export class NoteInKeyGameCoordinator {
         this.gameIsRunning = false;
         // Hide current key and string
         document.querySelector('#current-key-and-string').style.display = 'none';
-        if (document.querySelector('#fretboard')) {
-            document.querySelector('#fretboard').style.display = 'none';
+        if (document.querySelector('#virtual-fretboard')) {
+            document.querySelector('#virtual-fretboard').style.display = 'none';
         }
         document.querySelector('#scale-roadmaps').style.display = null;
     }

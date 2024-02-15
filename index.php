@@ -26,6 +26,8 @@ if (file_exists(__DIR__ . '/config/env.php')) {
     <link rel="stylesheet" href="src/assets/styles/range-slider.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/metronome-practice.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/virtual-fretboard.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/fret-selection.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/dual-range-slider.css?v=<?= $version ?>">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
@@ -69,7 +71,7 @@ if (file_exists(__DIR__ . '/config/env.php')) {
         <img class="icon" id="start-stop-btn" src="src/assets/images/play-icon.svg">
     </div>
 </header>
-<!--<button id="simulate-correct-note" style="font-size: 16px; background: #3c4143;margin: 20px auto 0; display: block">Play correct note</button>-->
+<button id="simulate-correct-note" style="font-size: 16px; background: #3c4143;margin: 20px auto 0; display: block; border:none">Play correct note</button>
 <main id="game-container">
     <!--<div id="progress-bar-title-div">-->
     <!--    <span>Challenging notes count</span>-->
@@ -86,6 +88,12 @@ if (file_exists(__DIR__ . '/config/env.php')) {
             <span id="incorrect-count"></span><span id="correct-count"></span>
         </div>
     </div>
+
+    <!--<div id="fret-selection">-->
+    <!--    <div id="fretboard-for-selection"></div>-->
+    <!--</div>-->
+
+
 
     <div id="game-start-instruction">
         <details open>

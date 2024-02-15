@@ -44,6 +44,7 @@ export class NoteInKeyGameInitializer {
     }
 
     initNoteInKeyGame() {
+        // new RoadmapSelector().initRoadmapSelector();
         // Add html components
         this.addHtmlComponents();
         // Init game mode options here as the option value is needed for the next initialization steps
@@ -303,7 +304,7 @@ export class NoteInKeyGameInitializer {
             <img src="src/assets/images/G-Key-Fretboard.svg" class="roadmap-image"
                 alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">
             </p>
-            <p>Roadmap for A, G and B strings with the D key::            
+            <p>Roadmap for A, G and B strings with the D key:            
             <img src="src/assets/images/D-Key-Fretboard.svg" class="roadmap-image"
                 alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
             <p>These can be shifted up and down according to the key.</p>

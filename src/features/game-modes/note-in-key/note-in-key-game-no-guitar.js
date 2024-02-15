@@ -24,7 +24,7 @@ export class NoteInKeyGameNoGuitar {
     static destroyNoGuitarGameOption() {
         document.querySelector('#game-container').classList.remove('no-guitar');
         // By removing the fretboard, the event listeners are also removed
-        document.querySelector('#fretboard')?.remove();
+        document.querySelector('#virtual-fretboard')?.remove();
     }
 
     static playNoGuitarNoteInKey(diatonicNotesOnStrings, keyString, keyNote) {
@@ -35,7 +35,7 @@ export class NoteInKeyGameNoGuitar {
         if (document.querySelector('#no-guitar-option input')?.checked) {
 
             // If the fretboard already exists, remove it before adding it again in case the string options changed
-            if (document.querySelector('#fretboard')) {
+            if (document.querySelector('#virtual-fretboard')) {
                 this.destroyNoGuitarGameOption();
             }
 
@@ -48,8 +48,8 @@ export class NoteInKeyGameNoGuitar {
 
 
     static addVirtualFretboard() {
-        document.querySelector('#game-container').insertAdjacentHTML('beforeend', `<div id="fretboard"></div>`);
-        const fretboard = document.querySelector('#fretboard');
+        document.querySelector('#game-container').insertAdjacentHTML('beforeend', `<div id="virtual-fretboard"></div>`);
+        const fretboard = document.querySelector('#virtual-fretboard');
         /**
          * diatonicNotesOnStrings looks like this.
          * Object is for e.g. {noteName: "G", number: 3}:

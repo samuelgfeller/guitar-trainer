@@ -52,7 +52,7 @@ export class GameInitializer {
             // header, but only if the modal is not open)
             if ((e.target === document.body || e.target.closest('main'))
                 && (e.target.id !== 'modal' && !e.target.closest('#modal') && e.target.nodeName !== 'INPUT')
-                && !e.target.closest('#fretboard')) {
+                && !e.target.closest('#virtual-fretboard')) {
                 self.coreGameCoordinationInitializer.startOrStopButtonActionHandler();
             }
         });

@@ -1,0 +1,80 @@
+/* mobile first min-width sets base and content is adapted to computers. */
+@media (min-width: 100px) {
+    #fret-selection-container {
+        width: 80%;
+        overflow: auto;
+        min-width: 420px;
+    }
+
+    .fretboard-for-shapes {
+
+        padding-right: 40px;
+    }
+
+    .diatonic-note-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #000000;
+        border: 1px solid #ffffff;
+        line-height: 1.4em;
+        /*color: #ff7a1c;*/
+        color: white;
+        font-weight: bold;
+        /*border-radius: 50%;*/
+        bottom: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(50%);
+        z-index: 2;
+    }
+
+    .diatonic-major {
+        color: #ee2929;
+    }
+
+    .diatonic-minor {
+        color: #2e8bff;
+    }
+
+    .diatonic-diminished {
+        color: #12c712;
+    }
+
+    #fretboard-switch-button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    #fretboard-switch-button-container button {
+        background-color: black;
+        color: #c0c0c0;
+        /*font-weight: bold;*/
+        font-size: 18px;
+        border: 2px dotted saddlebrown;
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+    #fretboard-switch-button-container button:hover{
+        background-color: #181818;
+        cursor: pointer;
+    }
+
+    #fret-selection {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 80%;
+        height: 400px;
+        background-color: saddlebrown;
+    }
+
+    #fretboard-for-selection {
+        width: 70%;
+        height: 200px;
+        background-color: #000000;
+    }
+}
