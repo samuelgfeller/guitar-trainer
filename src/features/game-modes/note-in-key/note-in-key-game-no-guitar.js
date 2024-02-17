@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.6.1";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1708178220";
 
 export class NoteInKeyGameNoGuitar {
     static diatonicNotesOnStrings;
@@ -89,16 +89,16 @@ export class NoteInKeyGameNoGuitar {
             let totalFrets = reversedNotes.length;
 
             for (const index in reversedNotes) {
-                let fret = document.createElement('div');
-                fret.className = 'fret';
-                fret.dataset.noteName = reversedNotes[index];
-                string.appendChild(fret);
+                let fretPosition = document.createElement('div');
+                fretPosition.className = 'fret-position';
+                fretPosition.dataset.noteName = reversedNotes[index];
+                string.appendChild(fretPosition);
 
                 // Highlight key note
                 if (reversedNotes[index] === this.keyNote && stringName === this.keyString) {
                     let keyNoteIndicator = document.createElement('span');
                     keyNoteIndicator.className = 'key-note-indicator';
-                    fret.appendChild(keyNoteIndicator);
+                    fretPosition.appendChild(keyNoteIndicator);
                 }
 
                 // If the fret index is 3, 5, 7, or 9 and the string is the first string, add a circle to the fret
@@ -108,7 +108,7 @@ export class NoteInKeyGameNoGuitar {
                 if ([3, 5, 7, 9].includes(fretNumberFromRight) && stringIndex === 0) {
                     let fretHelper = document.createElement('span');
                     fretHelper.className = 'fret-helper';
-                    fret.appendChild(fretHelper);
+                    fretPosition.appendChild(fretHelper);
                 }
             }
 
@@ -127,7 +127,7 @@ export class NoteInKeyGameNoGuitar {
 
     static addEventListenersToVirtualFretboard() {
         // Add event listeners to the frets
-        document.querySelectorAll('.fret').forEach(fret => {
+        document.querySelectorAll('.fret-position').forEach(fret => {
             fret.addEventListener('click', this.noteClickedEventHandler);
         });
         // Add event listeners to the strings
@@ -143,7 +143,7 @@ export class NoteInKeyGameNoGuitar {
         clearTimeout(this.wrongColorTimeout);
 
         // If event.target contains a data-attribute note name take that as fret (either normal fret or open string)
-        const fret = event.target.dataset.noteName ? event.target : event.target.closest('.fret');
+        const fret = event.target.dataset.noteName ? event.target : event.target.closest('.fret-position');
         // If fret indicator helper is clicked, get the note name from the parent fret
         const noteName = fret.dataset.noteName;
         const stringName = event.target.closest('.string').dataset.stringName;

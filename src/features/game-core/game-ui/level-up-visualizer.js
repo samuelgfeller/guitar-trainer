@@ -1,4 +1,4 @@
-import {ModalHandler} from "../../../components/game-core/ui/modal-handler.js?v=1.6.1";
+import {ModalHandler} from "../../../components/game-core/ui/modal-handler.js?v=1708178220";
 
 export class LevelUpVisualizer {
     /**
@@ -18,11 +18,12 @@ export class LevelUpVisualizer {
         // Stop the game in the form of an event to avoid a circular dependency with core-game-coordinator
         document.dispatchEvent(new CustomEvent('game-stop', {'detail': 'level-up'})); // add details
 
-        let header = `<h2>Congratulations 🎉</h2> <span id="close-modal" style="float: right; cursor: pointer;">×</span>`;
+        let header = `<h2>Congratulations 🎉</h2>`;
         let body = `<div>${bodyText}</div>`;
-        let footer = `<button id="restart-modal-btn">Restart</button><button id="next-lvl-modal-btn">${confirmButtonText}</button>`
+        let footer = `<button id="restart-modal-btn" class="grey-btn">Restart</button>
+<button id="next-lvl-modal-btn" class="green-btn">${confirmButtonText}</button>`
 
-        ModalHandler.displayModal(header, body, footer, closeModalEventHandler);
+        ModalHandler.displayModal(header, body, footer, closeModalEventHandler, 'lvl-up-modal');
 
         // Add event listeners (don't have to be removed as the entire modal box is removed from dom)
         document.getElementById('restart-modal-btn').addEventListener('click', restartLevelEventHandler);

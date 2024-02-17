@@ -1,4 +1,4 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1.6.1";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1708178220";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;

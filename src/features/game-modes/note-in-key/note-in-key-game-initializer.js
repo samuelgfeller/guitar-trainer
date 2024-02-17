@@ -1,11 +1,15 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1.6.1";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1.6.1";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1.6.1";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1.6.1";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1.6.1";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=1.6.1";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1.6.1";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1.6.1";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1708178220";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1708178220";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1708178220";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1708178220";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1708178220";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=1708178220";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1708178220";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1708178220";
+import {
+    FretShapeSelector
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=1708178220";
+
 
 export class NoteInKeyGameInitializer {
     // Possible keys
@@ -44,7 +48,6 @@ export class NoteInKeyGameInitializer {
     }
 
     initNoteInKeyGame() {
-        // new RoadmapSelector().initRoadmapSelector();
         // Add html components
         this.addHtmlComponents();
         // Init game mode options here as the option value is needed for the next initialization steps
@@ -52,6 +55,7 @@ export class NoteInKeyGameInitializer {
         // Init string options
         GameConfigurationManager.initGameModeOptions('note-in-key-game-strings-div');
         this.initStringOptionsEventListeners();
+        new FretShapeSelector().initRoadmapSelector();
 
         // Init game components
         // Note in key generator initialized here in case the user clicks "pause" and wants to continue the game
@@ -193,7 +197,7 @@ export class NoteInKeyGameInitializer {
         // Add game mode options (have to be added before the other initializations as they might depend on options)
         document.querySelector('#game-mode-options').innerHTML = `
                     <div id="difficulty-range-slider-container" class="option-for-game-mode">
-                        <input type='range' min='1' max='3' value='1' step='1'
+                        <input type="range" min='1' max='3' value='1' step='1'
                                list="level-options" id="difficulty-range-slider"/>
                         <datalist id="level-options">
                             <option value="1" label="Lvl 1"></option>
@@ -221,7 +225,10 @@ export class NoteInKeyGameInitializer {
                         <input type='checkbox' data-string="A" data-key="D">
                         <span class="normal-font-size">D key</span>
                     </label>
-                    
+                    <!-- Event listener added in fret-shape-selector -->
+                    <label class='checkbox-button option-for-game-mode' id="custom-shape-option">
+                        <span class="normal-font-size">Select custom shape</span>
+                    </label>                    
                     `;
         document.querySelector('#game-mode-options').insertAdjacentHTML('afterend', `
                     <span class="normal-font-size label-text options-title-span" id="string-option-title">Strings</span>

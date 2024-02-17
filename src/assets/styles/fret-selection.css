@@ -1,14 +1,16 @@
 /* mobile first min-width sets base and content is adapted to computers. */
 @media (min-width: 100px) {
     #fret-selection-container {
-        width: 80%;
+        width: 100%;
         overflow: auto;
-        min-width: 420px;
     }
 
     .fretboard-for-shapes {
-
+        min-width: 420px;
         padding-right: 40px;
+    }
+    .inactive-fretboard{
+        display: none;
     }
 
     .diatonic-note-number {
@@ -42,39 +44,10 @@
     }
 
     #fretboard-switch-button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
+
+    }
+    #fret-selection-container .fret:hover{
+        background-color: initial;
     }
 
-    #fretboard-switch-button-container button {
-        background-color: black;
-        color: #c0c0c0;
-        /*font-weight: bold;*/
-        font-size: 18px;
-        border: 2px dotted saddlebrown;
-        padding: 10px 20px;
-        border-radius: 10px;
-    }
-    #fretboard-switch-button-container button:hover{
-        background-color: #181818;
-        cursor: pointer;
-    }
-
-    #fret-selection {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        width: 80%;
-        height: 400px;
-        background-color: saddlebrown;
-    }
-
-    #fretboard-for-selection {
-        width: 70%;
-        height: 200px;
-        background-color: #000000;
-    }
 }

@@ -19,7 +19,7 @@
 
     }
 
-    .fret {
+    .fret-position {
         flex-grow: 1;
         height: 100%;
         border-left: 1px solid white;
@@ -29,7 +29,7 @@
         position: relative;
         z-index: 1;
     }
-    .fret:hover, .string-name:hover{
+    .fret-position:hover, .string-name:hover{
         background-color: rgba(255, 255, 255, 0.1);
     }
     .fret-clicked {

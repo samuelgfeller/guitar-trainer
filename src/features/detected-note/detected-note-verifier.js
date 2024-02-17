@@ -1,5 +1,5 @@
-import {DetectedNoteVisualizer} from "./detected-note-visualizer.js?v=1.6.1";
-import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=1.6.1";
+import {DetectedNoteVisualizer} from "./detected-note-visualizer.js?v=1708178220";
+import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=1708178220";
 
 export class DetectedNoteVerifier {
     // Variable is set in note-combination-coordinator each time new note is displayed

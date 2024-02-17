@@ -31,7 +31,7 @@
         /*background: white;*/
         color: #919191;
     }
-    h3, h4{
+    h2,h3, h4{
         color: #c0c0c0;
     }
     a{
@@ -110,6 +110,10 @@
     /*}*/
     #settings-toggle-btn {
         cursor: pointer;
+    }
+
+    input{
+        accent-color: saddlebrown;
     }
 
     #bpm-input {
@@ -193,6 +197,10 @@
     #treble-clef-output svg {
         display: block;
         height: 100%;
+    }
+
+    .text{
+        color: #c0c0c0;
     }
 
     #game-start-instruction {
@@ -437,6 +445,27 @@
         display: block;
         margin-top: 15px;
         margin-bottom: 10px;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .btn-container button, .btn {
+        background-color: black;
+        color: #c0c0c0;
+        /*font-weight: bold;*/
+        font-size: 18px;
+        border: 2px dotted saddlebrown;
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+    .btn-container button:hover, .btn:hover{
+        background-color: #181818;
+        cursor: pointer;
     }
 
     /*summary::marker{*/
