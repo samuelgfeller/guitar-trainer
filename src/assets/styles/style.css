@@ -76,18 +76,21 @@
     }
 
     #config-div {
-        row-gap: 0;
-        /*Hide by default, expand when user clicks on the settings icon*/
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.5s ease;
+        /*Awesome trick to transition from height 0 https://www.youtube.com/watch?v=B_n4YONte5A*/
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.5s ease-in-out;
     }
 
     #config-div.expanded {
-        max-height: 400px;
-        /*overflow: hidden; !* Initially, hide the overflow *!*/
+        grid-template-rows: 1fr;
         /* Delayed animation to prevent showing the scrollbar while config-div is expanding */
         animation: enableScroll 0.5s ease 0.5s forwards;
+    }
+
+    #config-inner-div{
+        overflow: hidden;
+        height: 100%;
     }
 
     #config-inner-div > div {

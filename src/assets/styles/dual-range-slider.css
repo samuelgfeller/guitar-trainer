@@ -19,8 +19,8 @@
     }
     .dual-range-slider-container{
         position: relative;
-        width: 300px;
-        max-width: 70%;
+        width: 100%;
+        max-width: 300px;
         height: auto;
         margin-bottom: 10px;
         text-align: left;
