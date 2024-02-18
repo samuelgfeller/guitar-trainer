@@ -1,6 +1,6 @@
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=1708178220";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1708178220";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=1708178220";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.0.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.0.0";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.0.0";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator

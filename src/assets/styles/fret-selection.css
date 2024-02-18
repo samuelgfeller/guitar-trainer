@@ -5,6 +5,11 @@
         overflow: auto;
     }
 
+    #fretboard-number-span{
+        font-size: 26px;
+        color: saddlebrown;
+    }
+
     .fretboard-for-shapes {
         min-width: 420px;
         padding-right: 40px;
@@ -43,11 +48,10 @@
         color: #12c712;
     }
 
-    #fretboard-switch-button-container {
 
-    }
-    #fret-selection-container .fret:hover{
+    #fret-selection-container .fret-position:hover{
         background-color: initial;
+        cursor: initial;
     }
 
 }

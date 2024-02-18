@@ -1,78 +1,87 @@
-import {DualRangeSlider} from "./dual-range-slider.js?v=1708178220";
-import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=1708178220";
-import {availableNotesOnStrings} from "../../../configuration/string-and-note-names.js?v=1708178220";
-import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=1708178220";
+import {DualRangeSlider} from "./dual-range-slider.js?v=2.0.0";
+import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.0.0";
+import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.0.0";
+import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.0.0";
 
 export class FretShapeSelector {
 
-    noteInKeyGenerator = new NoteInKeyGenerator();
+    static noteInKeyGenerator = new NoteInKeyGenerator();
 
     constructor() {
     }
 
-    initRoadmapSelector() {
-        this.initFretShapeSelectorOptionButton();
-        this.addRoadmapSelectorInstructions();
+    /**
+     * @param {number|string} fretboardShapeNumber
+     */
+    static openFretShapeSelectorModal(fretboardShapeNumber = 1) {
+        fretboardShapeNumber = parseInt(fretboardShapeNumber);
 
-    }
+        let header = `<h2 class="normal-font-size">Shape 
+<span id="fretboard-number-span">${fretboardShapeNumber}</span> selector</h2>`;
+        let body = `<div id="roadmap-selector-instructions" class="text">
+                        <p>Move slider below to select the range of frets with the shape you want to practice.</p>
+                    </div>`;
+        let footer = `<button id="move-fretboard-shape-button" class="normal-font-size btn">Shape ${fretboardShapeNumber === 1 ? 2 : 1}</button>
+                        <button id="save-modal-btn" class="normal-font-size btn">Save selection</button>`
 
-    initFretShapeSelectorOptionButton() {
-        document.querySelector('#custom-shape-option').addEventListener('click', () => {
-            this.openFretShapeSelectorModal();
+        // Close modal handler
+        const closeModalHandler = () => {
+            document.dispatchEvent(new Event('reload-key-and-string'));
+        }
+        // Open modal with fret shape selector
+        ModalHandler.displayModal(header, body, footer, closeModalHandler, 'big-modal');
+        // Must be before the slider is added so that the slider init can highlight the selected are on load
+        this.addFretSelectionFretboard(fretboardShapeNumber);
+        DualRangeSlider.addSelectionSlider();
+
+        document.getElementById('save-modal-btn').addEventListener('click', () => {
+            ModalHandler.closeModalAndCallGivenEventHandler();
         });
     }
 
-    openFretShapeSelectorModal() {
-        let header = `<h2 class="normal-font-size">Shape selector</h2>`;
-        let body = `<div id="roadmap-selector-instructions" class="text">
-                        <p>Move slider below to select the range of frets with the shapes you want to practice.</p>
-                    </div>`;
-        let footer = `<!--<button id="restart-modal-btn">Restart</button><button id="next-lvl-modal-btn"></button>-->`
-
-        // Open modal with fret shape selector
-        ModalHandler.displayModal(header, body, null, null, 'big-modal');
-        // Must be before the slider is added so that the slider init can highlight the selected are on load
-        this.addFretSelectionFretboard();
-        new DualRangeSlider().addSelectionSlider();
-    }
-
-    addRoadmapSelectorInstructions() {
-        document.querySelector('main').insertAdjacentHTML('afterbegin', `
-            
-        `);
-    }
-
-
-    addFretSelectionFretboard() {
+    /**
+     * @param {number} fretboardShapeNumber
+     */
+    static addFretSelectionFretboard(fretboardShapeNumber) {
         document.querySelector('#roadmap-selector-instructions').insertAdjacentHTML('afterend', `
             <div id="fret-selection-container">
-                <div id="fret-selection-fretboard-1" class="fretboard-for-shapes"></div>
-                <div id="fret-selection-fretboard-2" class="fretboard-for-shapes inactive-fretboard"></div>
-            </div>
-            <div id="fretboard-switch-button-container" class="btn-container">
-                <button id="move-fretboard-shape-button" class="normal-font-size btn">Move fretboard shapes</button>
+                <div id="fret-selection-fretboard-1" data-fretboard-nr="1" 
+                class="fretboard-for-shapes ${fretboardShapeNumber !== 1 ? `inactive-fretboard` : ``}"></div>
+                <div id="fret-selection-fretboard-2" data-fretboard-nr="2" 
+                class="fretboard-for-shapes ${fretboardShapeNumber !== 2 ? `inactive-fretboard` : ``}"></div>
             </div>
         `);
 
         const diatonicNotesOnStringsG = this.noteInKeyGenerator.getAvailableNotesOnStringsInDiatonicScale('G', availableNotesOnStrings);
-        this.addVirtualFretboardHtml('fret-selection-fretboard-1', diatonicNotesOnStringsG);
+        const note1PositionsF1 = this.addVirtualFretboardHtml('fret-selection-fretboard-1', diatonicNotesOnStringsG);
+        // Add shapes from the first fretboard to the local storage
+        localStorage.setItem('fret-shape-1-key-positions', JSON.stringify(note1PositionsF1));
         const diatonicNotesOnStringsD = this.noteInKeyGenerator.getAvailableNotesOnStringsInDiatonicScale('D', availableNotesOnStrings);
-        this.addVirtualFretboardHtml('fret-selection-fretboard-2', diatonicNotesOnStringsD);
-
+        const note1PositionsF2 = this.addVirtualFretboardHtml('fret-selection-fretboard-2', diatonicNotesOnStringsD);
+        localStorage.setItem('fret-shape-2-key-positions', JSON.stringify(note1PositionsF2));
         document.getElementById('move-fretboard-shape-button').addEventListener('click', () => {
             const fretboard1 = document.getElementById('fret-selection-fretboard-1');
             const fretboard2 = document.getElementById('fret-selection-fretboard-2');
 
             fretboard1.classList.toggle('inactive-fretboard');
             fretboard2.classList.toggle('inactive-fretboard');
+
+            const currentFretboardNr = fretboard1.classList.contains('inactive-fretboard') ? '2' : '1';
+
+            document.getElementById('fretboard-number-span').textContent = currentFretboardNr;
+            document.getElementById('move-fretboard-shape-button').textContent = `Shape ${currentFretboardNr === '1' ? '2' : '1'}`;
+
+            DualRangeSlider.setSliderValuesFromLocalStorage();
         });
     }
 
-    addVirtualFretboardHtml(fretboardId, diatonicNotesOnStrings) {
+    static addVirtualFretboardHtml(fretboardId, diatonicNotesOnStrings) {
         const fretboard = document.querySelector(`#${fretboardId}`);
         // Store the total number of frets on the string to place indicator helpers and scrollIntoView on mobile
         let totalFrets = availableNotesOnStrings[Object.keys(availableNotesOnStrings)[0]].length - 1;
         fretboard.dataset.totalFrets = totalFrets.toString();
+
+        let noteOnePositions = {};
 
         let stringIndex = 0;
         // Construct fretboard with available notes on strings
@@ -108,7 +117,7 @@ export class FretShapeSelector {
             reversedNotes.pop();
 
             for (const index in reversedNotes) {
-                // Calculate the fret number from the right
+                // Calculate the fret number where 1 is on the right
                 let fretNumberFromRight = totalFrets - parseInt(index);
 
                 let fretPosition = document.createElement('div');
@@ -123,6 +132,10 @@ export class FretShapeSelector {
                     let diatonicNoteNumber = document.createElement('span');
                     this.addDiatonicNoteNumberColor(diatonicNoteNumber, noteObject.number);
                     fretPosition.appendChild(diatonicNoteNumber);
+                    if (noteObject.number === 1) {
+                        // There can only be one key note on a string
+                        noteOnePositions[stringName] = fretNumberFromRight;
+                    }
                 }
             }
 
@@ -132,9 +145,10 @@ export class FretShapeSelector {
 
             stringIndex++;
         }
+        return noteOnePositions;
     }
 
-    addDiatonicNoteNumberColor(element, noteNumber) {
+    static addDiatonicNoteNumberColor(element, noteNumber) {
         element.classList.add('diatonic-note-number');
         if ([1, 4, 5].includes(noteNumber)) {
             element.classList.add('diatonic-major');

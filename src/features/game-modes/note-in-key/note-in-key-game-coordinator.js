@@ -1,5 +1,5 @@
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1708178220";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1708178220";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=2.0.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.0.0";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -83,20 +83,10 @@ export class NoteInKeyGameCoordinator {
     reloadKeyAndString() {
         console.log('reload key and string in note in key game');
 
-        // Select the checked checkbox if there is one
-        const checkedCheckbox = document.querySelector('.always-same-key-option input[type="checkbox"]:checked');
-
-        // If a checkbox is checked
-        if (checkedCheckbox) {
-            // Use the data-string and data-key attributes of the checked checkbox
-            this.keyString = checkedCheckbox.getAttribute('data-string');
-            this.keyNote = checkedCheckbox.getAttribute('data-key');
-        }else{
-            // Get new string and key
-            const { keyString, keyNote } = this.noteInKeyGenerator.getNewStringAndKey();
-            this.keyString = keyString;
-            this.keyNote = keyNote;
-        }
+        // Get new string and key
+        const {keyString, keyNote} = this.noteInKeyGenerator.getNewStringAndKey();
+        this.keyString = keyString;
+        this.keyNote = keyNote;
 
         // Prepare the attribute containing the notes on strings that may be displayed (diatonic to key, difficulty)
         this.noteInKeyGenerator.loadShuffledCombinations(this.keyString, this.keyNote);

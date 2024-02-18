@@ -1,7 +1,7 @@
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=1708178220";
-import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=1708178220";
-import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=1708178220";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1708178220";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=2.0.0";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=2.0.0";
+import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=2.0.0";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=2.0.0";
 
 export class GameInitializer {
     constructor() {
@@ -21,6 +21,8 @@ export class GameInitializer {
         document.getElementById('settings-toggle-btn').addEventListener('click', (e) => {
             GameConfigurationManager.toggleSettingsExpand();
         });
+        // When the user clicks outside the settings area, the options should close
+        GameConfigurationManager.addSettingsCloseEventListenerOnOutsideClick();
         // Init game mode selection
         GameConfigurationManager.initGameModeSelection();
 

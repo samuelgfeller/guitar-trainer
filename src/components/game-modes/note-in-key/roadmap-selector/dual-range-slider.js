@@ -1,5 +1,5 @@
 export class DualRangeSlider {
-    addSelectionSlider() {
+    static addSelectionSlider() {
         document.querySelector('#roadmap-selector-instructions').insertAdjacentHTML('beforeend', `
                 <div id="dual-range-slider-wrapper">
                 <div class="dual-range-slider-container normal-font-size">
@@ -9,13 +9,28 @@ export class DualRangeSlider {
                 </div>
                 </div>
             `);
+        // Set values of sliders to the saved values in the local storage
+        this.setSliderValuesFromLocalStorage();
 
+        // Add selection slider event listeners
         this.addSelectionSliderEventListeners();
-
-
     }
 
-    addSelectionSliderEventListeners() {
+    static setSliderValuesFromLocalStorage() {
+        const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
+        const savedFretRange = localStorage.getItem(`fret-range-${fretboardNr}`);
+        if (savedFretRange) {
+            const { lowerLimit, upperLimit } = JSON.parse(savedFretRange);
+            document.getElementById('slider-1').value = lowerLimit;
+            document.getElementById('slider-2').value = upperLimit;
+            // Trigger the event listeners to update the fretboard
+            document.getElementById('slider-1').dispatchEvent(new Event('input'));
+            document.getElementById('slider-2').dispatchEvent(new Event('input'));
+        }
+    }
+
+
+    static addSelectionSliderEventListeners() {
         let sliderOne = document.getElementById("slider-1");
         let sliderTwo = document.getElementById("slider-2");
         let minGap = 1;
@@ -39,11 +54,31 @@ export class DualRangeSlider {
             handleSliderChangeEvent(e);
         }
 
+        function scrollFretIntoView(e, sliderOne, sliderTwo, totalFrets) {
+            // Adjust the scrollIntoView call based on the slider that triggered the event
+            if (e && e.target.id === 'slider-1') {
+                const oneFretBeforeValue = parseInt(sliderOne.value) > 0
+                    ? parseInt(sliderOne.value) - 1 : parseInt(sliderOne.value);
+                const oneFretBefore = document.querySelector(
+                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretBeforeValue}"]`);
+                oneFretBefore.scrollIntoView({behavior: 'smooth', block: 'center'});
+            } else if (e && e.target.id === 'slider-2') {
+                const oneFretAfterValue = parseInt(sliderTwo.value) < totalFrets
+                    ? parseInt(sliderTwo.value) + 1 : parseInt(sliderTwo.value);
+                const oneFretAfter = document.querySelector(
+                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretAfterValue}"]`);
+                oneFretAfter.scrollIntoView({behavior: 'smooth', block: 'center'});
+            }
+        }
+
         function handleSliderChangeEvent(e = null) {
-            console.log(e ? e.target.id : '');
             let percent1 = (sliderOne.value / sliderMaxValue) * 100;
             let percent2 = (sliderTwo.value / sliderMaxValue) * 100;
             sliderTrack.style.background = `linear-gradient(to left, lightgrey ${percent1}% , saddlebrown ${percent1}% , saddlebrown ${percent2}%, lightgrey ${percent2}%)`;
+
+            // Save the fret range in the local storage
+            const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
+            localStorage.setItem(`fret-range-${fretboardNr}`, JSON.stringify({ lowerLimit: sliderOne.value, upperLimit: sliderTwo.value }));
 
             // Loop over the frets
             let totalFrets = document.querySelector('#fret-selection-fretboard-1').dataset.totalFrets;
@@ -55,30 +90,12 @@ export class DualRangeSlider {
                 for (let fretPosition of fretPositions) {
                     if (i >= sliderOne.value && i <= sliderTwo.value) {
                         fretPosition.style.backgroundColor = 'rgba(194,93,20,0.4)';
-
-                        // Adjust the scrollIntoView call based on the slider that triggered the event
-                        if (e && e.target.id === 'slider-1') {
-                            const oneFretBeforeValue = parseInt(sliderOne.value) > 0
-                                ? parseInt(sliderOne.value) - 1 : parseInt(sliderOne.value);
-                            const oneFretBefore = document.querySelector(
-                                `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretBeforeValue}"]`);
-                            oneFretBefore.scrollIntoView({behavior: 'smooth', block: 'center'});
-                        } else if (e && e.target.id === 'slider-2') {
-                            const oneFretAfterValue = parseInt(sliderTwo.value) < totalFrets
-                                ? parseInt(sliderTwo.value) + 1 : parseInt(sliderTwo.value);
-                            const oneFretAfter = document.querySelector(
-                                `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretAfterValue}"]`);
-                            oneFretAfter.scrollIntoView({behavior: 'smooth', block: 'center'});
-                        }
-
+                        scrollFretIntoView(e, sliderOne, sliderTwo, totalFrets);
                     } else {
                         fretPosition.style.backgroundColor = '';
                     }
                 }
-
             }
-
-            // saveFretsInLocalStorage();
         }
 
         handleSlideOneEvent();

@@ -1,28 +1,28 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1708178220";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1708178220";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1708178220";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1708178220";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1708178220";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=1708178220";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1708178220";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1708178220";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.0.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.0.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.0.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.0.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.0.0";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.0.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.0.0";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.0.0";
 import {
     FretShapeSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=1708178220";
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=2.0.0";
 
 
 export class NoteInKeyGameInitializer {
     // Possible keys
+    // availableNotesOnStrings = {
+    //     // String name: [possible keys for string]
+    //     'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
+    //     'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
+    //     'D': ['D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯'],
+    //     'G': ['G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
+    //     'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G'],
+    //     'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
+    // };
     availableNotesOnStrings = {
-        // String name: [possible keys for string]
-        'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
-        'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F'],
-        'D': ['D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯'],
-        'G': ['G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
-        'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G'],
-        'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C'],
-    };
-    availableNotesOnStringsFullFretboard = {
         // String name: [possible keys for string]
         'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
         'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯'],
@@ -55,7 +55,6 @@ export class NoteInKeyGameInitializer {
         // Init string options
         GameConfigurationManager.initGameModeOptions('note-in-key-game-strings-div');
         this.initStringOptionsEventListeners();
-        new FretShapeSelector().initRoadmapSelector();
 
         // Init game components
         // Note in key generator initialized here in case the user clicks "pause" and wants to continue the game
@@ -78,6 +77,10 @@ export class NoteInKeyGameInitializer {
         if (document.querySelector('#no-guitar-option input')) {
             NoteInKeyGameNoGuitar.initNoGuitarGameOption(this.noteInKeyGameCoordinator);
         }
+
+        // Add event listener to reload key button, so it can be called from static functions (passing the
+        // function via parameter causes the function to lose the "this" context)
+        document.addEventListener('reload-key-and-string', this.reloadKeyAndStringEventHandlerVar);
     }
 
     initStringOptionsEventListeners() {
@@ -119,6 +122,8 @@ export class NoteInKeyGameInitializer {
 
         document.getElementById('header-center-container').removeEventListener('click',
             this.reloadKeyAndStringEventHandlerVar);
+
+        document.removeEventListener('reload-key-and-string', this.reloadKeyAndStringEventHandlerVar);
 
         // Remove string options
         document.querySelector('#note-in-key-game-strings-div').remove();
@@ -165,14 +170,10 @@ export class NoteInKeyGameInitializer {
     }
 
     setAvailableNotesOnStrings() {
-        let notesOnStrings;
-        if (document.querySelector('#note-in-key-entire-fretboard-option input')?.checked) {
-            // Using the spread operator to create a copy of this.possibleKeysOnStrings otherwise it would
-            // be a reference, and the original object would be modified
-            notesOnStrings = {...this.availableNotesOnStringsFullFretboard};
-        } else {
-            notesOnStrings = {...this.availableNotesOnStrings};
-        }
+        // Using the spread operator to create a copy of this.possibleKeysOnStrings otherwise it would
+        // be a reference, and the original object would be modified
+        let notesOnStrings = {...this.availableNotesOnStrings};
+
         // Remove strings that were not selected from notesOnStrings
         const strings = document.querySelectorAll('#note-in-key-game-strings-div input');
 
@@ -196,7 +197,7 @@ export class NoteInKeyGameInitializer {
     addHtmlComponents() {
         // Add game mode options (have to be added before the other initializations as they might depend on options)
         document.querySelector('#game-mode-options').innerHTML = `
-                    <div id="difficulty-range-slider-container" class="option-for-game-mode">
+                    <!--<div id="difficulty-range-slider-container" class="option-for-game-mode">
                         <input type="range" min='1' max='3' value='1' step='1'
                                list="level-options" id="difficulty-range-slider"/>
                         <datalist id="level-options">
@@ -204,12 +205,7 @@ export class NoteInKeyGameInitializer {
                             <option value="2" label="Lvl 2"></option>
                             <option value="3" label="Lvl 3"></option>
                         </datalist>
-                    </div>
-                    <label class='checkbox-button option-for-game-mode' id="note-in-key-entire-fretboard-option">
-                        <input type='checkbox'>
-                        <!--<span class="normal-font-size"></span>-->
-                        <img src="src/assets/images/entire-fretboard-icon.svg" class="button-icon">
-                    </label>
+                    </div>-->
                     <!-- For simplicity, the no-guitar option has the same id for all game modes and 
                      the core-game-coordination-initializer sets the metronomeEnabled and noteDetectorEnabled values -->
                     <label class='checkbox-button option-for-game-mode' id="no-guitar-option">
@@ -217,16 +213,16 @@ export class NoteInKeyGameInitializer {
                         <!--<span class="normal-font-size"></span>-->
                         <img src="src/assets/images/no-guitar-icon.svg" class="button-icon">
                     </label>
-                    <label class='checkbox-button option-for-game-mode always-same-key-option' id="g-key-option">
-                        <input type='checkbox' data-string="E" data-key="G">
-                        <span class="normal-font-size">G key</span>
+                    <label class='checkbox-button option-for-game-mode custom-shape-option' id="shape-1-option">
+                        <input type='checkbox' data-fretboard-nr="1">
+                        <span class="normal-font-size">Shape 1</span>
                     </label>
-                    <label class='checkbox-button option-for-game-mode always-same-key-option' id="d-key-option">
-                        <input type='checkbox' data-string="A" data-key="D">
-                        <span class="normal-font-size">D key</span>
+                    <label class='checkbox-button option-for-game-mode custom-shape-option' id="shape-2-option">
+                        <input type='checkbox' data-fretboard-nr="2">
+                        <span class="normal-font-size">Shape 2</span>
                     </label>
                     <!-- Event listener added in fret-shape-selector -->
-                    <label class='checkbox-button option-for-game-mode' id="custom-shape-option">
+                    <label class='checkbox-button option-for-game-mode' id="select-custom-shape-option">
                         <span class="normal-font-size">Select custom shape</span>
                     </label>                    
                     `;
@@ -234,11 +230,11 @@ export class NoteInKeyGameInitializer {
                     <span class="normal-font-size label-text options-title-span" id="string-option-title">Strings</span>
                     <div id="note-in-key-game-strings-div">
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-e-string-option">
-                        <input type='checkbox' value="E">
+                        <input type='checkbox' value="E" checked>
                         <span class="normal-font-size">E</span>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-a-string-option">
-                        <input type='checkbox' value="A">
+                        <input type='checkbox' value="A" checked>
                         <span class="normal-font-size">A</span>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-d-string-option">
@@ -261,18 +257,10 @@ export class NoteInKeyGameInitializer {
 `);
 
         // Add difficulty range slider event listener
-        document.querySelector('#difficulty-range-slider')
-            .addEventListener('change', this.reloadKeyAndStringEventHandler.bind(this));
-
-        // Add note in key entire fretboard option event listener
-        document.querySelector('#note-in-key-entire-fretboard-option input')
-            .addEventListener('change', () => {
-                this.setAvailableNotesOnStrings();
-                this.reloadKeyAndStringEventHandler();
-            });
+        // document.querySelector('#difficulty-range-slider').addEventListener('change', this.reloadKeyAndStringEventHandler.bind(this));
 
         // Add event listeners for always the same key options
-        this.addAlwaysSameKeyEventListeners();
+        this.addCustomShapeChoiceEventListeners();
 
         document.querySelector('#header-center-container').innerHTML =
             `<img src="src/assets/images/reload-icon.svg" id="reload-key-btn"> Reload key`;
@@ -345,28 +333,39 @@ export class NoteInKeyGameInitializer {
             </div>`);
     }
 
-    addAlwaysSameKeyEventListeners() {
-        const alwaysSameKeyOptions = document.querySelectorAll('.always-same-key-option');
-        const self = this;
+    addCustomShapeChoiceEventListeners() {
+        const customShapeOption = document.querySelectorAll('.custom-shape-option');
         // If one of the key options is checked, the other should be unchecked
-        for (const option of alwaysSameKeyOptions) {
+        for (const option of customShapeOption) {
             option.addEventListener('change', () => {
-                console.log(option.querySelector('input').checked);
+                const input = option.querySelector('input');
                 // If the checkbox was not checked before
-                if (option.querySelector('input').checked) {
-
+                if (input.checked) {
                     // When one game mode is selected, uncheck all game modes
-                    for (const disabledOption of alwaysSameKeyOptions) {
+                    for (const disabledOption of customShapeOption) {
                         disabledOption.querySelector('input').checked = false;
                         // Fire change event so that option value is stored in local storage
                         disabledOption.querySelector('input').dispatchEvent(new Event('change'));
                     }
                     // The radio button that was clicked should be checked only if it was not checked before
-                    option.querySelector('input').checked = true;
-                    option.querySelector('input').dispatchEvent(new Event('change'));
+                    input.checked = true;
+                    input.dispatchEvent(new Event('change'));
+
+                    // If the fretrange has not been defined yet and the user selects a shape, define open popup to define
+                    if (!localStorage.getItem(`fret-range-${input.dataset.fretboardNr}`)) {
+                        FretShapeSelector.openFretShapeSelectorModal(parseInt(input.dataset.fretboardNr));
+                    }
                 }
                 this.reloadKeyAndStringEventHandler();
             });
         }
+        document.querySelector('#select-custom-shape-option').addEventListener('click', () => {
+            const checkedShapeInput = document.querySelector('.custom-shape-option input[type="checkbox"]:checked');
+            let fretboardNr = 1;
+            if (checkedShapeInput) {
+                fretboardNr = checkedShapeInput.dataset.fretboardNr;
+            }
+            FretShapeSelector.openFretShapeSelectorModal(fretboardNr);
+        });
     }
 }

@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=1708178220";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.0.0";
 
 export class GameConfigurationManager {
 
@@ -6,6 +6,14 @@ export class GameConfigurationManager {
         document.getElementById('config-div').classList.toggle('expanded');
         // Scroll to the top
         window.scrollTo(0, 0);
+    }
+
+    static addSettingsCloseEventListenerOnOutsideClick() {
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#config-div') && !e.target.closest('#settings-toggle-btn') && !e.target.closest('#modal')) {
+                document.getElementById('config-div').classList.remove('expanded');
+            }
+        });
     }
 
     static initGameModeSelection() {
