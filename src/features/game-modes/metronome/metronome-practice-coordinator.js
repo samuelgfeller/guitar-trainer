@@ -1,5 +1,5 @@
-import {MetronomePracticeInitializer} from "./metronome-practice-initializer.js?v=2.0.1";
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.0.1";
+import {MetronomePracticeInitializer} from "./metronome-practice-initializer.js?v=2.0.2";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.0.2";
 
 export class MetronomePracticeCoordinator {
 

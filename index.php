@@ -1,6 +1,6 @@
 <?php
 
-$version = '2.0.1';
+$version = '2.0.2';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
