@@ -1,10 +1,11 @@
 export class ArrayShuffler {
     static reShuffleAttempts = 0;
+    static maxReShuffleAttempts = 200;
 
     /**
      * Shuffles an array ensuring that two indexes that were adjacent before are not adjacent after shuffling.
-     * If it encounters two adjacent elements, it tries to reshuffle the entire array up to 10 times.
-     * If after 10 attempts, there are still adjacent elements, it adds the remaining elements to the shuffled array.
+     * If it encounters two adjacent elements, it tries to reshuffle the entire array up to x times.
+     * If after x attempts, there are still adjacent elements, it adds the remaining elements to the shuffled array.
      *
      * @param {Array} array - The array to shuffle.
      * @return {Array} - The shuffled array.
@@ -23,14 +24,17 @@ export class ArrayShuffler {
 
             // If the shuffled array is empty or the current element is not adjacent to the previous one,
             // add the current element to the shuffled array
-            if (!previousElement || Math.abs(array.indexOf(currentElement) - array.indexOf(previousElement)) !== 1) {
+            if (!previousElement
+                || (Math.abs(array.indexOf(currentElement) - array.indexOf(previousElement)) !== 1
+                && currentElement[1] !== previousElement[1])
+            ){
                 shuffledArray.push(currentElement);
                 remainingElements.splice(randomIndex, 1);
                 previousElement = currentElement;
             }
                 // If the current element is adjacent to the previous one and the reshuffle attempts is less than 10,
             // try to reshuffle the entire array
-            else if (this.reShuffleAttempts < 20) {
+            else if (this.reShuffleAttempts < this.maxReShuffleAttempts) {
                 this.reShuffleAttempts++;
                 return this.shuffleArray(array);
             }
@@ -40,8 +44,8 @@ export class ArrayShuffler {
             }
         }
 
-        // If after 10 reshuffle attempts, there are still remaining elements, add them to the shuffled array
-        if (this.reShuffleAttempts >= 20 && remainingElements.length > 0) {
+        // If after x reshuffle attempts, there are still remaining elements, add them to the shuffled array
+        if (this.reShuffleAttempts >= this.maxReShuffleAttempts && remainingElements.length > 0) {
             shuffledArray.push(...remainingElements);
         }
 

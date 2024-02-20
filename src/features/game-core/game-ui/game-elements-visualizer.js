@@ -1,4 +1,4 @@
-import {GameLevelTracker} from "../game-progress/game-level-tracker.js?v=2.0.5";
+import {GameLevelTracker} from "../game-progress/game-level-tracker.js?v=2.0.6";
 
 export class GameElementsVisualizer {
     static hideGameElementsAndDisplayInstructions() {
