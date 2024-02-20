@@ -97,7 +97,7 @@ export class TuneOperator {
         amplitude /= audioData.length;
 
         // If amplitude is not high enough, not trying to figure out note as its probably only background noise
-        if (frequency && amplitude > (this.isMobile ? 0.02 : 0.05)) {
+        if (frequency && amplitude > (this.isMobile ? 0.01 : 0.05)) {
 
             const note = self.getNote(frequency);
 
