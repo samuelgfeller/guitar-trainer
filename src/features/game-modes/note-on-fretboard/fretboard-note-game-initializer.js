@@ -1,9 +1,9 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=2.0.2";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.0.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.0.2";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.0.2";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.0.2";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.0.2";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=2.0.3";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.0.3";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.0.3";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.0.3";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.0.3";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.0.3";
 
 export class FretboardNoteGameInitializer {
 

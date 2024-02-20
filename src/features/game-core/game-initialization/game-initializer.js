@@ -1,7 +1,7 @@
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=2.0.2";
-import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=2.0.2";
-import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=2.0.2";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=2.0.2";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=2.0.3";
+import {CoreGameCoordinationInitializer} from "./core-game-coordination-initializer.js?v=2.0.3";
+import {VisibilityChangeHandler} from "./visibility-change-handler.js?v=2.0.3";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=2.0.3";
 
 export class GameInitializer {
     constructor() {

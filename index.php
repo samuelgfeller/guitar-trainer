@@ -1,6 +1,6 @@
 <?php
 
-$version = '2.0.2';
+$version = '2.0.3';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
@@ -89,13 +89,6 @@ if (file_exists(__DIR__ . '/config/env.php')) {
             <span id="incorrect-count"></span><span id="correct-count"></span>
         </div>
     </div>
-
-    <div id="audio-info">
-        <div id="audio-info-div"></div>
-        <div id="audio-info-div2"></div>
-    </div>
-
-
 
     <div id="game-start-instruction">
         <details open>

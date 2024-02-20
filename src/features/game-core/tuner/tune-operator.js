@@ -93,12 +93,9 @@ export class TuneOperator {
         }
         const frequency = self.pitchDetector.do(audioData);
         amplitude /= audioData.length;
-        const noteName = this.noteStrings[this.getNote(frequency) % 12];
-        document.querySelector('#audio-info-div').textContent =
-            `Frequency: ${Math.round(frequency)} Hz, Amplitude: ${amplitude.toFixed(2)}, Note: ${noteName}`;
-        document.querySelector('#audio-info-div2').textContent = '';
-        // If amplitude is not high enough (above 0.06), don't try to figure out note as its probably only background noise
-        if (frequency && amplitude > 0.06) {
+
+        // If amplitude is not high enough, not trying to figure out note as its probably only background noise
+        if (frequency && amplitude > (this.isMobile() ? 0.02 : 0.5)) {
 
             const note = self.getNote(frequency);
             document.querySelector('#audio-info-div2').textContent = self.noteStrings[note % 12];
@@ -109,7 +106,7 @@ export class TuneOperator {
                     name: self.noteStrings[note % 12],
                     value: note,
                     cents: self.getCents(frequency, note),
-                    octave: parseInt(note / 12) - 1,
+                    octave: Math.round(note / 12) - 1,
                     frequency: frequency,
                     amplitude: amplitude,
                 }
@@ -117,6 +114,10 @@ export class TuneOperator {
             document.dispatchEvent(noteDetectedEvent);
         }
     };
+
+    isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
 
     stopRecord() {
         if (this.scriptProcessor) {
