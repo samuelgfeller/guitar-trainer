@@ -22,6 +22,8 @@ export class TuneOperator {
             "A♯ | B♭",
             "B",
         ];
+        // Check if user is on mobile as sensitivity must be set to a higher value
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
     /**
@@ -95,10 +97,9 @@ export class TuneOperator {
         amplitude /= audioData.length;
 
         // If amplitude is not high enough, not trying to figure out note as its probably only background noise
-        if (frequency && amplitude > (this.isMobile() ? 0.02 : 0.5)) {
+        if (frequency && amplitude > (this.isMobile ? 0.02 : 0.05)) {
 
             const note = self.getNote(frequency);
-            document.querySelector('#audio-info-div2').textContent = self.noteStrings[note % 12];
 
             // console.log(frequency,self.noteStrings[note % 12]);
             const noteDetectedEvent = new CustomEvent("note-detected", {
@@ -114,10 +115,6 @@ export class TuneOperator {
             document.dispatchEvent(noteDetectedEvent);
         }
     };
-
-    isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
 
     stopRecord() {
         if (this.scriptProcessor) {

@@ -1,10 +1,10 @@
-import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=2.0.3";
+import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=2.0.4";
 import {
     FretboardNoteGameCoordinator
-} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=2.0.3";
-import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=2.0.3";
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=2.0.3";
-import {MetronomePracticeCoordinator} from "../../game-modes/metronome/metronome-practice-coordinator.js?v=2.0.3";
+} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=2.0.4";
+import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=2.0.4";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=2.0.4";
+import {MetronomePracticeCoordinator} from "../../game-modes/metronome/metronome-practice-coordinator.js?v=2.0.4";
 
 export class CoreGameCoordinationInitializer {
 
