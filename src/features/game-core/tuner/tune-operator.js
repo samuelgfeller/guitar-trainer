@@ -93,9 +93,16 @@ export class TuneOperator {
         }
         const frequency = self.pitchDetector.do(audioData);
         amplitude /= audioData.length;
+        const noteName = this.noteStrings[this.getNote(frequency) % 12];
+        document.querySelector('#audio-info-div').textContent =
+            `Frequency: ${Math.round(frequency)} Hz, Amplitude: ${amplitude.toFixed(2)}, Note: ${noteName}`;
+        document.querySelector('#audio-info-div2').textContent = '';
         // If amplitude is not high enough (above 0.06), don't try to figure out note as its probably only background noise
         if (frequency && amplitude > 0.06) {
+
             const note = self.getNote(frequency);
+            document.querySelector('#audio-info-div2').textContent = self.noteStrings[note % 12];
+
             // console.log(frequency,self.noteStrings[note % 12]);
             const noteDetectedEvent = new CustomEvent("note-detected", {
                 detail: {

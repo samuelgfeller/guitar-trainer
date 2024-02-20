@@ -1,6 +1,6 @@
 <?php
 
-$version = '2.0.1';
+$version = '2.0.2';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
@@ -17,7 +17,8 @@ if (file_exists(__DIR__ . '/config/env.php')) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+          content="width=device-width,
+          user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="src/assets/styles/modal.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/style.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/note-in-key.css?v=<?= $version ?>">
@@ -89,9 +90,10 @@ if (file_exists(__DIR__ . '/config/env.php')) {
         </div>
     </div>
 
-    <!--<div id="fret-selection">-->
-    <!--    <div id="fretboard-for-selection"></div>-->
-    <!--</div>-->
+    <div id="audio-info">
+        <div id="audio-info-div"></div>
+        <div id="audio-info-div2"></div>
+    </div>
 
 
 
