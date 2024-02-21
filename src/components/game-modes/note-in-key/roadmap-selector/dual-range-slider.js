@@ -74,7 +74,9 @@ export class DualRangeSlider {
         function handleSliderChangeEvent(e = null) {
             let percent1 = (sliderOne.value / sliderMaxValue) * 100;
             let percent2 = (sliderTwo.value / sliderMaxValue) * 100;
-            sliderTrack.style.background = `linear-gradient(to left, lightgrey ${percent1}% , saddlebrown ${percent1}% , saddlebrown ${percent2}%, lightgrey ${percent2}%)`;
+            sliderTrack.style.background =
+                `linear-gradient(to left, var(--slider-track-color) ${percent1}%, 
+                var(--slider-color) ${percent1}% , var(--slider-color) ${percent2}%, var(--slider-track-color) ${percent2}%)`;
 
             // Save the fret range in the local storage
             const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;

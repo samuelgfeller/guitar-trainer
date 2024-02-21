@@ -1,4 +1,4 @@
-import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=2.0.6";
+import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=2.1.0";
 
 export class NoteDisplayer {
 
@@ -76,7 +76,10 @@ export class NoteDisplayer {
     }
 
     static resetDetectedNoteColor() {
-        document.querySelector('#detected-note').style.color = null;
+        const detectedNoteDiv = document.querySelector('#detected-note');
+        if (detectedNoteDiv){
+            detectedNoteDiv.style.color = null;
+        }
         // if (this.currentCombinationIsChallenging) {
         //     this.frequencyBars.canvasContext.fillStyle = '#a96f00';
         // } else {

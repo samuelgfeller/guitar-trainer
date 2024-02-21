@@ -1,6 +1,6 @@
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=2.0.6";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=2.0.6";
-import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=2.0.6";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=2.1.0";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=2.1.0";
+import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=2.1.0";
 
 /**
  * Note displayer for "practice" mode, which means
@@ -87,7 +87,7 @@ export class NoteInKeyNoteHandler {
         if (combination && typeof combination === 'object' && 'noteName' in combination) {
             ({stringName, noteName} = combination);
             // Not update correct count if the combination is given as it's the first one
-            this.notUpdateCorrectCount = true;
+            // this.notUpdateCorrectCount = true;
         } else {
             ({stringName, noteName} = this.noteGenerator.getNextCombination());
         }
