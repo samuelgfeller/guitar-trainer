@@ -1,4 +1,4 @@
-import {FrequencyBarsVisualizer} from "./frequency-bars-visualizer.js?v=2.1.0";
+import {FrequencyBarsVisualizer} from "./frequency-bars-visualizer.js?v=1708779155";
 
 export class FrequencyBarsController {
 

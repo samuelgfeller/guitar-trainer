@@ -28,6 +28,7 @@
         cursor: pointer;
         position: relative;
         z-index: 1;
+        width: 66px;
     }
     .fret-position:hover, .string-name:hover{
         background-color: rgba(255, 255, 255, 0.1);

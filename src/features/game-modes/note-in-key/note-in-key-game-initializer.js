@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.0";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.0";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.0";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.0";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.0";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=1708779155";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1708779155";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1708779155";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1708779155";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=1708779155";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=1708779155";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1708779155";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1708779155";
 import {
     FretShapeSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=2.1.0";
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=1708779155";
 
 
 export class NoteInKeyGameInitializer {
@@ -352,7 +352,7 @@ export class NoteInKeyGameInitializer {
                     input.dispatchEvent(new Event('change'));
 
                     // If the fretrange has not been defined yet and the user selects a shape, define open popup to define
-                    if (!localStorage.getItem(`fret-range-${input.dataset.fretboardNr}`)) {
+                    if (!localStorage.getItem(`note-in-key-fret-range-${input.dataset.fretboardNr}`)) {
                         FretShapeSelector.openFretShapeSelectorModal(parseInt(input.dataset.fretboardNr));
                     }
                 }

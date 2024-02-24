@@ -1,6 +1,9 @@
 /* mobile first min-width sets base and content is adapted to computers. */
 @media (min-width: 100px) {
-    #fret-selection-container {
+    #selector-instructions{
+        width: 100%;
+    }
+    .fret-selection-container {
         width: 100%;
         overflow: auto;
     }
@@ -10,7 +13,7 @@
         color: saddlebrown;
     }
 
-    .fretboard-for-shapes {
+    .fretboard-for-shapes, .virtual-fretboard-selector {
         min-width: 420px;
         padding-right: 40px;
     }
@@ -18,7 +21,7 @@
         display: none;
     }
 
-    .diatonic-note-number {
+    .diatonic-note-number, .note-name-span {
         width: 28px;
         height: 28px;
         border-radius: 50%;
@@ -35,6 +38,10 @@
         transform: translateX(-50%) translateY(50%);
         z-index: 2;
     }
+    .note-name-span{
+        border: none;
+        background-color: #212121;
+    }
 
     .diatonic-major {
         color: #ee2929;
@@ -49,7 +56,7 @@
     }
 
 
-    #fret-selection-container .fret-position:hover{
+    .fret-selection-container .fret-position:hover{
         background-color: initial;
         cursor: initial;
     }

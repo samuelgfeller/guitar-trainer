@@ -1,7 +1,7 @@
-import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=2.1.0";
+import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1708779155";
 import {
     NoteOnFretboardNoteHandler
-} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=2.1.0";
+} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=1708779155";
 
 /**
  * Game mode "note-on-fretboard" core logic

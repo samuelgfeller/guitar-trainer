@@ -1,6 +1,11 @@
 export class DualRangeSlider {
-    static addSelectionSlider() {
-        document.querySelector('#roadmap-selector-instructions').insertAdjacentHTML('beforeend', `
+
+    /**
+     * @param {function} saveFretRangeInLocalStorageFunction
+     * @param {string} savedFretRange
+     */
+    static addSelectionSlider(saveFretRangeInLocalStorageFunction, savedFretRange, minSliderGap = 1) {
+        document.querySelector('#selector-instructions').insertAdjacentHTML('beforeend', `
                 <div id="dual-range-slider-wrapper">
                 <div class="dual-range-slider-container normal-font-size">
                     <div class="slider-track normal-font-size"></div>
@@ -9,16 +14,13 @@ export class DualRangeSlider {
                 </div>
                 </div>
             `);
-        // Set values of sliders to the saved values in the local storage
-        this.setSliderValuesFromLocalStorage();
-
+        // Set the slider values from the local storage right after the sliders are added
+        this.setSliderValuesFromLocalStorage(savedFretRange);
         // Add selection slider event listeners
-        this.addSelectionSliderEventListeners();
+        this.addSelectionSliderEventListeners(saveFretRangeInLocalStorageFunction, minSliderGap);
     }
 
-    static setSliderValuesFromLocalStorage() {
-        const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
-        const savedFretRange = localStorage.getItem(`fret-range-${fretboardNr}`);
+    static setSliderValuesFromLocalStorage(savedFretRange) {
         if (savedFretRange) {
             const { lowerLimit, upperLimit } = JSON.parse(savedFretRange);
             document.getElementById('slider-1').value = lowerLimit;
@@ -29,11 +31,13 @@ export class DualRangeSlider {
         }
     }
 
-
-    static addSelectionSliderEventListeners() {
+    /**
+     * @param {function} saveFretRangeInLocalStorageFunction
+     */
+    static addSelectionSliderEventListeners(saveFretRangeInLocalStorageFunction, minSliderGap = 1) {
         let sliderOne = document.getElementById("slider-1");
         let sliderTwo = document.getElementById("slider-2");
-        let minGap = 1;
+        let minGap = minSliderGap;
         let sliderTrack = document.querySelector(".slider-track");
         let sliderMaxValue = document.getElementById("slider-1").max;
 
@@ -60,13 +64,15 @@ export class DualRangeSlider {
                 const oneFretBeforeValue = parseInt(sliderOne.value) > 0
                     ? parseInt(sliderOne.value) - 1 : parseInt(sliderOne.value);
                 const oneFretBefore = document.querySelector(
-                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretBeforeValue}"]`);
+                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretBeforeValue}"],
+            #fretboard-range-selection-virtual-fretboard [data-fret-number="${oneFretBeforeValue}"]`);
                 oneFretBefore.scrollIntoView({behavior: 'smooth', block: 'center'});
             } else if (e && e.target.id === 'slider-2') {
                 const oneFretAfterValue = parseInt(sliderTwo.value) < totalFrets
                     ? parseInt(sliderTwo.value) + 1 : parseInt(sliderTwo.value);
                 const oneFretAfter = document.querySelector(
-                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretAfterValue}"]`);
+                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretAfterValue}"],
+                                #fretboard-range-selection-virtual-fretboard [data-fret-number="${oneFretAfterValue}`);
                 oneFretAfter.scrollIntoView({behavior: 'smooth', block: 'center'});
             }
         }
@@ -79,11 +85,10 @@ export class DualRangeSlider {
                 var(--slider-color) ${percent1}% , var(--slider-color) ${percent2}%, var(--slider-track-color) ${percent2}%)`;
 
             // Save the fret range in the local storage
-            const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
-            localStorage.setItem(`fret-range-${fretboardNr}`, JSON.stringify({ lowerLimit: sliderOne.value, upperLimit: sliderTwo.value }));
+            saveFretRangeInLocalStorageFunction(sliderOne.value, sliderTwo.value);
 
             // Loop over the frets
-            let totalFrets = document.querySelector('#fret-selection-fretboard-1').dataset.totalFrets;
+            let totalFrets = document.querySelector('[data-total-frets]').dataset.totalFrets;
 
             // Loop over frets
             for (let i = 0; i <= totalFrets; i++) {

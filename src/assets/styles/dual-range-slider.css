@@ -78,7 +78,7 @@
         cursor: pointer;
         margin-top: -23px;
         pointer-events: auto;
-        border-radius: 12px;
+        border-radius: 99px;
     }
 
     .dual-range-slider-container input[type="range"]::-moz-range-thumb {
@@ -90,7 +90,7 @@
         margin-top: -23px;
         pointer-events: auto;
         border: none;
-        border-radius: 12px;
+        border-radius: 99px;
     }
 
     .dual-range-slider-container input[type="range"]::-ms-thumb {
@@ -102,7 +102,7 @@
         margin-top: -23px;
         pointer-events: auto;
         border: none;
-        border-radius: 12px;
+        border-radius: 99px;
     }
 
     .dual-range-slider-container input[type="range"]:active::-webkit-slider-thumb {

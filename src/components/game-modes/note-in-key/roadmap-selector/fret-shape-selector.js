@@ -1,7 +1,7 @@
-import {DualRangeSlider} from "./dual-range-slider.js?v=2.1.0";
-import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.1.0";
-import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.1.0";
-import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.1.0";
+import {DualRangeSlider} from "./dual-range-slider.js?v=1708779155";
+import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=1708779155";
+import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=1708779155";
+import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=1708779155";
 
 export class FretShapeSelector {
 
@@ -9,6 +9,8 @@ export class FretShapeSelector {
 
     constructor() {
     }
+
+
 
     /**
      * @param {number|string} fretboardShapeNumber
@@ -18,7 +20,7 @@ export class FretShapeSelector {
 
         let header = `<h2 class="normal-font-size">Shape 
 <span id="fretboard-number-span">${fretboardShapeNumber}</span> selector</h2>`;
-        let body = `<div id="roadmap-selector-instructions" class="text">
+        let body = `<div id="selector-instructions" class="text">
                         <p>Move slider below to select the range of frets with the shape you want to practice.</p>
                     </div>`;
         let footer = `<button id="move-fretboard-shape-button" class="normal-font-size btn">Shape ${fretboardShapeNumber === 1 ? 2 : 1}</button>
@@ -32,19 +34,30 @@ export class FretShapeSelector {
         ModalHandler.displayModal(header, body, footer, closeModalHandler, 'big-modal');
         // Must be before the slider is added so that the slider init can highlight the selected are on load
         this.addFretSelectionFretboard(fretboardShapeNumber);
-        DualRangeSlider.addSelectionSlider();
+
+        // The slider change event handler needs the save in localstorage function, and
+        // right after the sliders are added, the values saved in the local storage have to be loaded, before
+        // the handler initialized as it's called.
+        DualRangeSlider.addSelectionSlider(
+            this.saveFretRangeInLocalStorage,
+            this.getSavedFretRange()
+        );
 
         document.getElementById('save-modal-btn').addEventListener('click', () => {
             ModalHandler.closeModalAndCallGivenEventHandler();
         });
+    }
+    static getSavedFretRange(){
+        const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
+        return localStorage.getItem(`note-in-key-fret-range-${fretboardNr}`);
     }
 
     /**
      * @param {number} fretboardShapeNumber
      */
     static addFretSelectionFretboard(fretboardShapeNumber) {
-        document.querySelector('#roadmap-selector-instructions').insertAdjacentHTML('afterend', `
-            <div id="fret-selection-container">
+        document.querySelector('#selector-instructions').insertAdjacentHTML('afterend', `
+            <div class="fret-selection-container">
                 <div id="fret-selection-fretboard-1" data-fretboard-nr="1" 
                 class="fretboard-for-shapes ${fretboardShapeNumber !== 1 ? `inactive-fretboard` : ``}"></div>
                 <div id="fret-selection-fretboard-2" data-fretboard-nr="2" 
@@ -71,7 +84,7 @@ export class FretShapeSelector {
             document.getElementById('fretboard-number-span').textContent = currentFretboardNr;
             document.getElementById('move-fretboard-shape-button').textContent = `Shape ${currentFretboardNr === '1' ? '2' : '1'}`;
 
-            DualRangeSlider.setSliderValuesFromLocalStorage();
+            DualRangeSlider.setSliderValuesFromLocalStorage(this.getSavedFretRange());
         });
     }
 
@@ -159,4 +172,13 @@ export class FretShapeSelector {
         }
         element.textContent = noteNumber;
     }
+
+    static saveFretRangeInLocalStorage(lowerLimit, upperLimit) {
+        const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
+        localStorage.setItem(`note-in-key-fret-range-${fretboardNr}`, JSON.stringify({
+            lowerLimit: lowerLimit,
+            upperLimit: upperLimit
+        }));
+    }
+
 }

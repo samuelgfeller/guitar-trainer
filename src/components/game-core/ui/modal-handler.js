@@ -40,6 +40,8 @@ static displayModal(header, body, footer = '', modalClosedEventHandler = null, m
         document.addEventListener('click', this.closeBtnClickHandler.bind(this));
 
         document.addEventListener('click', this.closeModalFromClickOutsideHandler.bind(this));
+
+        document.addEventListener('keydown', this.closeOnEscapeKeyPress.bind(this));
     }
 
     static closeModalAndCallGivenEventHandler(){
@@ -59,6 +61,13 @@ static displayModal(header, body, footer = '', modalClosedEventHandler = null, m
 
     static closeModalFromClickOutsideHandler(e) {
         if (e.target && e.target === document.getElementById('modal')) {
+            this.closeModalAndCallGivenEventHandler();
+        }
+    }
+
+    // close modal on escape key press
+    static closeOnEscapeKeyPress(e) {
+        if (e.key === 'Escape') {
             this.closeModalAndCallGivenEventHandler();
         }
     }

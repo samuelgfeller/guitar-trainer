@@ -1,9 +1,10 @@
-import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=2.1.0";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.0";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.1.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.0";
+import {GameLevelTracker} from "../../game-core/game-progress/game-level-tracker.js?v=1708779155";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=1708779155";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=1708779155";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=1708779155";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=1708779155";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=1708779155";
+import {RangeSelector} from "../../../components/game-modes/note-on-fretboard/range-selector.js?v=1708779155";
 
 export class FretboardNoteGameInitializer {
 
@@ -29,6 +30,7 @@ export class FretboardNoteGameInitializer {
         document.addEventListener('leveled-up', this.levelUpEventHandler);
 
         this.addHtmlComponents();
+        this.addSelectRangeButtonEventListener();
 
         // Init strings options for them to be saved to localstorage
         // Other options are initialized in core-game-coordination-initializer
@@ -144,6 +146,9 @@ export class FretboardNoteGameInitializer {
 
     addHtmlComponents() {
         document.querySelector('#game-mode-options').innerHTML = `
+                    <label class='checkbox-button option-for-game-mode' id="select-range-option">
+                        <span class="normal-font-size">Select range</span>
+                    </label>      
                          <label class='checkbox-button option-for-game-mode' id="fretboard-note-game-treble-clef">
                              <input type='checkbox'>
                              <!--<span class="normal-font-size"></span>-->
@@ -160,7 +165,6 @@ export class FretboardNoteGameInitializer {
                              <input type="checkbox" alt="Preset challenging notes">
                              <img src="src/assets/images/challenging-icon.svg" class="button-icon">
                          </label>`;
-
         // Game instructions
         document.querySelector('#game-start-instruction').querySelector('h3').innerHTML = `Fretboard note game`;
         document.querySelector('#game-instruction-text').innerHTML = `
@@ -195,30 +199,37 @@ export class FretboardNoteGameInitializer {
                             <span class="normal-font-size label-text options-title-span" id="string-option-title">Strings</span>
                             <div id="note-on-fretboard-game-strings-div">
                             <label class='checkbox-button option-for-game-mode' id="note-on-fretboard-e-string-option">
-                                <input type='checkbox' value="E">
+                                <input type='checkbox' value="E" checked>
                                 <span class="normal-font-size">E</span>
                             </label>
                             <label class='checkbox-button option-for-game-mode' id="note-on-fretboard-a-string-option">
-                                <input type='checkbox' value="A">
+                                <input type='checkbox' value="A" checked>
                                 <span class="normal-font-size">A</span>
                             </label>
                             <label class='checkbox-button option-for-game-mode' id="note-on-fretboard-d-string-option">
-                                <input type='checkbox' value="D">
+                                <input type='checkbox' value="D" checked>
                                 <span class="normal-font-size">D</span>
                             </label>
                             <label class='checkbox-button option-for-game-mode' id="note-on-fretboard-g-string-option">
-                                <input type='checkbox' value="G">
+                                <input type='checkbox' value="G" checked>
                                 <span class="normal-font-size">G</span>
                             </label>
                             <label class='checkbox-button option-for-game-mode' id="note-on-fretboard-b-string-option">
-                                <input type='checkbox' value="B">
+                                <input type='checkbox' value="B" checked>
                                 <span class="normal-font-size">B</span>
                             </label>
                             <label class='checkbox-button option-for-game-mode' id="note-on-fretboard-e2-string-option">
-                                <input type='checkbox' value="E2">
+                                <input type='checkbox' value="E2" checked>
                                 <span class="normal-font-size">E2</span>
                             </label>
                             </div>
         `)
     }
+
+    addSelectRangeButtonEventListener(){
+        document.querySelector('#select-range-option').addEventListener('click', () => {
+            RangeSelector.openRangeSelectorModal();
+        });
+    }
+
 }

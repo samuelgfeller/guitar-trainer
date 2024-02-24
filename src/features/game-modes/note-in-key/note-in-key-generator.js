@@ -1,9 +1,9 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.1.0";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1708779155";
 import {
     availableNotesOnStrings,
     shape1keyNote,
     shape2keyNote
-} from "../../../components/configuration/config-data.js?v=2.1.0";
+} from "../../../components/configuration/config-data.js?v=1708779155";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -119,7 +119,7 @@ export class NoteInKeyGenerator {
         // Get selected fretboard nr
         const fretboardNr = this.getSelectedFretboardNr();
         // Get the selected range from local storage based on which shape option is checked
-        return fretboardNr ? JSON.parse(localStorage.getItem(`fret-range-${fretboardNr}`)) : false;
+        return fretboardNr ? JSON.parse(localStorage.getItem(`note-in-key-fret-range-${fretboardNr}`)) : false;
     }
 
     /**
