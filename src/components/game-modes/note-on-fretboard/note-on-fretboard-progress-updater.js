@@ -1,6 +1,6 @@
 import {
     GameProgressVisualizer
-} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=1708779155";
+} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=1708879136";
 
 /**
  * Progress update for games that use the metronome and have challenging

@@ -1,39 +1,57 @@
-export class NoteShuffler {
+export class NoteOnFretboardShuffler {
     strings;
-    notes;
+    // Every note required to check if they are half a tone apart
+    notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 
     constructor() {
-        // Initialize the notesList, shuffledCombinations, and currentIndex properties
-        this.notesList = [];
+        this.noteCombinationsToBeShuffled = {};
         this.shuffledCombinations = [];
         this.currentIndex = 0;
         this.shuffledAmount = 0;
     }
 
-    setStringsAndNotes(strings, notes) {
-        this.strings = strings;
-        this.notes = notes;
-    }
-
     /**
-     * Sets the notes list by generating all possible guitar notes on the fretboard.
+     * Sets the note list by generating all possible guitar notes on the fretboard.
      * Includes notes ranging from C to B for each string.
      * @returns {number} The amount of shuffled notes.
      */
-    shuffleNotesList() {
-        this.notesList = [];
-        // Generate all possible note combinations for each string and note
-        for (const string of this.strings) {
-            for (const note of this.notes) {
-                // Not adding open strings
-                if (note !== string && !(string === 'E2' && note === 'E')) {
-                    const noteCombination = `${string}|${note}`;
-                    this.notesList.push(noteCombination); // Add the note combination to the notesList
+    shuffleNotesList(notesOnStrings) {
+        // Generate all possible note combinations for each string
+        this.noteCombinationsToBeShuffled = this.getNoteCombinationsFromSelectedRange(notesOnStrings);
+
+        return this.shuffleNotes();
+    }
+
+    /**
+     * Returns an array with the note combinations that are inside the selected range.
+     * Similar functionality to removeNotesOutsideOfSelectedRange() and createArrayWithCombinationsToBeShuffled()
+     * from note-in-key-generator
+     * @param notesOnStrings
+     * @return {[]}
+     */
+    getNoteCombinationsFromSelectedRange(notesOnStrings) {
+        // If a fretboard range is set, only add the notes within the range
+        const selectedRange = JSON.parse(localStorage.getItem(`note-on-fretboard-range`));
+
+        if (!selectedRange) {
+            return notesOnStrings;
+        }
+        let notesInsideSelectedRange = [];
+
+        for (let string in notesOnStrings) {
+            for (const noteIndex in notesOnStrings[string]) {
+                // Note index is the fret position
+                if (parseInt(noteIndex) >= parseInt(selectedRange.lowerLimit)
+                    && parseInt(noteIndex) <= parseInt(selectedRange.upperLimit)) {
+                    // Create a note combination by concatenating the string and note
+                    const noteCombination = `${string}|${notesOnStrings[string][noteIndex]}`;
+                    notesInsideSelectedRange.push(noteCombination); // Add the note combination to the notesList
                 }
             }
         }
-        return this.shuffleNotes();
+        return notesInsideSelectedRange;
     }
+
 
     /**
      * Shuffles the notes list while ensuring each succeeding note is different from the
@@ -42,7 +60,7 @@ export class NoteShuffler {
      */
     shuffleNotes() {
         // Create a copy of the notesList using the spread operator
-        let notesListCopy = [...this.notesList];
+        let notesListCopy = [...this.noteCombinationsToBeShuffled];
 
         this.shuffledCombinations = [];
 
@@ -116,7 +134,7 @@ export class NoteShuffler {
      * or the same note across any string.
      * @param {string|null} noteCombination1 The first note combination.
      * @param {string} noteCombination2 The second note combination.
-     * @returns {boolean} True if there is a halftone difference, false otherwise.
+     * @returns {boolean} True if there is only a halftone or less difference, false otherwise.
      */
     isHalfToneDifference(noteCombination1, noteCombination2) {
         const [string1, noteName1] = noteCombination1.split('|');
@@ -124,15 +142,17 @@ export class NoteShuffler {
 
         // Get the index of the note and string names
         const noteIndex1 = this.notes.indexOf(noteName1);
-        const stringIndex1 = this.strings.indexOf(string1);
         const noteIndex2 = this.notes.indexOf(noteName2);
-        const stringIndex2 = this.strings.indexOf(string2);
 
         // Check if the string is the same and if so, if the notes are half a tone apart
         // (Math.abs turns a negative into positive value and if the note indices is 1 or -1 it indicates a halftone difference
-        return (stringIndex1 === stringIndex2 && Math.abs(noteIndex2 - noteIndex1) === 1)
+        return (string1 === string2 && Math.abs(noteIndex2 - noteIndex1) === 1)
             // Or the notes are the same across any string
-            || noteIndex1 === noteIndex2;
+            || noteIndex1 === noteIndex2
+            // Or if noteIndex1 is 0 and noteIndex2 is 11 that means it's also only a halftone difference
+            || (string1 === string2 &&
+                (noteIndex1 === 0 && noteIndex2 === 11) || (noteIndex1 === 11 && noteIndex2 === 0)
+            );
 
     }
 

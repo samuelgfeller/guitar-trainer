@@ -1,6 +1,6 @@
-import {DualRangeSlider} from "../note-in-key/roadmap-selector/dual-range-slider.js?v=1708779155";
-import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=1708779155";
-import {availableNotesOnStrings} from "../../configuration/config-data.js?v=1708779155";
+import {DualRangeSlider} from "../note-in-key/roadmap-selector/dual-range-slider.js?v=1708879136";
+import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=1708879136";
+import {availableNotesOnStrings} from "../../configuration/config-data.js?v=1708879136";
 
 export class RangeSelector {
 
@@ -16,7 +16,8 @@ export class RangeSelector {
 
         // Close modal handler
         const closeModalHandler = () => {
-            // document.dispatchEvent(new Event('reload-key-and-string'));
+            document.dispatchEvent(new Event('game-stop'));
+            document.dispatchEvent(new Event('note-on-fretboard-reshuffle-notes'));
         }
         // Open modal with fret shape selector
         ModalHandler.displayModal(header, body, footer, closeModalHandler, 'big-modal');

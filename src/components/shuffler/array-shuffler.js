@@ -84,7 +84,10 @@ export class ArrayShuffler {
     }
 
     /**
-     * @return {boolean|boolean|*}
+     * Check if the current element is adjacent to the previous one and add it to the shuffled array
+     * If the function was unable to add an element that isn't adjacent or equal to the previous one,
+     * false is returned.
+     * @return {boolean}
      */
     static checkAndAddElementToArray() {
         // Select a random element from the remainingElements array

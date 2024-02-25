@@ -1,7 +1,7 @@
-import {FretboardNoteGameInitializer} from "./fretboard-note-game-initializer.js?v=1708779155";
 import {
     NoteOnFretboardNoteHandler
-} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=1708779155";
+} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=1708879136";
+import {NoteOnFretboardGameInitializer} from "./initialization/note-on-fretboard-game-initializer.js?v=1708879136";
 
 /**
  * Game mode "note-on-fretboard" core logic
@@ -13,7 +13,7 @@ export class FretboardNoteGameCoordinator {
 
     constructor() {
         // Is initialized in core game coordinator
-        this.fretboardNoteGameInitializer = new FretboardNoteGameInitializer(this);
+        this.fretboardNoteGameInitializer = new NoteOnFretboardGameInitializer(this);
         // Setup game components
         this.fretboardNoteGameInitializer.init();
 

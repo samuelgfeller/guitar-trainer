@@ -22,4 +22,8 @@ export class BpmInput {
             bpmInput.dispatchEvent(changeEvent);
         });
     }
+
+    static removeBpmInput(){
+        document.querySelector('#header-center-container').innerHTML = '';
+    }
 }

@@ -1,11 +1,11 @@
-import {NoteShuffler} from "../../shuffler/note-shuffler.js?v=1708779155";
-import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1708779155";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1708879136";
+import {NoteOnFretboardShuffler} from "./note-on-fretboard-shuffler.js?v=1708879136";
 
 export class NoteOnFretboardGenerator {
     constructor() {
         // The noteShuffler shuffles and stores the note combinations
         // getNextNoteCombination() returns the next note combination from the noteShuffler or the next challenging note
-        this.noteShuffler = new NoteShuffler();
+        this.noteShuffler = new NoteOnFretboardShuffler();
     }
 
     /**

@@ -1,7 +1,7 @@
-import {DualRangeSlider} from "./dual-range-slider.js?v=1708779155";
-import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=1708779155";
-import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=1708779155";
-import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=1708779155";
+import {DualRangeSlider} from "./dual-range-slider.js?v=1708879136";
+import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=1708879136";
+import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=1708879136";
+import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=1708879136";
 
 export class FretShapeSelector {
 
@@ -28,6 +28,7 @@ export class FretShapeSelector {
 
         // Close modal handler
         const closeModalHandler = () => {
+            document.dispatchEvent(new Event('game-stop'));
             document.dispatchEvent(new Event('reload-key-and-string'));
         }
         // Open modal with fret shape selector

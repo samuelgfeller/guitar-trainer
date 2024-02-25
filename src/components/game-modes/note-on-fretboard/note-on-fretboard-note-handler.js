@@ -1,10 +1,10 @@
-import {DetectedNoteVerifier} from "../../../features/detected-note/detected-note-verifier.js?v=1708779155";
-import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1708779155";
+import {DetectedNoteVerifier} from "../../../features/detected-note/detected-note-verifier.js?v=1708879136";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=1708879136";
 import {
     GameProgressVisualizer
-} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=1708779155";
-import {NoteOnFretboardGenerator} from "./note-on-fretboard-generator.js?v=1708779155";
-import {NoteOnFretboardProgressUpdater} from "./note-on-fretboard-progress-updater.js?v=1708779155";
+} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=1708879136";
+import {NoteOnFretboardGenerator} from "./note-on-fretboard-generator.js?v=1708879136";
+import {NoteOnFretboardProgressUpdater} from "./note-on-fretboard-progress-updater.js?v=1708879136";
 
 /**
  * Note display coordinator when playing the "game" which
@@ -72,16 +72,13 @@ export class NoteOnFretboardNoteHandler {
     }
 
     /**
-     * @param {object} strings strings as key and all notes of string as value
+     * @param {object} notesOnStrings strings as key and all notes of string as value
      */
-    setAvailableStringsAndShuffleNotesList(strings) {
-        this.noteGenerator.noteShuffler.setStringsAndNotes(
-            strings,
-            ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B']
-        )
+    setAvailableStringsAndShuffleNotesList(notesOnStrings) {
 
         // Full progress bar is the total of shuffled notes
-        this.noteOnFretboardProgressUpdater.notesAmountForFullProgressBar = this.noteGenerator.noteShuffler.shuffleNotesList();
+        this.noteOnFretboardProgressUpdater.notesAmountForFullProgressBar =
+            this.noteGenerator.noteShuffler.shuffleNotesList(notesOnStrings);
         this.updateProgress();
     }
 

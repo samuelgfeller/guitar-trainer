@@ -1,9 +1,9 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1708779155";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1708879136";
 import {
     availableNotesOnStrings,
     shape1keyNote,
     shape2keyNote
-} from "../../../components/configuration/config-data.js?v=1708779155";
+} from "../../../components/configuration/config-data.js?v=1708879136";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -188,16 +188,15 @@ export class NoteInKeyGenerator {
     }
 
     /**
-     * Shuffles the notes from each string with the note shuffler
-     * and puts them into the shuffledCombinations attribute
+     * Create an array with all possible combinations of strings and notes
      */
     createArrayWithCombinationsToBeShuffled() {
         this.combinationsToBeShuffled = [];
         // Shuffle the notes on each string
         for (let string in this.diatonicNotesOnStrings) {
-            // Fretboard game mote shuffler cannot be taken as it shuffles creates combinations with all strings with
+            // Fretboard game note shuffler cannot be taken as it shuffles creates combinations with all strings with
             // every note.
-            // We want combinations with only specific notes going with each string.
+            // We want combinations with only specific notes (diatonic) going with each string.
             this.combinationsToBeShuffled.push(...this.diatonicNotesOnStrings[string].map(noteObject => [string, noteObject.noteName]));
         }
         console.debug('Combinations to be shuffled', this.combinationsToBeShuffled);
