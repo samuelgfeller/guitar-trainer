@@ -1,10 +1,8 @@
-import {BpmInput} from "../../../../components/configuration/bpm-input.js?v=1708879136";
-import {
-    GameConfigurationManager
-} from "../../../game-core/game-initialization/game-configuration-manager.js?v=1708879136";
-import {availableNotesOnStrings} from "../../../../components/configuration/config-data.js?v=1708879136";
-import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=1708879136";
-import {NoteOnFretboardEventListenerAdder} from "./note-on-fretboard-event-listener-adder.js?v=1708879136";
+import {BpmInput} from "../../../../components/configuration/bpm-input.js?v=2.1.1";
+import {GameConfigurationManager} from "../../../game-core/game-initialization/game-configuration-manager.js?v=2.1.1";
+import {availableNotesOnStrings} from "../../../../components/configuration/config-data.js?v=2.1.1";
+import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=2.1.1";
+import {NoteOnFretboardEventListenerAdder} from "./note-on-fretboard-event-listener-adder.js?v=2.1.1";
 
 export class NoteOnFretboardGameInitializer {
 

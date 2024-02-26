@@ -1,9 +1,9 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=1708879136";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.1.1";
 import {
     availableNotesOnStrings,
     shape1keyNote,
     shape2keyNote
-} from "../../../components/configuration/config-data.js?v=1708879136";
+} from "../../../components/configuration/config-data.js?v=2.1.1";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;

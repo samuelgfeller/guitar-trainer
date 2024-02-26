@@ -1,4 +1,4 @@
-import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=1708879136";
+import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=2.1.1";
 
 export class NoteDisplayer {
 

@@ -1,8 +1,8 @@
-import {MetronomeOperator} from "../metronome/metronome-operator.js?v=1708879136";
-import {TuneOperator} from "../tuner/tune-operator.js?v=1708879136";
-import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=1708879136";
-import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=1708879136";
-import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=1708879136";
+import {MetronomeOperator} from "../metronome/metronome-operator.js?v=2.1.1";
+import {TuneOperator} from "../tuner/tune-operator.js?v=2.1.1";
+import {FrequencyBarsController} from "../frequency-bars/frequency-bars-controller.js?v=2.1.1";
+import {GameElementsVisualizer} from "../game-ui/game-elements-visualizer.js?v=2.1.1";
+import {ScreenWakeLocker} from "../wake-lock/screen-wake-locker.js?v=2.1.1";
 
 export class CoreGameCoordinator {
     metronomeOperator = new MetronomeOperator();
@@ -32,6 +32,7 @@ export class CoreGameCoordinator {
         this.boundCorrectNoteButtonEventHandler = this.correctNoteButtonEventHandler.bind(this);
 
         this.screenWakeLocker = new ScreenWakeLocker();
+        this.frequencyBarsController = new FrequencyBarsController();
     }
 
     startGame() {
@@ -77,7 +78,7 @@ export class CoreGameCoordinator {
         }
         if (this.noteDetectorEnabled) {
             this.tuneOperator.stop();
-            FrequencyBarsController.removeFrequencyBarsAndDetectedNoteFromDom();
+            this.frequencyBarsController.removeFrequencyBarsAndDetectedNoteFromDom();
         }
         // Stop game if there is a game coordinator (not the case when changing level before game start)
         if (this.gameCoordinator !== null) {
@@ -108,11 +109,11 @@ export class CoreGameCoordinator {
             this.tuneOperator.initGetUserMedia();
             return this.tuneOperator.start().then(() => {
                 // Show frequency bars
-                FrequencyBarsController.addFrequencyBarsAndDetectedNoteToDom();
+                this.frequencyBarsController.addFrequencyBarsAndDetectedNoteToDom();
                 console.log('frequency bars added')
-                // Set frequencyData instance variable
-                let frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
-                new FrequencyBarsController(frequencyData).updateFrequencyBars(this.tuneOperator);
+                // Set frequencyData variable
+                this.frequencyBarsController.frequencyData = new Uint8Array(this.tuneOperator.analyser.frequencyBinCount);
+                this.frequencyBarsController.updateFrequencyBars(this.tuneOperator);
             });
         }
         // If noteDetectorEnabled is false, return a resolved promise

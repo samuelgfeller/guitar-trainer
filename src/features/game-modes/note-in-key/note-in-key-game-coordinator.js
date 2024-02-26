@@ -1,5 +1,5 @@
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=1708879136";
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=1708879136";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.1";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=2.1.1";
 
 export class NoteInKeyGameCoordinator {
     string;
