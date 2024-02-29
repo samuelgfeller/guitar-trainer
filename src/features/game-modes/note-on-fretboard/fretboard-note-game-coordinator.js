@@ -1,7 +1,7 @@
 import {
     NoteOnFretboardNoteHandler
-} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=2.1.1";
-import {NoteOnFretboardGameInitializer} from "./initialization/note-on-fretboard-game-initializer.js?v=2.1.1";
+} from "../../../components/game-modes/note-on-fretboard/note-on-fretboard-note-handler.js?v=2.1.3";
+import {NoteOnFretboardGameInitializer} from "./initialization/note-on-fretboard-game-initializer.js?v=2.1.3";
 
 /**
  * Game mode "note-on-fretboard" core logic
@@ -30,11 +30,11 @@ export class FretboardNoteGameCoordinator {
      */
     play() {
         // Add challenging combinations (if checkbox checked)
-        if (document.querySelector('#challenging-notes-preset input').checked) {
-            const getTrebleClefChallengingNotes = document.querySelector('#fretboard-note-game-treble-clef input').checked;
+        // if (document.querySelector('#challenging-notes-preset input').checked) {
+        //     const getTrebleClefChallengingNotes = document.querySelector('#fretboard-note-game-treble-clef input').checked;
             // this.noteDisplayer.challengingCombinations =
             //     FretboardGameChallengingNotesProvider.getChallengingNotes(getTrebleClefChallengingNotes);
-        }
+        // }
 
         this.noteOnFretboardNoteHandler.beingGame();
         this.noteOnFretboardNoteHandler.displayNotes(true);

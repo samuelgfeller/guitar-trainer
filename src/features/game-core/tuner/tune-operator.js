@@ -22,8 +22,6 @@ export class TuneOperator {
             "A♯ | B♭",
             "B",
         ];
-        // Check if user is on mobile as sensitivity must be set to a higher value
-        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
     /**
@@ -96,8 +94,12 @@ export class TuneOperator {
         const frequency = self.pitchDetector.do(audioData);
         amplitude /= audioData.length;
 
+        let amplitudeSetting = localStorage.getItem('mic-sensitivity-option');
+        // Mic sensitivity value divided by 1000 is the min amplitude. If value 50 -> 0.05
+        amplitudeSetting = amplitudeSetting ? parseInt(amplitudeSetting) / 1000 : 0.1;
+
         // If amplitude is not high enough, not trying to figure out note as its probably only background noise
-        if (frequency && amplitude > (this.isMobile ? 0.01 : 0.05)) {
+        if (frequency && amplitude > amplitudeSetting) {
 
             const note = self.getNote(frequency);
 

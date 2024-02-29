@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.1";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.1";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.1";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.1";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.1";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.1";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.1";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.1";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.3";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.3";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.3";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.3";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.3";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.3";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.3";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.3";
 import {
     FretShapeSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=2.1.1";
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=2.1.3";
 
 
 export class NoteInKeyGameInitializer {
@@ -126,11 +126,11 @@ export class NoteInKeyGameInitializer {
         document.removeEventListener('reload-key-and-string', this.reloadKeyAndStringEventHandlerVar);
 
         // Remove string options
-        document.querySelector('#note-in-key-game-strings-div').remove();
-        document.querySelector('#string-option-title').remove();
-        document.querySelector('#scale-roadmaps').remove();
+        document.querySelector('#note-in-key-game-strings-div')?.remove();
+        document.querySelector('#string-option-title')?.remove();
+        document.querySelector('#scale-roadmaps')?.remove();
 
-        document.querySelector('#note-and-string-container').remove();
+        document.querySelector('#note-and-string-container')?.remove();
 
         // Event listeners that were tied to html components that are not removed or replaced on game mode change
         // don't need to be removed as that removes the event listeners from the html components as well
@@ -238,19 +238,19 @@ export class NoteInKeyGameInitializer {
                         <span class="normal-font-size">A</span>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-d-string-option">
-                        <input type='checkbox' value="D">
+                        <input type='checkbox' value="D" checked>
                         <span class="normal-font-size">D</span>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-g-string-option">
-                        <input type='checkbox' value="G">
+                        <input type='checkbox' value="G" checked>
                         <span class="normal-font-size">G</span>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-b-string-option">
-                        <input type='checkbox' value="B">
+                        <input type='checkbox' value="B" checked>
                         <span class="normal-font-size">B</span>
                     </label>
                     <label class='checkbox-button option-for-game-mode' id="note-in-key-e2-string-option">
-                        <input type='checkbox' value="E2">
+                        <input type='checkbox' value="E2" checked>
                         <span class="normal-font-size">E2</span>
                     </label>
                     </div>

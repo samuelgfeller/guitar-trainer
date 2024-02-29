@@ -18,7 +18,6 @@ export class NoteOnFretboardShuffler {
     shuffleNotesList(notesOnStrings) {
         // Generate all possible note combinations for each string
         this.noteCombinationsToBeShuffled = this.getNoteCombinationsFromSelectedRange(notesOnStrings);
-
         return this.shuffleNotes();
     }
 
@@ -33,16 +32,13 @@ export class NoteOnFretboardShuffler {
         // If a fretboard range is set, only add the notes within the range
         const selectedRange = JSON.parse(localStorage.getItem(`note-on-fretboard-range`));
 
-        if (!selectedRange) {
-            return notesOnStrings;
-        }
         let notesInsideSelectedRange = [];
 
         for (let string in notesOnStrings) {
             for (const noteIndex in notesOnStrings[string]) {
                 // Note index is the fret position
-                if (parseInt(noteIndex) >= parseInt(selectedRange.lowerLimit)
-                    && parseInt(noteIndex) <= parseInt(selectedRange.upperLimit)) {
+                if (!selectedRange || (parseInt(noteIndex) >= parseInt(selectedRange.lowerLimit)
+                    && parseInt(noteIndex) <= parseInt(selectedRange.upperLimit))) {
                     // Create a note combination by concatenating the string and note
                     const noteCombination = `${string}|${notesOnStrings[string][noteIndex]}`;
                     notesInsideSelectedRange.push(noteCombination); // Add the note combination to the notesList

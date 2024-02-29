@@ -1,8 +1,8 @@
-import {BpmInput} from "../../../../components/configuration/bpm-input.js?v=2.1.1";
-import {GameConfigurationManager} from "../../../game-core/game-initialization/game-configuration-manager.js?v=2.1.1";
-import {availableNotesOnStrings} from "../../../../components/configuration/config-data.js?v=2.1.1";
-import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=2.1.1";
-import {NoteOnFretboardEventListenerAdder} from "./note-on-fretboard-event-listener-adder.js?v=2.1.1";
+import {BpmInput} from "../../../../components/configuration/bpm-input.js?v=2.1.3";
+import {GameConfigurationManager} from "../../../game-core/game-initialization/game-configuration-manager.js?v=2.1.3";
+import {availableNotesOnStrings} from "../../../../components/configuration/config-data.js?v=2.1.3";
+import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=2.1.3";
+import {NoteOnFretboardEventListenerAdder} from "./note-on-fretboard-event-listener-adder.js?v=2.1.3";
 
 export class NoteOnFretboardGameInitializer {
 
@@ -102,27 +102,23 @@ export class NoteOnFretboardGameInitializer {
                                  <span class="normal-font-size">+ name</span>
                              </div>
                          </label>
-                         <label class='checkbox-button option-for-game-mode' id="challenging-notes-preset">
+                         <!--<label class='checkbox-button option-for-game-mode' id="challenging-notes-preset">
                              <input type="checkbox" alt="Preset challenging notes">
                              <img src="src/assets/images/challenging-icon.svg" class="button-icon">
-                         </label>`;
+                         </label>-->`;
         // Game instructions
         document.querySelector('#game-start-instruction').querySelector('h3').innerHTML = `Fretboard note game`;
         document.querySelector('#game-instruction-text').innerHTML = `
-                 <p>The number in the header corresponds to the metronome tempo (bpm) which will be the 
-                 frequency in which a new string and note will be displayed. Each bpm higher is one level higher.</p>
-                 <p>The goal is to play the note on the given string before time runs out.</p>
+                 <p>The number in the header corresponds to beats per minute, which is the 
+                 time you have to play the displayed note on the given string.</p>
+                 <p>After time runs out, the note's color changes and the note is marked as challenging,
+                 and it has to be practiced further.<p>
                  <p>If it's too fast, lower the tempo to a rhythm that suits you.</p>
-                 <p>When you fail to play a note correctly, it gets added to the challenging notes list.</p>
-                 <p>The challenging notes have a higher chance of reappearing in the game to help you focus on learning
-                     them.</p>
-                 <p>The progress bar represents (on the left side) the number of challenging notes that still need to be 
-                 "learned" correctly until reaching 0 (on the right side). </p>
-                 <p>Each time you play a challenging note correctly 3 times, the progress bar advances.</p>
-                 <p>After mastering all challenging notes, 10 additional notes have to be played correctly to fill the
-                     progress bar to 100% and complete the level.</p>
+                 <p>When you fail to play a note correctly, it the challenging note has a higher chance of 
+                 reappearing to help you focus on learning it.</p>
+                 <p>The challenging note has to be played correctly three times in a row to be removed from the list.</p>
                  <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game, 
-                 or double-click a blank area.</p>
+                 or double-click this instruction.</p>
                  `;
         document.querySelector('main').insertAdjacentHTML('beforeend', `<div id="note-and-string-container" style="display: none">
                      <div>

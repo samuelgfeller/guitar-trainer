@@ -1,4 +1,4 @@
-import {FrequencyBarsVisualizer} from "./frequency-bars-visualizer.js?v=2.1.1";
+import {FrequencyBarsVisualizer} from "./frequency-bars-visualizer.js?v=2.1.3";
 
 export class FrequencyBarsController {
     frequencyData = null;
@@ -6,11 +6,13 @@ export class FrequencyBarsController {
     frequencyBarsVisualizer = null;
 
     constructor() {
-        // Listen for the updateFrequencyBarsFillStyle event
-        document.addEventListener('updateFrequencyBarsFillStyle', (event) => {
-            this.frequencyBarsVisualizer.canvasContext.fillStyle = event.detail;
-        });
+        this.frequencyBarsFillStyleEventHandlerVar = this.frequencyBarsFillStyleEventHandler.bind(this);
     }
+
+    frequencyBarsFillStyleEventHandler(event) {
+        this.frequencyBarsVisualizer.canvasContext.fillStyle = event.detail;
+    }
+
 
     updateFrequencyBars(tuneOperator) {
         // requestAnimationFrame calls the function on the next frame but shouldn't if the game is paused
@@ -33,11 +35,13 @@ export class FrequencyBarsController {
                 </div>
                 <canvas id="frequency-bars"></canvas>`);
         this.frequencyBarsVisualizer = new FrequencyBarsVisualizer();
+        document.addEventListener('update-frequency-bars-fill-style', this.frequencyBarsFillStyleEventHandlerVar);
     }
 
     removeFrequencyBarsAndDetectedNoteFromDom() {
         document.querySelector('#frequency-bars')?.remove();
         document.querySelector('#detected-note-div')?.remove();
         this.frequencyBarsVisualizer = null;
+        document.removeEventListener('update-frequency-bars-fill-style', this.frequencyBarsFillStyleEventHandlerVar);
     }
 }

@@ -1,6 +1,6 @@
-import {DualRangeSlider} from "../note-in-key/roadmap-selector/dual-range-slider.js?v=2.1.1";
-import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.1.1";
-import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.1.1";
+import {DualRangeSlider} from "../note-in-key/roadmap-selector/dual-range-slider.js?v=2.1.3";
+import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.1.3";
+import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.1.3";
 
 export class RangeSelector {
 

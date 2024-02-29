@@ -1,4 +1,4 @@
-import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=2.1.1";
+import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=2.1.3";
 
 export class NoteDisplayer {
 
@@ -95,7 +95,7 @@ export class NoteDisplayer {
      * @param color
      */
     static updateFrequencyBarsFillStyle(color) {
-        const event = new CustomEvent('updateFrequencyBarsFillStyle', {detail: color});
+        const event = new CustomEvent('update-frequency-bars-fill-style', {detail: color});
         document.dispatchEvent(event);
     }
 

@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.1.1";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.1.3";
 
 export class GameConfigurationManager {
 

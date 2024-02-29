@@ -1,10 +1,11 @@
-import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=2.1.1";
+import {CoreGameCoordinator} from "../game-start/core-game-coordinator.js?v=2.1.3";
 import {
     FretboardNoteGameCoordinator
-} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=2.1.1";
-import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=2.1.1";
-import {GameConfigurationManager} from "./game-configuration-manager.js?v=2.1.1";
-import {MetronomePracticeCoordinator} from "../../game-modes/metronome/metronome-practice-coordinator.js?v=2.1.1";
+} from "../../game-modes/note-on-fretboard/fretboard-note-game-coordinator.js?v=2.1.3";
+import {NoteInKeyGameCoordinator} from "../../game-modes/note-in-key/note-in-key-game-coordinator.js?v=2.1.3";
+import {GameConfigurationManager} from "./game-configuration-manager.js?v=2.1.3";
+import {MetronomePracticeCoordinator} from "../../game-modes/metronome/metronome-practice-coordinator.js?v=2.1.3";
+import {MicSensitivityOption} from "../../../components/configuration/mic-sensitivity-option.js?v=2.1.3";
 
 export class CoreGameCoordinationInitializer {
 
@@ -41,6 +42,14 @@ export class CoreGameCoordinationInitializer {
             document.querySelector('#start-stop-btn').disabled = true;
         }
         // All game coordinators MUST implement a play() and stop() method
+
+        // Add mic sensitivity option if note detector is enabled
+        console.log(this.coreGameCoordinator.noteDetectorEnabled);
+        if (this.coreGameCoordinator.noteDetectorEnabled) {
+            MicSensitivityOption.addMicSensitivityOption();
+        }else{
+            MicSensitivityOption.removeMicSensitivityOption();
+        }
 
         // Init game mode options after they have been added via instantiation of the correct gameModeCoordinator above
         GameConfigurationManager.initGameModeOptions();

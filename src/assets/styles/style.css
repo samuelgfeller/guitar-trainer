@@ -31,10 +31,12 @@
         /*background: white;*/
         color: #919191;
     }
-    h2,h3, h4{
+
+    h2, h3, h4 {
         color: #c0c0c0;
     }
-    a{
+
+    a {
         color: saddlebrown;
     }
 
@@ -88,7 +90,7 @@
         animation: enableScroll 0.5s ease 0.5s forwards;
     }
 
-    #config-inner-div{
+    #config-inner-div {
         overflow: hidden;
         height: 100%;
     }
@@ -115,7 +117,7 @@
         cursor: pointer;
     }
 
-    input{
+    input {
         accent-color: saddlebrown;
     }
 
@@ -130,11 +132,13 @@
         padding: 5px 10px;
         width: 90px;
     }
+
     .icon {
         width: 30px;
         /*height: 30px;*/
         filter: invert(70%);
     }
+
     #game-start-instruction .icon {
         width: 20px;
         margin: 0 5px;
@@ -172,7 +176,8 @@
         height: 100%;
         width: 45%;
     }
-    .note-value-span{
+
+    .note-value-span {
         height: 100%;
         /*Set line height to more than 100% to compensate ♭ char that takes up more space than regular letters*/
         line-height: 130%;
@@ -184,7 +189,8 @@
         font-weight: bold;
         color: #bcbcbc;
     }
-    #string-span.treble-clef-enabled{
+
+    #string-span.treble-clef-enabled {
         height: 200px;
         line-height: 200px;
     }
@@ -202,7 +208,7 @@
         height: 100%;
     }
 
-    .text{
+    .text {
         color: #c0c0c0;
     }
 
@@ -225,7 +231,7 @@
         margin-top: 20px;
     }
 
-    .roadmap-image{
+    .roadmap-image {
         width: 100%;
         margin: 10px auto;
         /*filter: invert(90%);*/
@@ -376,7 +382,7 @@
         z-index: -1;
     }
 
-    #game-progress-div{
+    #game-progress-div {
         width: 90%;
     }
 
@@ -417,18 +423,16 @@
     }
 
 
-
     /*#current-key-and-string .icon {*/
     /*    width: 20px;*/
     /*    margin-right: 20px§;*/
     /*    cursor: pointer;*/
     /*    filter: invert(60%);*/
     /*}*/
-
     /*.option-for-game-mode {*/
     /*    display: none;*/
     /*}*/
-    .options-title-span{
+    .options-title-span {
         width: 100%;
     }
 
@@ -441,7 +445,8 @@
         text-align: center;
         color: #c0c0c0;
     }
-    .label-text{
+
+    .label-text {
         /*font-family: SF-Pro-Text, CenturyGothic, Geneva, AppleGothic, sans-serif;*/
         font-size: 13px;
         text-align: center;
@@ -466,9 +471,23 @@
         padding: 10px 20px;
         border-radius: 10px;
     }
-    .btn-container button:hover, .btn:hover{
+
+    .btn-container button:hover, .btn:hover {
         background-color: #181818;
         cursor: pointer;
+    }
+
+    #sensitivity-range-slider {
+        width: 200px;
+        max-width: 100%;
+    }
+
+    #mic-sensitivity-option#mic-sensitivity-option {
+        flex-wrap: nowrap;
+    }
+
+    #mic-sensitivity-option span {
+        font-size: 15px;
     }
 
     /*summary::marker{*/
@@ -501,6 +520,7 @@
         /*justify-content: center;*/
         /*column-gap: 60px;*/
     }
+
     #start-stop-btn {
         margin-right: 0;
     }
@@ -517,24 +537,29 @@
         width: 200px;
         height: auto;
     }
+
     #string-span.treble-clef-enabled {
         height: 260px;
         line-height: 260px;
     }
+
     #note-and-string-container > div {
         /* Treble clef staff is 200px wide */
         width: 200px;
     }
 }
+
 @media (max-height: 500px) {
     #detected-note {
         margin-top: 0;
     }
 }
+
 @media (min-width: 641px) and (min-height: 600px) {
     .note-value-span.note-value-span {
         font-size: 130px;
     }
+
     #game-container.no-guitar .note-value-span.note-value-span {
         font-size: 100px;
     }
@@ -548,7 +573,8 @@
     #game-container {
         gap: 40px;
     }
-    .roadmap-image{
+
+    .roadmap-image {
         width: 70%;
     }
 
@@ -563,6 +589,7 @@
     /*    gap: 0;*/
     /*}*/
 }
+
 @media (max-height: 660px) {
     #game-container {
         gap: 20px;
@@ -573,6 +600,7 @@
     #game-container {
         gap: 50px;
     }
+
     #game-container.no-guitar {
         gap: 20px;
     }
