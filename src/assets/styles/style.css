@@ -95,7 +95,7 @@
         height: 100%;
     }
 
-    #config-inner-div > div {
+    #config-inner-div > div, #config-inner-div > details > div {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -450,7 +450,8 @@
         /*font-family: SF-Pro-Text, CenturyGothic, Geneva, AppleGothic, sans-serif;*/
         font-size: 13px;
         text-align: center;
-        display: block;
+        /*display: block;*/
+        display: list-item; /*For collapsible summary*/
         margin-top: 15px;
         margin-bottom: 10px;
     }
@@ -480,6 +481,7 @@
     #sensitivity-range-slider {
         width: 200px;
         max-width: 100%;
+        direction: rtl;
     }
 
     #mic-sensitivity-option#mic-sensitivity-option {

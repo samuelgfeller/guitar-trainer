@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=2.1.3";
+import {GameProgressVisualizer} from "./game-progress-visualizer.js?v=2.1.4";
 
 /**
  * Progress update for games that use the metronome and have challenging

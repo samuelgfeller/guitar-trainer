@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.3";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.3";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.3";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.3";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.3";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.3";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.3";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.3";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.4";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.4";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.4";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.4";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.4";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.4";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.4";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.4";
 import {
     FretShapeSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=2.1.3";
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=2.1.4";
 
 
 export class NoteInKeyGameInitializer {
@@ -284,25 +284,16 @@ export class NoteInKeyGameInitializer {
             <p>The note on the given string will be the note number 1 of the key.</p>
             <p>The goal is to play the note number diatonic to the key, on the given string.</p>
             <p>For example, if the key is C, the note number 4 is F. If the key is G, number 4 is C. <br>
-            Refer to the fretboard roadmap below.</p>
+            Refer to the fretboard roadmaps below.</p>
             <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
             <p>After successfully playing 30 notes, a new key is suggested. The key can also be changed anytime
             with the "reload" button.</p>
-            <p>In the settings icon, you can adjust the difficulty among three levels that affect the 
-            distance between the requested notes and note number 1 on the fretboard.</p>
-            <p>The second option in the settings is to enable notes after C on the E string and F on the A
-            string which are impractical for chord grips on classical guitar </p>
-            <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game 
-            or double-tap this instruction.</p>
-            <h3>Roadmaps</h3>
-            <p>Roadmap for E and D strings with the G key:         
-            <img src="src/assets/images/G-Key-Fretboard.svg" class="roadmap-image"
-                alt="https://youtu.be/dYs_0Rx3CTI?si=ez3lOjaeHTXl8W-2&t=450">
+            <p>In the settings icon, you can select a range of frets to practice on. The "shape" of the 
+            note positions on the strings will be kept while playing, but it may be shifted up or down the 
+            fretboard depending on the note 1 position. 
             </p>
-            <p>Roadmap for A, G and B strings with the D key:            
-            <img src="src/assets/images/D-Key-Fretboard.svg" class="roadmap-image"
-                alt="https://youtu.be/dYs_0Rx3CTI?si=RGa0pX5z24TSZ2dH&t=623"></p>
-            <p>These can be shifted up and down according to the key.</p>
+            <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game 
+            or double-tap this instruction.</p>           
             <p>I recommend watching Paul Davids 
             <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">
             Music Theory episodes</a>.</p>
@@ -313,7 +304,7 @@ export class NoteInKeyGameInitializer {
         document.querySelector('#game-start-instruction').insertAdjacentHTML('afterend',
             `<div id="scale-roadmaps">
                 <details open>
-                    <summary><h3>Full scale roadmaps</h3></summary>
+                    <summary><h3>Roadmaps</h3></summary>
                     <img src="src/assets/images/roadmaps/G-heptatonic-scale-numbered.svg" class="roadmap-image"
                     alt="roadmap">
                     <img src="src/assets/images/roadmaps/D-heptatonic-scale-numbered.svg" class="roadmap-image">
