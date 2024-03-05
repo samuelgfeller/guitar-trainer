@@ -1,6 +1,6 @@
 import {
     GameConfigurationManager
-} from "../../features/game-core/game-initialization/game-configuration-manager.js?v=2.1.4";
+} from "../../features/game-core/game-initialization/game-configuration-manager.js?v=2.1.5";
 
 export class MicSensitivityOption {
     static addMicSensitivityOption() {
@@ -23,7 +23,7 @@ export class MicSensitivityOption {
     }
 
     static removeMicSensitivityOption() {
-        document.querySelector('#mic-sensitivity-option-title').closest('details')?.remove();
+        document.querySelector('#mic-sensitivity-option-title')?.closest('details')?.remove();
         document.getElementById('mic-sensitivity-option-title')?.remove();
         document.getElementById('mic-sensitivity-option')?.remove();
     }

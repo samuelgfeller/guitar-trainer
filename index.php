@@ -1,6 +1,6 @@
 <?php
 
-$version = '2.1.4';
+$version = '2.1.5';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
@@ -95,17 +95,14 @@ if (file_exists(__DIR__ . '/config/env.php')) {
             <summary><h3>Instructions</h3></summary>
             <div id="game-instruction-text">
                 <p>Click on the settings icon in the header to select a game mode.</p>
-                <p>For certain game modes, there are different options such as displaying notes on a
-                    treble clef staff or to change the difficulty.</p>
                 <p><b>Available game modes: </b></p>
                 <ol style="list-style-position: inside;">
-                    <li>Plain metronome</li>
+                    <li>Plain metronome with exercises</li>
                     <li>Play given note on fretboard
                     <li>Play note number in the given key
                 </ol>
                 <p>You have to allow microphone access when it is asked so that the game can work.
                     It will detect what note you're playing.</p>
-
             </div>
         </details>
     </div>
