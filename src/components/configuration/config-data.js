@@ -8,5 +8,5 @@ export const availableNotesOnStrings = {
     'E2': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯'],
 };
 
-export const shape1keyNote = 'G';
-export const shape2keyNote = 'D';
+export const pattern1keyNote = 'G';
+export const pattern2keyNote = 'D';

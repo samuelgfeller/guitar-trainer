@@ -13,7 +13,7 @@
         color: saddlebrown;
     }
 
-    .fretboard-for-shapes, .virtual-fretboard-selector {
+    .fretboard-for-patterns, .virtual-fretboard-selector {
         min-width: 420px;
         padding-right: 40px;
     }

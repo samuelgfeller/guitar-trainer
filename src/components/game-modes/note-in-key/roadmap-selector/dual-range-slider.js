@@ -1,4 +1,6 @@
 export class DualRangeSlider {
+    static defaultMinValue = 2;
+    static defaultMaxValue = 6;
 
     /**
      * @param {function} saveFretRangeInLocalStorageFunction
@@ -9,8 +11,8 @@ export class DualRangeSlider {
                 <div id="dual-range-slider-wrapper">
                 <div class="dual-range-slider-container normal-font-size">
                     <div class="slider-track normal-font-size"></div>
-                    <input type="range" class="normal-font-size" min="0" max="11" value="2" id="slider-1">
-                    <input type="range" class="normal-font-size" min="0" max="11" value="6" id="slider-2">
+                    <input type="range" class="normal-font-size" min="0" max="11" value="${this.defaultMinValue}" id="slider-1">
+                    <input type="range" class="normal-font-size" min="0" max="11" value="${this.defaultMaxValue}" id="slider-2">
                 </div>
                 </div>
             `);
@@ -64,14 +66,14 @@ export class DualRangeSlider {
                 const oneFretBeforeValue = parseInt(sliderOne.value) > 0
                     ? parseInt(sliderOne.value) - 1 : parseInt(sliderOne.value);
                 const oneFretBefore = document.querySelector(
-                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretBeforeValue}"],
+                    `.fretboard-for-patterns:not(.inactive-fretboard) [data-fret-number="${oneFretBeforeValue}"],
             #fretboard-range-selection-virtual-fretboard [data-fret-number="${oneFretBeforeValue}"]`);
                 oneFretBefore.scrollIntoView({behavior: 'smooth', block: 'center'});
             } else if (e && e.target.id === 'slider-2') {
                 const oneFretAfterValue = parseInt(sliderTwo.value) < totalFrets
                     ? parseInt(sliderTwo.value) + 1 : parseInt(sliderTwo.value);
                 const oneFretAfter = document.querySelector(
-                    `.fretboard-for-shapes:not(.inactive-fretboard) [data-fret-number="${oneFretAfterValue}"],
+                    `.fretboard-for-patterns:not(.inactive-fretboard) [data-fret-number="${oneFretAfterValue}"],
                                 #fretboard-range-selection-virtual-fretboard [data-fret-number="${oneFretAfterValue}`);
                 oneFretAfter.scrollIntoView({behavior: 'smooth', block: 'center'});
             }

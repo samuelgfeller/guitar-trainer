@@ -1,6 +1,6 @@
-import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=2.1.5";
-import {GameElementsVisualizer} from "../../../game-core/game-ui/game-elements-visualizer.js?v=2.1.5";
-import {LevelUpVisualizer} from "../../../game-core/game-ui/level-up-visualizer.js?v=2.1.5";
+import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=2.1.6";
+import {GameElementsVisualizer} from "../../../game-core/game-ui/game-elements-visualizer.js?v=2.1.6";
+import {LevelUpVisualizer} from "../../../game-core/game-ui/level-up-visualizer.js?v=2.1.6";
 
 export class NoteOnFretboardEventHandler{
 

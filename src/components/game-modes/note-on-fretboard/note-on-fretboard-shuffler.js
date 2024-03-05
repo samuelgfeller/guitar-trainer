@@ -17,7 +17,14 @@ export class NoteOnFretboardShuffler {
      */
     shuffleNotesList(notesOnStrings) {
         // Generate all possible note combinations for each string
-        this.noteCombinationsToBeShuffled = this.getNoteCombinationsFromSelectedRange(notesOnStrings);
+        let noteCombinationsToBeShuffled = this.getNoteCombinationsFromSelectedRange(notesOnStrings);
+        this.noteCombinationsToBeShuffled = noteCombinationsToBeShuffled;
+
+        // Increase the noteCombinationsToBeShuffled to at least 18 notes. If not enough, double or triple them
+        while (this.noteCombinationsToBeShuffled.length < 18) {
+            this.noteCombinationsToBeShuffled = this.noteCombinationsToBeShuffled.concat(noteCombinationsToBeShuffled);
+        }
+
         return this.shuffleNotes();
     }
 

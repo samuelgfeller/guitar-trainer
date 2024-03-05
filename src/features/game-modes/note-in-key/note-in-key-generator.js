@@ -1,9 +1,9 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.1.5";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.1.6";
 import {
     availableNotesOnStrings,
-    shape1keyNote,
-    shape2keyNote
-} from "../../../components/configuration/config-data.js?v=2.1.5";
+    pattern1keyNote,
+    pattern2keyNote
+} from "../../../components/configuration/config-data.js?v=2.1.6";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -42,7 +42,7 @@ export class NoteInKeyGenerator {
     getAvailableKeyNotesOnStrings() {
         // Get the selected fret range if there is one
         const selectedFretRange = this.getSelectedFretRange();
-        const keyNotePositions = this.getKeyNotePositionsInShape(selectedFretRange);
+        const keyNotePositions = this.getKeyNotePositionsInPattern(selectedFretRange);
 
         // If no range is selected, return the original availableNotesOnStrings
         if (!selectedFretRange || !keyNotePositions) {
@@ -67,7 +67,7 @@ export class NoteInKeyGenerator {
                     const spaceToTheLeft = 11 - (upperLimit - keyNotePosition) - noteFretNumber;
 
                     // If the key note requires more space than 0 to the left (towards negative) or more than 11,
-                    // the shape overflows and is not valid
+                    // the pattern overflows and is not valid
                     if (spaceToTheRight >= 0 && spaceToTheLeft >= 0) {
                         strippedNotesOnStringsForKey[string][noteFretNumber] = this.availableNotesOnStrings[string][noteFretNumber];
                     }
@@ -118,7 +118,7 @@ export class NoteInKeyGenerator {
     getSelectedFretRange() {
         // Get selected fretboard nr
         const fretboardNr = this.getSelectedFretboardNr();
-        // Get the selected range from local storage based on which shape option is checked
+        // Get the selected range from local storage based on which pattern option is checked
         return fretboardNr ? JSON.parse(localStorage.getItem(`note-in-key-fret-range-${fretboardNr}`)) : false;
     }
 
@@ -126,26 +126,26 @@ export class NoteInKeyGenerator {
      * @return {number|boolean}
      */
     getSelectedFretboardNr() {
-        const checkedShapeOption = document.querySelector('.custom-shape-option input[type="checkbox"]:checked');
-        if (!checkedShapeOption) {
+        const checkedPatternOption = document.querySelector('.custom-pattern-option input[type="checkbox"]:checked');
+        if (!checkedPatternOption) {
             return false;
         }
-        return parseInt(checkedShapeOption.dataset.fretboardNr);
+        return parseInt(checkedPatternOption.dataset.fretboardNr);
     }
 
     /**
      * @return {object|boolean} returns an object with the strings as key and fret positions of the key notes
      * inside the selected range as values or false if no range is selected
      */
-    getKeyNotePositionsInShape(selectedFretRange) {
-        // Determine which shape option is checked
+    getKeyNotePositionsInPattern(selectedFretRange) {
+        // Determine which pattern option is checked
         const fretboardNr = this.getSelectedFretboardNr();
         // If no range is selected, return the original diatonicNotesOnStrings
         if (!fretboardNr || !selectedFretRange) {
             return false;
         }
-        // Get all key note positions from local storage based on which shape option is checked
-        let keyNotePositions = JSON.parse(localStorage.getItem(`fret-shape-${fretboardNr}-key-positions`));
+        // Get all key note positions from local storage based on which pattern option is checked
+        let keyNotePositions = JSON.parse(localStorage.getItem(`fret-pattern-${fretboardNr}-key-positions`));
 
         // Remove key note positions that are outside the selected range
         for (let string in keyNotePositions) {
@@ -165,8 +165,8 @@ export class NoteInKeyGenerator {
             return diatonicNotesOnStrings;
         }
 
-        const shapeKeyNote = fretboardNr === 1 ? shape1keyNote : shape2keyNote;
-        const diatonicNotesOnStringsInShapeKey = this.getAvailableNotesOnStringsInDiatonicScale(shapeKeyNote, availableNotesOnStrings);
+        const patternKeyNote = fretboardNr === 1 ? pattern1keyNote : pattern2keyNote;
+        const diatonicNotesOnStringsInPatternKey = this.getAvailableNotesOnStringsInDiatonicScale(patternKeyNote, availableNotesOnStrings);
 
         // If range is selected, remove notes outside the range
         let strippedDiatonicNotes = {};
@@ -174,11 +174,11 @@ export class NoteInKeyGenerator {
         for (let string in diatonicNotesOnStrings) {
             strippedDiatonicNotes[string] = [];
             for (let noteObject of diatonicNotesOnStrings[string]) {
-                // Get the fret number of the same note number but in the shape key where the user defined the range
-                const noteFretNumberInShapeKey = diatonicNotesOnStringsInShapeKey[string].find(
-                    noteObjectFromShape => noteObjectFromShape.number === noteObject.number).fretNumber;
+                // Get the fret number of the same note number but in the pattern key where the user defined the range
+                const noteFretNumberInPatternKey = diatonicNotesOnStringsInPatternKey[string].find(
+                    noteObjectFromPattern => noteObjectFromPattern.number === noteObject.number).fretNumber;
                 // If the note is within the selected range of the "translated" key, add it to the strippedDiatonicNotes
-                if (noteFretNumberInShapeKey >= selectedRange.lowerLimit && noteFretNumberInShapeKey <= selectedRange.upperLimit) {
+                if (noteFretNumberInPatternKey >= selectedRange.lowerLimit && noteFretNumberInPatternKey <= selectedRange.upperLimit) {
                     strippedDiatonicNotes[string].push(noteObject);
                 }
             }

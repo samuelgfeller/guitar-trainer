@@ -1,9 +1,9 @@
-import {DualRangeSlider} from "./dual-range-slider.js?v=2.1.5";
-import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.1.5";
-import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.1.5";
-import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.1.5";
+import {DualRangeSlider} from "./dual-range-slider.js?v=2.1.6";
+import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.1.6";
+import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.1.6";
+import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.1.6";
 
-export class FretShapeSelector {
+export class FretPatternSelector {
 
     static noteInKeyGenerator = new NoteInKeyGenerator();
 
@@ -13,17 +13,17 @@ export class FretShapeSelector {
 
 
     /**
-     * @param {number|string} fretboardShapeNumber
+     * @param {number|string} fretboardPatternNumber
      */
-    static openFretShapeSelectorModal(fretboardShapeNumber = 1) {
-        fretboardShapeNumber = parseInt(fretboardShapeNumber);
+    static openFretPatternSelectorModal(fretboardPatternNumber = 1) {
+        fretboardPatternNumber = parseInt(fretboardPatternNumber);
 
-        let header = `<h2 class="normal-font-size">Shape 
-<span id="fretboard-number-span">${fretboardShapeNumber}</span> selector</h2>`;
+        let header = `<h2 class="normal-font-size">Pattern 
+<span id="fretboard-number-span">${fretboardPatternNumber}</span> selector</h2>`;
         let body = `<div id="selector-instructions" class="text">
-                        <p>Move slider below to select the range of frets with the shape you want to practice.</p>
+                        <p>Move slider below to select the range of frets with the pattern you want to practice.</p>
                     </div>`;
-        let footer = `<button id="move-fretboard-shape-button" class="normal-font-size btn">Shape ${fretboardShapeNumber === 1 ? 2 : 1}</button>
+        let footer = `<button id="move-fretboard-pattern-button" class="normal-font-size btn">Pattern ${fretboardPatternNumber === 1 ? 2 : 1}</button>
                         <button id="save-modal-btn" class="normal-font-size btn">Save selection</button>`
 
         // Close modal handler
@@ -31,10 +31,16 @@ export class FretShapeSelector {
             document.dispatchEvent(new Event('game-stop'));
             document.dispatchEvent(new Event('reload-key-and-string'));
         }
-        // Open modal with fret shape selector
+        // Open modal with fret pattern selector
         ModalHandler.displayModal(header, body, footer, closeModalHandler, 'big-modal');
         // Must be before the slider is added so that the slider init can highlight the selected are on load
-        this.addFretSelectionFretboard(fretboardShapeNumber);
+        this.addFretSelectionFretboard(fretboardPatternNumber);
+
+        // If there is no value saved in the local storage, set the default values
+        if(!this.getSavedFretRange()){
+            DualRangeSlider.defaultMinValue = 2;
+            DualRangeSlider.defaultMaxValue = 6;
+        }
 
         // The slider change event handler needs the save in localstorage function, and
         // right after the sliders are added, the values saved in the local storage have to be loaded, before
@@ -49,31 +55,31 @@ export class FretShapeSelector {
         });
     }
     static getSavedFretRange(){
-        const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
+        const fretboardNr = document.querySelector(`.fretboard-for-patterns:not(.inactive-fretboard)`).dataset.fretboardNr;
         return localStorage.getItem(`note-in-key-fret-range-${fretboardNr}`);
     }
 
     /**
-     * @param {number} fretboardShapeNumber
+     * @param {number} fretboardPatternNumber
      */
-    static addFretSelectionFretboard(fretboardShapeNumber) {
+    static addFretSelectionFretboard(fretboardPatternNumber) {
         document.querySelector('#selector-instructions').insertAdjacentHTML('afterend', `
             <div class="fret-selection-container">
                 <div id="fret-selection-fretboard-1" data-fretboard-nr="1" 
-                class="fretboard-for-shapes ${fretboardShapeNumber !== 1 ? `inactive-fretboard` : ``}"></div>
+                class="fretboard-for-patterns ${fretboardPatternNumber !== 1 ? `inactive-fretboard` : ``}"></div>
                 <div id="fret-selection-fretboard-2" data-fretboard-nr="2" 
-                class="fretboard-for-shapes ${fretboardShapeNumber !== 2 ? `inactive-fretboard` : ``}"></div>
+                class="fretboard-for-patterns ${fretboardPatternNumber !== 2 ? `inactive-fretboard` : ``}"></div>
             </div>
         `);
 
         const diatonicNotesOnStringsG = this.noteInKeyGenerator.getAvailableNotesOnStringsInDiatonicScale('G', availableNotesOnStrings);
         const note1PositionsF1 = this.addVirtualFretboardHtml('fret-selection-fretboard-1', diatonicNotesOnStringsG);
-        // Add shapes from the first fretboard to the local storage
-        localStorage.setItem('fret-shape-1-key-positions', JSON.stringify(note1PositionsF1));
+        // Add patterns from the first fretboard to the local storage
+        localStorage.setItem('fret-pattern-1-key-positions', JSON.stringify(note1PositionsF1));
         const diatonicNotesOnStringsD = this.noteInKeyGenerator.getAvailableNotesOnStringsInDiatonicScale('D', availableNotesOnStrings);
         const note1PositionsF2 = this.addVirtualFretboardHtml('fret-selection-fretboard-2', diatonicNotesOnStringsD);
-        localStorage.setItem('fret-shape-2-key-positions', JSON.stringify(note1PositionsF2));
-        document.getElementById('move-fretboard-shape-button').addEventListener('click', () => {
+        localStorage.setItem('fret-pattern-2-key-positions', JSON.stringify(note1PositionsF2));
+        document.getElementById('move-fretboard-pattern-button').addEventListener('click', () => {
             const fretboard1 = document.getElementById('fret-selection-fretboard-1');
             const fretboard2 = document.getElementById('fret-selection-fretboard-2');
 
@@ -83,7 +89,7 @@ export class FretShapeSelector {
             const currentFretboardNr = fretboard1.classList.contains('inactive-fretboard') ? '2' : '1';
 
             document.getElementById('fretboard-number-span').textContent = currentFretboardNr;
-            document.getElementById('move-fretboard-shape-button').textContent = `Shape ${currentFretboardNr === '1' ? '2' : '1'}`;
+            document.getElementById('move-fretboard-pattern-button').textContent = `Pattern ${currentFretboardNr === '1' ? '2' : '1'}`;
 
             DualRangeSlider.setSliderValuesFromLocalStorage(this.getSavedFretRange());
         });
@@ -175,7 +181,7 @@ export class FretShapeSelector {
     }
 
     static saveFretRangeInLocalStorage(lowerLimit, upperLimit) {
-        const fretboardNr = document.querySelector(`.fretboard-for-shapes:not(.inactive-fretboard)`).dataset.fretboardNr;
+        const fretboardNr = document.querySelector(`.fretboard-for-patterns:not(.inactive-fretboard)`).dataset.fretboardNr;
         localStorage.setItem(`note-in-key-fret-range-${fretboardNr}`, JSON.stringify({
             lowerLimit: lowerLimit,
             upperLimit: upperLimit

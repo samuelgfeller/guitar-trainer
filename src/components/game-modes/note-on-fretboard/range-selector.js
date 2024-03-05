@@ -1,6 +1,6 @@
-import {DualRangeSlider} from "../note-in-key/roadmap-selector/dual-range-slider.js?v=2.1.5";
-import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.1.5";
-import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.1.5";
+import {DualRangeSlider} from "../note-in-key/roadmap-selector/dual-range-slider.js?v=2.1.6";
+import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.1.6";
+import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.1.6";
 
 export class RangeSelector {
 
@@ -19,10 +19,17 @@ export class RangeSelector {
             document.dispatchEvent(new Event('game-stop'));
             document.dispatchEvent(new Event('note-on-fretboard-reshuffle-notes'));
         }
-        // Open modal with fret shape selector
+        // Open modal with fret pattern selector
         ModalHandler.displayModal(header, body, footer, closeModalHandler, 'big-modal');
         // Must be before the slider is added so that the slider init can highlight the selected are on load
         this.addFretSelectionFretboard();
+
+        // If there is no value saved in the local storage, set the default values
+        if(!localStorage.getItem(`note-on-fretboard-range`)){
+            DualRangeSlider.defaultMinValue = 0;
+            DualRangeSlider.defaultMaxValue = 11;
+        }
+
         DualRangeSlider.addSelectionSlider(
             this.saveFretRangeInLocalStorage,
             localStorage.getItem(`note-on-fretboard-range`),
@@ -43,7 +50,7 @@ export class RangeSelector {
         `);
 
         this.addVirtualFretboardHtml();
-        // Add shapes from the first fretboard to the local storage
+        // Add patterns from the first fretboard to the local storage
         // localStorage.setItem('fretboard-range-selection', JSON.stringify(note1PositionsF1));
 
     }

@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.5";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.5";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.5";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.5";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.5";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.5";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.5";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.5";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.6";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.6";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.6";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.6";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.6";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.6";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.6";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.6";
 import {
-    FretShapeSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-shape-selector.js?v=2.1.5";
+    FretPatternSelector
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-pattern-selector.js?v=2.1.6";
 
 
 export class NoteInKeyGameInitializer {
@@ -213,17 +213,17 @@ export class NoteInKeyGameInitializer {
                         <!--<span class="normal-font-size"></span>-->
                         <img src="src/assets/images/no-guitar-icon.svg" class="button-icon">
                     </label>
-                    <label class='checkbox-button option-for-game-mode custom-shape-option' id="shape-1-option">
+                    <label class='checkbox-button option-for-game-mode custom-pattern-option' id="pattern-1-option">
                         <input type='checkbox' data-fretboard-nr="1">
-                        <span class="normal-font-size">Shape 1</span>
+                        <span class="normal-font-size">Pattern 1</span>
                     </label>
-                    <label class='checkbox-button option-for-game-mode custom-shape-option' id="shape-2-option">
+                    <label class='checkbox-button option-for-game-mode custom-pattern-option' id="pattern-2-option">
                         <input type='checkbox' data-fretboard-nr="2">
-                        <span class="normal-font-size">Shape 2</span>
+                        <span class="normal-font-size">Pattern 2</span>
                     </label>
-                    <!-- Event listener added in fret-shape-selector -->
-                    <label class='checkbox-button option-for-game-mode' id="select-custom-shape-option">
-                        <span class="normal-font-size">Select custom shape</span>
+                    <!-- Event listener added in fret-pattern-selector -->
+                    <label class='checkbox-button option-for-game-mode' id="select-custom-pattern-option">
+                        <span class="normal-font-size">Select custom pattern</span>
                     </label>                    
                     `;
         document.querySelector('#game-mode-options').insertAdjacentHTML('afterend', `
@@ -260,7 +260,7 @@ export class NoteInKeyGameInitializer {
         // document.querySelector('#difficulty-range-slider').addEventListener('change', this.reloadKeyAndStringEventHandler.bind(this));
 
         // Add event listeners for always the same key options
-        this.addCustomShapeChoiceEventListeners();
+        this.addCustomPatternChoiceEventListeners();
 
         document.querySelector('#header-center-container').innerHTML =
             `<img src="src/assets/images/reload-icon.svg" id="reload-key-btn"> Reload key`;
@@ -288,7 +288,7 @@ export class NoteInKeyGameInitializer {
             <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
             <p>After successfully playing 30 notes, a new key is suggested. The key can also be changed anytime
             with the "reload" button.</p>
-            <p>In the settings icon, you can select a range of frets to practice on. The "shape" of the 
+            <p>In the settings icon, you can select a range of frets to practice on. The "pattern" of the 
             note positions on the strings will be kept while playing, but it may be shifted up or down the 
             fretboard depending on the note 1 position. 
             </p>
@@ -324,16 +324,16 @@ export class NoteInKeyGameInitializer {
             </div>`);
     }
 
-    addCustomShapeChoiceEventListeners() {
-        const customShapeOption = document.querySelectorAll('.custom-shape-option');
+    addCustomPatternChoiceEventListeners() {
+        const customPatternOption = document.querySelectorAll('.custom-pattern-option');
         // If one of the key options is checked, the other should be unchecked
-        for (const option of customShapeOption) {
+        for (const option of customPatternOption) {
             option.addEventListener('change', () => {
                 const input = option.querySelector('input');
                 // If the checkbox was not checked before
                 if (input.checked) {
                     // When one game mode is selected, uncheck all game modes
-                    for (const disabledOption of customShapeOption) {
+                    for (const disabledOption of customPatternOption) {
                         disabledOption.querySelector('input').checked = false;
                         // Fire change event so that option value is stored in local storage
                         disabledOption.querySelector('input').dispatchEvent(new Event('change'));
@@ -342,21 +342,21 @@ export class NoteInKeyGameInitializer {
                     input.checked = true;
                     input.dispatchEvent(new Event('change'));
 
-                    // If the fretrange has not been defined yet and the user selects a shape, define open popup to define
+                    // If the fretrange has not been defined yet and the user selects a pattern, define open popup to define
                     if (!localStorage.getItem(`note-in-key-fret-range-${input.dataset.fretboardNr}`)) {
-                        FretShapeSelector.openFretShapeSelectorModal(parseInt(input.dataset.fretboardNr));
+                        FretPatternSelector.openFretPatternSelectorModal(parseInt(input.dataset.fretboardNr));
                     }
                 }
                 this.reloadKeyAndStringEventHandler();
             });
         }
-        document.querySelector('#select-custom-shape-option').addEventListener('click', () => {
-            const checkedShapeInput = document.querySelector('.custom-shape-option input[type="checkbox"]:checked');
+        document.querySelector('#select-custom-pattern-option').addEventListener('click', () => {
+            const checkedPatternInput = document.querySelector('.custom-pattern-option input[type="checkbox"]:checked');
             let fretboardNr = 1;
-            if (checkedShapeInput) {
-                fretboardNr = checkedShapeInput.dataset.fretboardNr;
+            if (checkedPatternInput) {
+                fretboardNr = checkedPatternInput.dataset.fretboardNr;
             }
-            FretShapeSelector.openFretShapeSelectorModal(fretboardNr);
+            FretPatternSelector.openFretPatternSelectorModal(fretboardNr);
         });
     }
 }
