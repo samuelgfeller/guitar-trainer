@@ -1,9 +1,9 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.1.6";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.2.0";
 import {
     availableNotesOnStrings,
     pattern1keyNote,
     pattern2keyNote
-} from "../../../components/configuration/config-data.js?v=2.1.6";
+} from "../../../components/configuration/config-data.js?v=2.2.0";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -13,6 +13,8 @@ export class NoteInKeyGenerator {
     shuffledCombinations;
     // Index of the current combination to be displayed from the shuffledCombinations array
     currentIndex = 0;
+    // Both patterns can be selected or only one.
+    selectedFretboardPattern = null;
 
     constructor() {
     }
@@ -108,6 +110,8 @@ export class NoteInKeyGenerator {
         // Fill the combinationsToBeShuffled array with all possible combinations
         this.createArrayWithCombinationsToBeShuffled();
 
+        // Reset currentIndex
+        this.currentIndex = 0;
         // Shuffle the array with the combinations
         this.shuffledCombinations = ArrayShuffler.shuffleArray(this.combinationsToBeShuffled, [keyString, keyNote]);
     }
@@ -123,14 +127,25 @@ export class NoteInKeyGenerator {
     }
 
     /**
-     * @return {number|boolean}
+     * @return {number|boolean|null}
      */
     getSelectedFretboardNr() {
-        const checkedPatternOption = document.querySelector('.custom-pattern-option input[type="checkbox"]:checked');
-        if (!checkedPatternOption) {
+        console.log('selectedFretboardPattern', this.selectedFretboardPattern);
+        if (this.selectedFretboardPattern) {
+            return this.selectedFretboardPattern;
+        }
+
+        const checkedPatternOptions = document.querySelectorAll('.custom-pattern-option input[type="checkbox"]:checked');
+        if (!checkedPatternOptions) {
             return false;
         }
-        return parseInt(checkedPatternOption.dataset.fretboardNr);
+
+        // If multiple checkedPatternOptions, return randomly the 1 or 2, if only one, return that one
+        const checkedPatternOption =
+            checkedPatternOptions.length === 1 ? checkedPatternOptions[0] : checkedPatternOptions[Math.floor(Math.random() * 2)];
+
+        this.selectedFretboardPattern = parseInt(checkedPatternOption.dataset.fretboardNr);
+        return this.selectedFretboardPattern;
     }
 
     /**
@@ -204,18 +219,20 @@ export class NoteInKeyGenerator {
 
 
     getNextCombination() {
+        // Error below should be fixed with currentIndex reset in loadShuffledCombinations()
+        // Sometimes there is a bug after a few rounds where only the number 1 is displayed
+        // The error line 81 is Uncaught TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+        // Either the shuffledCombinations is undefined or the shuffledCombinations[currentIndex] is undefined
+        console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations: ' + this.shuffledCombinations
+            + 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
+        // If this.shuffledCombinations[this.currentIndex] is undefined, inform user with alert
+        if (this.currentIndex === undefined || !this.shuffledCombinations[this.currentIndex]) {
+            alert('There was an error and I don\'t know how to reproduce it. ' +
+                'Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex
+                + ' | shuffledCombinations[currentIndex]: ' + this.shuffledCombinations[this.currentIndex]);
+        }
         // The note shuffler returns a string with the format 'string|note'
         let [string, note] = this.shuffledCombinations[this.currentIndex];
-
-        /*Sometimes there is a bug after a few rounds where only the number 1 is displayed
-        The error line 81 is Uncaught TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
-        Either the shuffledCombinations is undefined or the shuffledCombinations[currentIndex] is undefined
-        console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
-        If this.shuffledCombinations[this.currentIndex] is undefined, inform user with alert
-        if (this.currentIndex === undefined || !this.shuffledCombinations[this.currentIndex]) {
-            alert('There was an error. Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex +' | shuffledCombinations[currentIndex]: ' + this.shuffledCombinations[this.currentIndex]);
-        }*/
-        // bug above fixed by setting it to null if this.shuffledCombinations[this.currentIndex] is invalid
 
         // If the current index is reached, re shuffle all the notes and reset it to 0
         if (this.currentIndex >= this.shuffledCombinations.length - 1 || !this.shuffledCombinations[this.currentIndex]) {

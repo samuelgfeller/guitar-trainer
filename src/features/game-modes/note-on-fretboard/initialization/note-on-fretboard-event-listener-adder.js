@@ -1,6 +1,6 @@
-import {GameProgressVisualizer} from "../../../game-core/game-progress/game-progress-visualizer.js?v=2.1.6";
-import {NoteOnFretboardEventHandler} from "./note-on-fretboard-event-handler.js?v=2.1.6";
-import {RangeSelector} from "../../../../components/game-modes/note-on-fretboard/range-selector.js?v=2.1.6";
+import {GameProgressVisualizer} from "../../../game-core/game-progress/game-progress-visualizer.js?v=2.2.0";
+import {NoteOnFretboardEventHandler} from "./note-on-fretboard-event-handler.js?v=2.2.0";
+import {RangeSelector} from "../../../../components/game-modes/note-on-fretboard/range-selector.js?v=2.2.0";
 
 export class NoteOnFretboardEventListenerAdder {
 

@@ -1,5 +1,5 @@
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.6";
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=2.1.6";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.2.0";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=2.2.0";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -82,6 +82,9 @@ export class NoteInKeyGameCoordinator {
 
     reloadKeyAndString() {
         console.log('reload key and string in note in key game');
+
+        // Reset selected fretboard pattern
+        this.noteInKeyGenerator.selectedFretboardPattern = null;
 
         // Get new string and key
         const {keyString, keyNote} = this.noteInKeyGenerator.getNewStringAndKey();

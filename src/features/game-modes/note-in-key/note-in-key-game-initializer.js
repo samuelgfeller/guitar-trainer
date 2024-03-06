@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.1.6";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.1.6";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.1.6";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.1.6";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.1.6";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.1.6";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.1.6";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.1.6";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.2.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.2.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.2.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.2.0";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.2.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.2.0";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.2.0";
 import {
     FretPatternSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-pattern-selector.js?v=2.1.6";
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-pattern-selector.js?v=2.2.0";
 
 
 export class NoteInKeyGameInitializer {
@@ -333,16 +333,17 @@ export class NoteInKeyGameInitializer {
                 // If the checkbox was not checked before
                 if (input.checked) {
                     // When one game mode is selected, uncheck all game modes
-                    for (const disabledOption of customPatternOption) {
-                        disabledOption.querySelector('input').checked = false;
-                        // Fire change event so that option value is stored in local storage
-                        disabledOption.querySelector('input').dispatchEvent(new Event('change'));
-                    }
-                    // The radio button that was clicked should be checked only if it was not checked before
-                    input.checked = true;
-                    input.dispatchEvent(new Event('change'));
+                    // for (const disabledOption of customPatternOption) {
+                    //     disabledOption.querySelector('input').checked = false;
+                    //     // Fire change event so that option value is stored in local storage
+                    //     disabledOption.querySelector('input').dispatchEvent(new Event('change'));
+                    // }
+                    // // The radio button that was clicked should be checked only if it was not checked before
+                    // input.checked = true;
+                    // input.dispatchEvent(new Event('change'));
 
-                    // If the fretrange has not been defined yet and the user selects a pattern, define open popup to define
+                    // If the fret range has not been defined yet, and the user selects a pattern,
+                    // automatically open popup on the selected pattern
                     if (!localStorage.getItem(`note-in-key-fret-range-${input.dataset.fretboardNr}`)) {
                         FretPatternSelector.openFretPatternSelectorModal(parseInt(input.dataset.fretboardNr));
                     }
@@ -351,6 +352,7 @@ export class NoteInKeyGameInitializer {
             });
         }
         document.querySelector('#select-custom-pattern-option').addEventListener('click', () => {
+            // If both are checked, it defaults to the first one
             const checkedPatternInput = document.querySelector('.custom-pattern-option input[type="checkbox"]:checked');
             let fretboardNr = 1;
             if (checkedPatternInput) {

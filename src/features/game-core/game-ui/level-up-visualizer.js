@@ -1,4 +1,4 @@
-import {ModalHandler} from "../../../components/game-core/ui/modal-handler.js?v=2.1.6";
+import {ModalHandler} from "../../../components/game-core/ui/modal-handler.js?v=2.2.0";
 
 export class LevelUpVisualizer {
     /**
