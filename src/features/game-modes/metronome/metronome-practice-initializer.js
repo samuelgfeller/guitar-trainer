@@ -1,6 +1,6 @@
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.2.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.0";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.2.0";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.2.1";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.1";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.2.1";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -11,11 +11,17 @@ export class MetronomePracticeInitializer {
     }
 
     initMetronomePractice() {
-        document.querySelector('#game-start-instruction').querySelector('h3').innerHTML = `Metronome`;
-        document.querySelector('#game-instruction-text').innerHTML =
-            `<p>Click <img class="icon" src="src/assets/images/play-icon.svg"> or double tap blank space to start the metronome.</p>
-            <p>Select an exercise by clicking on the title. To start the timer, click on it.</p>
-            <p>Exercise timer: <input id="exercise-timer-input" type="number">min</p>`
+        document.querySelector('#game-start-instruction').innerHTML = `
+        <details open>
+                    <summary><h3>Metronome</h3></summary>
+                    <div id="game-instruction-text">
+                        <p>Click <img class="icon" src="src/assets/images/play-icon.svg" alt="play"> or double tap blank 
+                        space to start the metronome.</p>
+                        <p>Select an exercise by clicking on the title. To start the timer, click on it.</p>
+                        <p>Exercise timer: <input id="exercise-timer-input" type="number">min</p>
+                    </div>
+                </details>
+        `;
         BpmInput.addBpmInput();
         this.initBpmInputForMetronome();
         this.initTimerInputForExercises();
@@ -25,8 +31,9 @@ export class MetronomePracticeInitializer {
     }
 
     destroy() {
-        document.querySelector('#exercise-container').remove();
+        document.querySelector('#exercise-container')?.remove();
         document.removeEventListener('leveled-up', this.levelUpEventHandler);
+        document.querySelector('#game-start-instruction').innerHTML = '';
     }
 
     levelUp() {

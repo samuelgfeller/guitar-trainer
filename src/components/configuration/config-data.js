@@ -10,3 +10,6 @@ export const availableNotesOnStrings = {
 
 export const pattern1keyNote = 'G';
 export const pattern2keyNote = 'D';
+
+// colors
+// darkslateblue, #005d72

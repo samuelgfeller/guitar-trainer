@@ -1,6 +1,6 @@
 import {
     GameConfigurationManager
-} from "../../features/game-core/game-initialization/game-configuration-manager.js?v=2.2.0";
+} from "../../features/game-core/game-initialization/game-configuration-manager.js?v=2.2.1";
 
 export class MicSensitivityOption {
     static addMicSensitivityOption() {

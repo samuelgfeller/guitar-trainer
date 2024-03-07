@@ -1,0 +1,51 @@
+:root {
+    --accent-color: saddlebrown;
+}
+
+.theme-settings-grid {
+    display: inline-grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /*display: flex;*/
+    /*flex-wrap: wrap;*/
+    width: 100%;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    /*border: 1px solid #ccc;*/
+}
+
+.theme-settings-grid > div {
+    /*background: rgba(255, 255, 255, .1);*/
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 15px;
+    /*width: 100%;*/
+    position: relative;
+}
+
+.theme-settings-grid > div:hover {
+    /*background: rgba(255, 255, 255, .15);*/
+    background: rgba(255, 255, 255, 0.18);
+    cursor: pointer;
+}
+
+.color-preview {
+    width: 100%;
+    height: 70px;
+    border-radius: 20px;
+    margin-bottom: 17px;
+    /*Default black, real color set inline*/
+    /*background-color: var(--accent-color);*/
+    background: linear-gradient(-45deg, red 50%, blue 50%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.theme-setting-option {
+    text-align: left;
+}
+.theme-setting-option span {
+    margin-left: 5px;
+}

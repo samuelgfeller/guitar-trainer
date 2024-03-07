@@ -60,6 +60,29 @@
         width: 90%;
         border-bottom: 10px dotted saddlebrown;
     }
+    .stay-active-button img{
+        filter: invert(70%) drop-shadow(0 0 5px rgba(0, 0, 0, 0.38));
+    }
+    .stay-active-button{
+        background: #1f2425;
+        border: 3px solid #3c4143;
+        /*padding: 10px;*/
+        width: 55px;
+        height: 55px;
+        /*box-shadow: inset 0 -10px 20px 0 rgba(0, 0, 0, 0.4), inset 0 10px 20px 0 rgba(0, 0, 0, 0.4);*/
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: border-color 0.3s ease, background-color 0.3s ease; /* This makes the color change smoothly */
+
+        /*min-height: 40px;*/
+    }
+    .stay-active-button.selected{
+        background-color: saddlebrown;
+        border-color: saddlebrown;
+    }
 
     .checkbox-button {
         display: inline-flex;
@@ -78,6 +101,12 @@
         border-radius: 20px;
         cursor: pointer;
         min-height: 40px;
+    }
+    #info-game-mode{
+        padding: 4px 12px 4px 12px;
+    }
+    #info-game-mode input{
+
     }
 
     .checkbox-button:hover {

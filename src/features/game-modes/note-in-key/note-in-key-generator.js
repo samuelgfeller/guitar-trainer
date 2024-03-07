@@ -1,9 +1,9 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.2.0";
+import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.2.1";
 import {
     availableNotesOnStrings,
     pattern1keyNote,
     pattern2keyNote
-} from "../../../components/configuration/config-data.js?v=2.2.0";
+} from "../../../components/configuration/config-data.js?v=2.2.1";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -136,7 +136,7 @@ export class NoteInKeyGenerator {
         }
 
         const checkedPatternOptions = document.querySelectorAll('.custom-pattern-option input[type="checkbox"]:checked');
-        if (!checkedPatternOptions) {
+        if (checkedPatternOptions.length === 0) {
             return false;
         }
 

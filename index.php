@@ -1,6 +1,6 @@
 <?php
 
-$version = '2.2.0';
+$version = '2.2.1';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
@@ -29,6 +29,7 @@ if (file_exists(__DIR__ . '/config/env.php')) {
     <link rel="stylesheet" href="src/assets/styles/virtual-fretboard.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/fret-selection.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/dual-range-slider.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/theme-settings.css?v=<?= $version ?>">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
@@ -42,18 +43,18 @@ if (file_exists(__DIR__ . '/config/env.php')) {
     <div id="config-inner-div">
         <span class="normal-font-size label-text">Game modes</span>
         <div id="game-mode-selection">
-            <label class='checkbox-button' id="metronome-game-mode">
-                <input type='checkbox'>
+            <button class='stay-active-button' id="settings-mode">
+                <img src="src/assets/images/settings-icon.svg" class="button-icon">
+            </button>
+            <button class='stay-active-button' id="metronome-game-mode">
                 <img src="src/assets/images/metronome-icon.svg" class="button-icon">
-            </label>
-            <label class='checkbox-button' id="fretboard-note-game-mode">
-                <input type='checkbox'>
+            </button>
+            <button class='stay-active-button' id="fretboard-note-game-mode">
                 <img src="src/assets/images/guitar-fretboard-icon.svg" class="button-icon">
-            </label>
-            <label class='checkbox-button' id="note-in-key-game-mode">
-                <input type='checkbox'>
+            </button>
+            <button class='stay-active-button' id="note-in-key-game-mode">
                 <img src="src/assets/images/key-icon.png" class="button-icon">
-            </label>
+            </button>
         </div>
         <span class="normal-font-size label-text options-title-span">Options</span>
         <div id="game-mode-options">
@@ -64,7 +65,7 @@ if (file_exists(__DIR__ . '/config/env.php')) {
 <header>
     <div>
         <!--<label for="bpm-input">Metronome BPM</label>-->
-        <img src="src/assets/images/settings-icon.svg" id="settings-toggle-btn" class="icon">
+        <img src="src/assets/images/settings/bars-left-icon.svg" id="settings-toggle-btn" class="icon">
         <div class="center-flexbox" id="header-center-container">
             <!--  Content added at instantiation of game mode coordinator -->
             <p>Guitar Trainer</p>
@@ -90,22 +91,7 @@ if (file_exists(__DIR__ . '/config/env.php')) {
         </div>
     </div>
 
-    <div id="game-start-instruction">
-        <details open>
-            <summary><h3>Instructions</h3></summary>
-            <div id="game-instruction-text">
-                <p>Click on the settings icon in the header to select a game mode.</p>
-                <p><b>Available game modes: </b></p>
-                <ol style="list-style-position: inside;">
-                    <li>Plain metronome with exercises</li>
-                    <li>Play given note on fretboard
-                    <li>Play note number in the given key
-                </ol>
-                <p>You have to allow microphone access when it is asked so that the game can work.
-                    It will detect what note you're playing.</p>
-            </div>
-        </details>
-    </div>
+    <div id="game-start-instruction"></div>
 </main>
 <script type="module" src="src/features/game-core/game-loader.js?v=<?= $version ?>"></script>
 <!--<script type="module" src="js/test/tests-main.js?v=--><?php

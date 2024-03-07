@@ -1,8 +1,14 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.2.0";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.2.1";
 
 export class GameConfigurationManager {
 
     static toggleSettingsExpand() {
+        if (document.getElementById('config-div').classList.contains('expanded')) {
+            document.getElementById('settings-toggle-btn').src = 'src/assets/images/settings/bars-left-icon.svg';
+        }else{
+            document.getElementById('settings-toggle-btn').src = 'src/assets/images/settings/bars-right-icon.svg';
+        }
+
         document.getElementById('config-div').classList.toggle('expanded');
         // Scroll to the top
         window.scrollTo(0, 0);
@@ -11,9 +17,13 @@ export class GameConfigurationManager {
     static addSettingsCloseEventListenerOnOutsideClick() {
         document.addEventListener('click', (e) => {
             if (!e.target.closest('#config-div') && !e.target.closest('#settings-toggle-btn') && !e.target.closest('#modal')) {
-                document.getElementById('config-div').classList.remove('expanded');
+                this.closeConfigCollapsible();
             }
         });
+    }
+    static closeConfigCollapsible(){
+        document.getElementById('config-div').classList.remove('expanded');
+        document.getElementById('settings-toggle-btn').src = 'src/assets/images/settings/bars-left-icon.svg';
     }
 
     static initGameModeSelection() {
@@ -21,17 +31,18 @@ export class GameConfigurationManager {
         const previouslySelectedGameModeId = localStorage.getItem('game-mode');
         // Check the input of the game mode from local storage
         if (previouslySelectedGameModeId) {
-            document.querySelector(`#${previouslySelectedGameModeId} input`).checked = true;
+            document.querySelector(`#${previouslySelectedGameModeId}`)?.classList.add('selected');
+        }else{
+            // If there is no previously selected game mode, select settings mode
+            document.querySelector('#settings-mode').classList.add('selected');
         }
         // If one of the game mode radio buttons is checked, the other should be unchecked
-        for (const gameMode of gameModeSelection.querySelectorAll('label')) {
-            gameMode.addEventListener('change', () => {
+        for (const gameMode of gameModeSelection.querySelectorAll('button')) {
+            gameMode.addEventListener('click', () => {
                 // When one game mode is selected, uncheck all game modes
-                for (const gameModeLabel of gameModeSelection.querySelectorAll('label')) {
-                    gameModeLabel.querySelector('input').checked = false;
-                }
-                // The radio button that was clicked should be checked
-                gameMode.querySelector('input').checked = true;
+                gameModeSelection.querySelector('.selected')?.classList.remove('selected');
+                // Add selected class to the clicked game mode
+                gameMode.classList.add('selected');
                 localStorage.setItem('game-mode', gameMode.id);
                 // GameConfigurationOptionVisualHandler.updateModeOptions(gameMode.id);
                 // If there was a game running, stop it

@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.2.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.2.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.2.0";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.2.0";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.2.0";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.2.0";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.2.0";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.2.1";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.1";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.2.1";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.2.1";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.2.1";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.2.1";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.2.1";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.2.1";
 import {
     FretPatternSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-pattern-selector.js?v=2.2.0";
+} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-pattern-selector.js?v=2.2.1";
 
 
 export class NoteInKeyGameInitializer {
@@ -223,7 +223,7 @@ export class NoteInKeyGameInitializer {
                     </label>
                     <!-- Event listener added in fret-pattern-selector -->
                     <label class='checkbox-button option-for-game-mode' id="select-custom-pattern-option">
-                        <span class="normal-font-size">Select custom pattern</span>
+                        <span class="normal-font-size">Select range</span>
                     </label>                    
                     `;
         document.querySelector('#game-mode-options').insertAdjacentHTML('afterend', `
@@ -277,38 +277,42 @@ export class NoteInKeyGameInitializer {
         reloadKeyButton.addEventListener('click', this.reloadKeyAndStringEventHandlerVar);
 
         // Game instructions
-        document.querySelector('#game-start-instruction').querySelector('h3').innerHTML =
-            `Practice diatonic notes in any key`;
-        document.querySelector('#game-instruction-text').innerHTML = `
-            <p>A random string and major key will be generated and displayed.</p>
-            <p>The note on the given string will be the note number 1 of the key.</p>
-            <p>The goal is to play the note number diatonic to the key, on the given string.</p>
-            <p>For example, if the key is C, the note number 4 is F. If the key is G, number 4 is C. <br>
-            Refer to the fretboard roadmaps below.</p>
-            <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
-            <p>After successfully playing 30 notes, a new key is suggested. The key can also be changed anytime
-            with the "reload" button.</p>
-            <p>In the settings icon, you can select a range of frets to practice on. The "pattern" of the 
-            note positions on the strings will be kept while playing, but it may be shifted up or down the 
-            fretboard depending on the note 1 position. 
-            </p>
-            <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game 
-            or double-tap this instruction.</p>           
-            <p>I recommend watching Paul Davids 
-            <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">
-            Music Theory episodes</a>.</p>
-            <p>And <a href="https://www.youtube.com/watch?v=kmAK4tRmLec">this video</a>
-            on how to find the chords to any song on guitar from Andrew Clarke that motivated me
-            to create this tool.</p>
-            `;
+        document.querySelector('#game-start-instruction').innerHTML =
+            `
+        <details open>
+              <summary><h3>Practice diatonic notes in any key</h3></summary>
+              <div id="game-instruction-text">
+                  <p>A random string and major key will be generated and displayed.</p>
+                  <p>The note on the given string will be the note number 1 of the key.</p>
+                  <p>The goal is to play the note number diatonic to the key, on the given string.</p>
+                  <p>For example, if the key is C, the note number 4 is F. If the key is G, number 4 is C. <br>
+                  Refer to the patterns below.</p>
+                  <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
+                  <p>After successfully playing 30 notes, a new key is suggested. The key can also be changed anytime
+                  with the "reload" button.</p>
+                  <p>In the settings icon, you can select a range of frets to practice on. The "pattern" of the 
+                  note positions on the strings will be kept while playing, but it may be shifted up or down the 
+                  fretboard depending on the note 1 position. 
+                  </p>
+                  <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game 
+                  or double-tap this instruction.</p>           
+                  <p>I recommend watching Paul Davids 
+                  <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">
+                  Music Theory episodes</a>.</p>
+                  <p>And <a href="https://www.youtube.com/watch?v=kmAK4tRmLec">this video</a>
+                  on how to find the chords to any song on guitar from Andrew Clarke that motivated me
+                  to create this tool.</p>
+              </div>
+        </details>`
+
         document.querySelector('#game-start-instruction').insertAdjacentHTML('afterend',
             `<div id="scale-roadmaps">
-                <details open>
-                    <summary><h3>Roadmaps</h3></summary>
-                    <img src="src/assets/images/roadmaps/G-heptatonic-scale-numbered.svg" class="roadmap-image"
-                    alt="roadmap">
-                    <img src="src/assets/images/roadmaps/D-heptatonic-scale-numbered.svg" class="roadmap-image">
-                    </details>`);
+           <details open>
+              <summary><h3>Patterns</h3></summary>
+              <img src="src/assets/images/roadmaps/G-heptatonic-scale-numbered.svg" class="roadmap-image" alt="roadmap">
+                <img src="src/assets/images/roadmaps/D-heptatonic-scale-numbered.svg" class="roadmap-image">
+            </details>
+        </div>`);
 
 
         document.querySelector('main').insertAdjacentHTML('beforeend',
