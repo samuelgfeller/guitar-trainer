@@ -1,6 +1,6 @@
 <?php
 
-$version = '2.2.1';
+$version = '2.2.2';
 
 // If config/env.php exists, contains the 'env' key, and it's set to 'dev' add version to js imports
 if (file_exists(__DIR__ . '/config/env.php')) {
@@ -29,7 +29,7 @@ if (file_exists(__DIR__ . '/config/env.php')) {
     <link rel="stylesheet" href="src/assets/styles/virtual-fretboard.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/fret-selection.css?v=<?= $version ?>">
     <link rel="stylesheet" href="src/assets/styles/dual-range-slider.css?v=<?= $version ?>">
-    <link rel="stylesheet" href="src/assets/styles/theme-settings.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="src/assets/styles/theme-selection.css?v=<?= $version ?>">
     <link rel="icon" type="image/x-icon" href="guitar.ico">
     <script src="https://cdn.jsdelivr.net/npm/aubiojs@0.1.1/build/aubio.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>

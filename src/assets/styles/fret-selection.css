@@ -10,7 +10,7 @@
 
     #fretboard-number-span{
         font-size: 26px;
-        color: saddlebrown;
+        color: var(--accent-color);
     }
 
     .fretboard-for-patterns, .virtual-fretboard-selector {
@@ -25,11 +25,11 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background-color: #000000;
-        border: 1px solid #ffffff;
+        background-color: var(--background-color);
+        border: 1px solid var(--opposite-theme-color);
         line-height: 1.4em;
         /*color: #ff7a1c;*/
-        color: white;
+        color: var(--primary-text-color);
         font-weight: bold;
         /*border-radius: 50%;*/
         bottom: 50%;
@@ -40,7 +40,8 @@
     }
     .note-name-span{
         border: none;
-        background-color: #212121;
+        /*background-color: rgba(var(--r), var(--g), var(--b), 0.8);*/
+        background-color: var(--background-color);
     }
 
     .diatonic-major {

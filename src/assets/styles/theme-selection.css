@@ -1,8 +1,4 @@
-:root {
-    --accent-color: saddlebrown;
-}
-
-.theme-settings-grid {
+.theme-selection-grid {
     display: inline-grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     /*display: flex;*/
@@ -14,7 +10,7 @@
     /*border: 1px solid #ccc;*/
 }
 
-.theme-settings-grid > div {
+.theme-selection-grid > div {
     /*background: rgba(255, 255, 255, .1);*/
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
@@ -23,7 +19,7 @@
     position: relative;
 }
 
-.theme-settings-grid > div:hover {
+.theme-selection-grid > div:hover {
     /*background: rgba(255, 255, 255, .15);*/
     background: rgba(255, 255, 255, 0.18);
     cursor: pointer;

@@ -1,6 +1,6 @@
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.2.1";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.1";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.2.1";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.2.2";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.2";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.2.2";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -88,7 +88,6 @@ export class MetronomePracticeInitializer {
         const nameCapitalized = nameWithoutDashes.charAt(0).toUpperCase() + nameWithoutDashes.slice(1);
         return `<div tabindex="0" id="${name}-exercise">
                     <h4>${nameCapitalized}</h4>
-                    <!--<img src="src/assets/images/checkmark-icon.svg" alt="x">-->
                    <span ></span>
                     <div class="video-overlay">
                        <h3 class="overlay-text">${nameCapitalized}</h3>

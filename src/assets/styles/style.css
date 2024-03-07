@@ -1,3 +1,15 @@
+:root {
+    --accent-color: saddlebrown;
+    --background-color: #0e0e0e;
+    --background-light-accent-color: rgba(255, 255, 255, .3);
+    --primary-text-color: #c0c0c0;
+    --secondary-text-color: #919191;
+    --opposite-theme-color: white;
+    --hover-color: #181818;
+    --modal-background-color: rgba(3, 10, 0, 0.85);
+    --icon-filter: invert(70%);
+}
+
 @font-face {
     font-family: VarelaRound;
     src: url(../fonts/VarelaRound-Regular.ttf);
@@ -27,17 +39,16 @@
     }
 
     body {
-        background: #0e0e0e;
-        /*background: white;*/
-        color: #919191;
+        background: var(--background-color);
+        color: var(--secondary-text-color);
     }
 
     h2, h3, h4 {
-        color: #c0c0c0;
+        color: var(--primary-text-color);
     }
 
     a {
-        color: saddlebrown;
+        color: var(--accent-color);
     }
 
     header, #config-div {
@@ -58,12 +69,14 @@
         /*border-radius: 30px;*/
         padding: 3vh 0;
         width: 90%;
-        border-bottom: 10px dotted saddlebrown;
+        border-bottom: 10px dotted var(--accent-color);
     }
-    .stay-active-button img{
-        filter: invert(70%) drop-shadow(0 0 5px rgba(0, 0, 0, 0.38));
+
+    .stay-active-button img {
+        filter: var(--icon-filter) drop-shadow(0 0 5px rgba(0, 0, 0, 0.38));
     }
-    .stay-active-button{
+
+    .stay-active-button {
         background: #1f2425;
         border: 3px solid #3c4143;
         /*padding: 10px;*/
@@ -79,9 +92,10 @@
 
         /*min-height: 40px;*/
     }
-    .stay-active-button.selected{
-        background-color: saddlebrown;
-        border-color: saddlebrown;
+
+    .stay-active-button.selected {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
     }
 
     .checkbox-button {
@@ -91,10 +105,10 @@
         padding: 4px 12px 4px 8px;
         background: #1f2425;
         border: 3px solid #3c4143;
-        /*border: 3px solid  saddlebrown;*/
+        /*border: 3px solid  var(--accent-color);*/
         /*box-shadow: inset 0 -10px 20px 0 rgba(0, 0, 0, 0.7), inset 0 10px 20px 0 rgba(0, 0, 0, 0.7);*/
         /*background: #525252;*/
-        /*background: saddlebrown;*/
+        /*background: var(--accent-color);*/
         /*border: 0px solid #3c4143;*/
         /*padding: 5px 14px 5px 10px;*/
         /*box-shadow: inset 0 -10px 20px 0 rgba(0, 0, 0, 0.4), inset 0 10px 20px 0 rgba(0, 0, 0, 0.4);*/
@@ -102,10 +116,12 @@
         cursor: pointer;
         min-height: 40px;
     }
-    #info-game-mode{
+
+    #info-game-mode {
         padding: 4px 12px 4px 12px;
     }
-    #info-game-mode input{
+
+    #info-game-mode input {
 
     }
 
@@ -158,8 +174,7 @@
     }
 
     input {
-        accent-color: saddlebrown;
-        accent-color: #005d72;
+        accent-color: var(--accent-color);
     }
 
     #bpm-input {
@@ -167,7 +182,7 @@
         text-align: center;
         background: transparent;
         /*color: #c0c0c0;*/
-        color: wheat;
+        color: var(--secondary-text-color);
         border: none;
         border-bottom: 2px dashed #8a8a8a;
         padding: 5px 10px;
@@ -177,7 +192,7 @@
     .icon {
         width: 30px;
         /*height: 30px;*/
-        filter: invert(70%);
+        filter: var(--icon-filter);
     }
 
     #game-start-instruction .icon {
@@ -201,7 +216,7 @@
     .button-icon {
         width: 30px;
         height: 30px;
-        filter: invert(70%);
+        filter: var(--icon-filter);
     }
 
     #note-and-string-container {
@@ -228,7 +243,7 @@
     .note-value-span.note-value-span {
         font-size: 100px;
         font-weight: bold;
-        color: #bcbcbc;
+        color: var(--secondary-text-color);
     }
 
     #string-span.treble-clef-enabled {
@@ -250,13 +265,13 @@
     }
 
     .text {
-        color: #c0c0c0;
+        color: var(--primary-text-color);
     }
 
     #game-start-instruction {
         width: 100%;
         justify-content: center;
-        color: #c0c0c0;
+        color: var(--primary-text-color);
         text-align: center;
         gap: 0;
         max-width: 975px;
@@ -321,7 +336,7 @@
     }
 
     .label {
-        color: #919191;
+        color: var(--secondary-text-color);
     }
 
     #lower-bpm-btn {
@@ -398,7 +413,7 @@
         position: absolute;
         top: 50%;
         height: 8px; /* Maximum height of the bar */
-        background-color: rgba(255, 255, 255, .3); /* Set the color of the growing bar */
+        background-color: var(--background-light-accent-color); /* Set the color of the growing accent bar */
         transition: width 0.3s ease; /* Adjust the transition duration as per your preference */
         border-radius: 99px;
     }
@@ -440,7 +455,7 @@
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
-        color: #b6b6b6;
+        color: var(--secondary-text-color);
         line-height: 1.1em;
     }
 
@@ -484,7 +499,7 @@
         padding: 5px;
         border-radius: 10px;
         text-align: center;
-        color: #c0c0c0;
+        color: var(--primary-text-color);
     }
 
     .label-text {
@@ -505,17 +520,17 @@
     }
 
     .btn-container button, .btn {
-        background-color: black;
-        color: #c0c0c0;
+        background-color: var(--background-color);
+        color: var(--primary-text-color);
         /*font-weight: bold;*/
         font-size: 18px;
-        border: 2px dotted saddlebrown;
+        border: 2px dotted var(--accent-color);
         padding: 10px 20px;
         border-radius: 10px;
     }
 
     .btn-container button:hover, .btn:hover {
-        background-color: #181818;
+        background-color: var(--hover-color);
         cursor: pointer;
     }
 

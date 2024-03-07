@@ -16,7 +16,6 @@
         gap: 20px;
         justify-content: center;
         padding: 20px;
-        background-color: #1f1f1f;
         /*border: 1px solid #ccc;*/
     }
 
@@ -52,14 +51,14 @@
     #exercise-timer-input{
         background: transparent;
         border: none;
-        border-bottom: 2px dashed #8a8a8a;
+        border-bottom: 2px dashed var(--secondary-text-color);
         width: 50px;
-        color: #e5e5e5;
+        color: var(--primary-text-color);
         text-align: center;
     }
 
     #exercise-timer{
-        color: wheat;
+        color: var(--secondary-text-color);
         font-size: 0.9rem;
         font-weight: bold;
     }
@@ -86,7 +85,7 @@
     }
 
     .selected-exercise {
-        outline: 3px solid saddlebrown;
+        outline: 3px solid var(--accent-color);
     }
 
     .video-overlay {
@@ -106,25 +105,26 @@
         border-radius: 20px;
         /*border: 2px solid #212121;*/
         /*box-shadow: 0px 0px 15px #1f1f1f;*/
-        box-shadow: 0px 0px 15px #333333;
-        box-shadow: 0px 0px 10px #494949;
+        /*box-shadow: 0px 0px 15px #333333;*/
+        /*box-shadow: 0px 0px 10px #494949;*/
         /* Add more styles as needed (color, opacity, etc.) */
     }
     .video-overlay:hover{
         /*background: rgba(0, 0, 0, 0.3);*/
         /*background: rgba(255, 255, 255, .1);*/
-        box-shadow: 0px 0px 15px #52290b;
+        box-shadow: 0px 0px 15px var(--accent-color);
 
     }
     .video-overlay:hover h3{
         /*color: #ffffff;*/
-        /*color: saddlebrown;*/
-        background: #9f531d;
+        /*color: var(--accent-color);*/
+        background: var(--accent-color);
+        filter: brightness(1.5);
     }
     .video-overlay h3{
         color: #a8a7a7;
-        color: saddlebrown;
-        color: black;
+        color: var(--accent-color);
+        color: var(--background-color);
         padding: 3px 10px;
         /*color: #8a4f28;*/
 

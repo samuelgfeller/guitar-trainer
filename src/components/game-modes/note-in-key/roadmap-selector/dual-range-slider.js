@@ -24,7 +24,7 @@ export class DualRangeSlider {
 
     static setSliderValuesFromLocalStorage(savedFretRange) {
         if (savedFretRange) {
-            const { lowerLimit, upperLimit } = JSON.parse(savedFretRange);
+            const {lowerLimit, upperLimit} = JSON.parse(savedFretRange);
             document.getElementById('slider-1').value = lowerLimit;
             document.getElementById('slider-2').value = upperLimit;
             // Trigger the event listeners to update the fretboard
@@ -98,7 +98,7 @@ export class DualRangeSlider {
 
                 for (let fretPosition of fretPositions) {
                     if (i >= sliderOne.value && i <= sliderTwo.value) {
-                        fretPosition.style.backgroundColor = 'rgba(194,93,20,0.4)';
+                        fretPosition.style.backgroundColor = 'rgba(var(--r), var(--g), var(--b), 0.5)';
                         scrollFretIntoView(e, sliderOne, sliderTwo, totalFrets);
                     } else {
                         fretPosition.style.backgroundColor = '';
