@@ -1,9 +1,9 @@
-import {ArrayShuffler} from "../../../components/shuffler/array-shuffler.js?v=2.2.2";
 import {
     availableNotesOnStrings,
     pattern1keyNote,
     pattern2keyNote
-} from "../../../components/configuration/config-data.js?v=2.2.2";
+} from "../../../components/configuration/config-data.js?v=2.3.0";
+import {NoteInKeyShuffler} from "../../../components/game-modes/note-in-key/shuffler/note-in-key-shuffler.js?v=2.3.0";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -34,8 +34,9 @@ export class NoteInKeyGenerator {
         const keys = availableKeyNotesOnStrings[this.string].filter(() => true);
         // Get random key from possible keys for string
         this.key = keys[Math.floor(Math.random() * keys.length)];
-
-        return {keyString: this.string, keyNote: this.key};
+        // Fret number
+        const keyNoteFretPosition = availableNotesOnStrings[this.string].indexOf(this.key);
+        return {keyString: this.string, keyNote: this.key, keyNoteFretPosition: keyNoteFretPosition};
     }
 
     /**
@@ -57,21 +58,21 @@ export class NoteInKeyGenerator {
             // The note index is the fret number.
             // The array has to be initialized before adding notes to it
             strippedNotesOnStringsForKey[string] = [];
-            for (let noteFretNumber in this.availableNotesOnStrings[string]) {
+            for (let noteFretPosition in this.availableNotesOnStrings[string]) {
                 if (keyNotePositions[string]) {
-                    noteFretNumber = parseInt(noteFretNumber);
+                    noteFretPosition = parseInt(noteFretPosition);
                     const keyNotePosition = parseInt(keyNotePositions[string]);
                     const lowerLimit = parseInt(selectedFretRange.lowerLimit);
                     const upperLimit = parseInt(selectedFretRange.upperLimit);
 
                     // Add the note to strippedNotesOnStringsForKey if the note is in the keyNotePositions
-                    const spaceToTheRight = noteFretNumber - keyNotePosition + lowerLimit;
-                    const spaceToTheLeft = 11 - (upperLimit - keyNotePosition) - noteFretNumber;
+                    const spaceToTheRight = noteFretPosition - keyNotePosition + lowerLimit;
+                    const spaceToTheLeft = 11 - (upperLimit - keyNotePosition) - noteFretPosition;
 
                     // If the key note requires more space than 0 to the left (towards negative) or more than 11,
                     // the pattern overflows and is not valid
                     if (spaceToTheRight >= 0 && spaceToTheLeft >= 0) {
-                        strippedNotesOnStringsForKey[string][noteFretNumber] = this.availableNotesOnStrings[string][noteFretNumber];
+                        strippedNotesOnStringsForKey[string][noteFretPosition] = this.availableNotesOnStrings[string][noteFretPosition];
                     }
                 }
             }
@@ -88,15 +89,16 @@ export class NoteInKeyGenerator {
      * Related to the given key and difficulty level.
      * @param keyString
      * @param keyNote
+     * @param keyNoteFretPosition
      */
-    loadShuffledCombinations(keyString, keyNote) {
+    loadShuffledCombinations(keyString, keyNote, keyNoteFretPosition) {
         // Convert the range of possibleKeysOnStrings to the diatonic scale of the given keyNote
         let diatonicNotesOnStrings = this.getAvailableNotesOnStringsInDiatonicScale(
             keyNote, this.availableNotesOnStrings
         );
 
         // const keyIndex = this.possibleKeysOnStrings[keyString].indexOf(keyNote);
-        // const difficulty = parseInt(document.getElementById('difficulty-range-slider').value) ?? 1;
+        // const difficulty = parseInt(document.getElementById('fret-gap-range-slider').value) ?? 1;
 
         // Get index of note that is key on string from freshly created diatonicNotesOnStrings
         // const keyIndex = diatonicNotesOnStrings[keyString].findIndex(noteObject => noteObject.noteName === keyNote);
@@ -106,14 +108,23 @@ export class NoteInKeyGenerator {
         // Remove notes that are not nearby the key note, according to the difficulty level
         // this.diatonicNotesOnStrings = this.removeNotesAccordingToDifficultyLevel(diatonicNotesOnStrings, keyIndex, difficulty);
         this.diatonicNotesOnStrings = this.removeNotesOutsideOfSelectedRange(diatonicNotesOnStrings);
-        console.log('diatonicNotesOnStrings that will be shuffled: ', this.diatonicNotesOnStrings);
+        // console.log('diatonicNotesOnStrings that will be shuffled: ', this.diatonicNotesOnStrings);
         // Fill the combinationsToBeShuffled array with all possible combinations
         this.createArrayWithCombinationsToBeShuffled();
 
         // Reset currentIndex
         this.currentIndex = 0;
         // Shuffle the array with the combinations
-        this.shuffledCombinations = ArrayShuffler.shuffleArray(this.combinationsToBeShuffled, [keyString, keyNote]);
+        // this.shuffledCombinations = ArrayShuffler.shuffleArray(
+        //     this.combinationsToBeShuffled,
+        //     [keyString, {noteName: keyNote, fretPosition: keyNoteFretPosition}]
+        // );
+        // console.log('combinationsToBeShuffled', this.combinationsToBeShuffled);
+        this.shuffledCombinations = NoteInKeyShuffler.shuffleArray(
+            this.combinationsToBeShuffled,
+            [keyString, {noteName: keyNote, fretPosition: keyNoteFretPosition}],
+        );
+        // console.log(this.shuffledCombinations);
     }
 
     /**
@@ -130,7 +141,6 @@ export class NoteInKeyGenerator {
      * @return {number|boolean|null}
      */
     getSelectedFretboardNr() {
-        console.log('selectedFretboardPattern', this.selectedFretboardPattern);
         if (this.selectedFretboardPattern) {
             return this.selectedFretboardPattern;
         }
@@ -190,10 +200,10 @@ export class NoteInKeyGenerator {
             strippedDiatonicNotes[string] = [];
             for (let noteObject of diatonicNotesOnStrings[string]) {
                 // Get the fret number of the same note number but in the pattern key where the user defined the range
-                const noteFretNumberInPatternKey = diatonicNotesOnStringsInPatternKey[string].find(
-                    noteObjectFromPattern => noteObjectFromPattern.number === noteObject.number).fretNumber;
+                const noteFretPositionInPatternKey = diatonicNotesOnStringsInPatternKey[string].find(
+                    noteObjectFromPattern => noteObjectFromPattern.number === noteObject.number).fretPosition;
                 // If the note is within the selected range of the "translated" key, add it to the strippedDiatonicNotes
-                if (noteFretNumberInPatternKey >= selectedRange.lowerLimit && noteFretNumberInPatternKey <= selectedRange.upperLimit) {
+                if (noteFretPositionInPatternKey >= selectedRange.lowerLimit && noteFretPositionInPatternKey <= selectedRange.upperLimit) {
                     strippedDiatonicNotes[string].push(noteObject);
                 }
             }
@@ -209,10 +219,12 @@ export class NoteInKeyGenerator {
         this.combinationsToBeShuffled = [];
         // Shuffle the notes on each string
         for (let string in this.diatonicNotesOnStrings) {
-            // Fretboard game note shuffler cannot be taken as it shuffles creates combinations with all strings with
+            // Fretboard game note shuffler cannot be taken as it shuffles combinations with all strings with
             // every note.
             // We want combinations with only specific notes (diatonic) going with each string.
-            this.combinationsToBeShuffled.push(...this.diatonicNotesOnStrings[string].map(noteObject => [string, noteObject.noteName]));
+            // this.combinationsToBeShuffled.push(...this.diatonicNotesOnStrings[string].map(noteObject => [string, noteObject.noteName]));
+            this.combinationsToBeShuffled.push(...this.diatonicNotesOnStrings[string].map(noteObject => [string, noteObject]));
+
         }
         console.debug('Combinations to be shuffled', this.combinationsToBeShuffled);
     }
@@ -223,13 +235,15 @@ export class NoteInKeyGenerator {
         // Sometimes there is a bug after a few rounds where only the number 1 is displayed
         // The error line 81 is Uncaught TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
         // Either the shuffledCombinations is undefined or the shuffledCombinations[currentIndex] is undefined
-        console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations: ' + this.shuffledCombinations
-            + 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
+        // console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations: ' + this.shuffledCombinations
+        //     + 'shuffledCombinations[currentIndex]' + this.shuffledCombinations[this.currentIndex]);
         // If this.shuffledCombinations[this.currentIndex] is undefined, inform user with alert
-        if (this.currentIndex === undefined || !this.shuffledCombinations[this.currentIndex]) {
-            alert('There was an error and I don\'t know how to reproduce it. ' +
-                'Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex
-                + ' | shuffledCombinations[currentIndex]: ' + this.shuffledCombinations[this.currentIndex]);
+        if (this.currentIndex === undefined || this.shuffledCombinations.length === 0
+            || !this.shuffledCombinations[this.currentIndex]) {
+            console.log('currentIndex: ' + this.currentIndex, 'shuffledCombinations: ' + this.shuffledCombinations)
+            alert('There was an error. Shuffled combinations array empty.' +
+                'Please reload the page. ' + "\n" + 'currentIndex: ' + this.currentIndex);
+
         }
         // The note shuffler returns a string with the format 'string|note'
         let [string, note] = this.shuffledCombinations[this.currentIndex];
@@ -238,7 +252,8 @@ export class NoteInKeyGenerator {
         if (this.currentIndex >= this.shuffledCombinations.length - 1 || !this.shuffledCombinations[this.currentIndex]) {
             const previousCombination = this.shuffledCombinations[this.currentIndex];
             // replace the shuffled combinations with a freshly shuffled array
-            this.shuffledCombinations = ArrayShuffler.shuffleArray(this.combinationsToBeShuffled, previousCombination);
+            // this.shuffledCombinations = ArrayShuffler.shuffleArray(this.combinationsToBeShuffled, previousCombination);
+            this.shuffledCombinations = NoteInKeyShuffler.shuffleArray(this.combinationsToBeShuffled, previousCombination);
             this.currentIndex = 0;
         } else {
             this.currentIndex++;
@@ -281,7 +296,7 @@ export class NoteInKeyGenerator {
                 .map(note => ({
                     noteName: note,
                     number: diatonicScale.indexOf(note) + 1,
-                    fretNumber: notesOnString.indexOf(note)
+                    fretPosition: notesOnString.indexOf(note)
                 }))
                 .filter(noteObject => diatonicScale.includes(noteObject.noteName));
         }

@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.2.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.2.2";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.2.2";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.2.2";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.2.2";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.2.2";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.2.2";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.2.2";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.3.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.3.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.3.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.3.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.3.0";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.3.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.3.0";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.3.0";
 import {
     FretPatternSelector
-} from "../../../components/game-modes/note-in-key/roadmap-selector/fret-pattern-selector.js?v=2.2.2";
+} from "../../../components/game-modes/note-in-key/pattern-selector/fret-pattern-selector.js?v=2.3.0";
 
 
 export class NoteInKeyGameInitializer {
@@ -94,13 +94,13 @@ export class NoteInKeyGameInitializer {
         });
     }
 
-    reloadKeyAndStringEventHandler() {
+    reloadKeyAndStringEventHandler(newKey = true) {
         console.trace('reloadKeyAndStringEventHandler');
         const gameIsRunning = this.noteInKeyGameCoordinator.gameIsRunning;
         // Pause game
         document.dispatchEvent(new Event('game-stop'));
         // Load new key on string
-        this.noteInKeyGameCoordinator.reloadKeyAndString();
+        this.noteInKeyGameCoordinator.reloadKeyAndString(newKey);
 
         if (gameIsRunning) {
             // Resume the game with the new key
@@ -154,7 +154,7 @@ export class NoteInKeyGameInitializer {
             `Practice completed in ${minutes} min and ${seconds} sec!`,
             'Go to next key',
             this.goToNextKey.bind(this),
-            this.restartKey);
+            this.restartKey.bind(this));
         // Reset timer
         this.noteInKeyGameCoordinator.timer = 0;
     }
@@ -166,6 +166,7 @@ export class NoteInKeyGameInitializer {
     }
 
     restartKey() {
+        this.reloadKeyAndStringEventHandler(false)
         document.dispatchEvent(new Event('game-start'));
     }
 
@@ -197,16 +198,7 @@ export class NoteInKeyGameInitializer {
     addHtmlComponents() {
         // Add game mode options (have to be added before the other initializations as they might depend on options)
         document.querySelector('#game-mode-options').innerHTML = `
-                    <!--<div id="difficulty-range-slider-container" class="option-for-game-mode">
-                        <input type="range" min='1' max='3' value='1' step='1'
-                               list="level-options" id="difficulty-range-slider"/>
-                        <datalist id="level-options">
-                            <option value="1" label="Lvl 1"></option>
-                            <option value="2" label="Lvl 2"></option>
-                            <option value="3" label="Lvl 3"></option>
-                        </datalist>
-                    </div>-->
-                    <!-- For simplicity, the no-guitar option has the same id for all game modes and 
+                                       <!-- For simplicity, the no-guitar option has the same id for all game modes and 
                      the core-game-coordination-initializer sets the metronomeEnabled and noteDetectorEnabled values -->
                     <label class='checkbox-button option-for-game-mode' id="no-guitar-option">
                         <input type='checkbox'>
@@ -224,7 +216,21 @@ export class NoteInKeyGameInitializer {
                     <!-- Event listener added in fret-pattern-selector -->
                     <label class='checkbox-button option-for-game-mode' id="select-custom-pattern-option">
                         <span class="normal-font-size">Select range</span>
-                    </label>                    
+                    </label>      
+                    <div id="fret-gap-range-slider-container">
+                    <span>Max gap</span>
+                    <div  class="option-for-game-mode">
+                        <input type="range" min='1' max='5' value='2' step='1'
+                               list="level-options" id="fret-gap-range-slider"/>
+                        <datalist id="level-options">
+                            <option value="1" label="1"></option>
+                            <option value="2" label="2"></option>
+                            <option value="3" label="3"></option>
+                            <option value="3" label="4"></option>
+                            <option value="5" label="5"></option>
+                        </datalist>
+                    </div> 
+                     </div>            
                     `;
         document.querySelector('#game-mode-options').insertAdjacentHTML('afterend', `
                     <span class="normal-font-size label-text options-title-span" id="string-option-title">Strings</span>
@@ -257,7 +263,7 @@ export class NoteInKeyGameInitializer {
 `);
 
         // Add difficulty range slider event listener
-        // document.querySelector('#difficulty-range-slider').addEventListener('change', this.reloadKeyAndStringEventHandler.bind(this));
+        document.querySelector('#fret-gap-range-slider').addEventListener('change', this.reloadKeyAndStringEventHandler.bind(this));
 
         // Add event listeners for always the same key options
         this.addCustomPatternChoiceEventListeners();

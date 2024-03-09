@@ -1,7 +1,12 @@
-.difficulty-range-slider-container{
-    width: 150px;
+#fret-gap-range-slider-container{
+    width: 140px;
+    text-align: center;
 }
-.difficulty-range-slider-container input{
+#fret-gap-range-slider-container span{
+    font-size: 13px;
+}
+
+#fret-gap-range-slider-container input{
     width: 100%;
     margin: 0;
 }

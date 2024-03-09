@@ -195,7 +195,7 @@
         filter: var(--icon-filter);
     }
 
-    #game-start-instruction .icon {
+    #game-start-instruction .icon, .game-instructions .icon {
         width: 20px;
         margin: 0 5px;
     }
@@ -243,7 +243,7 @@
     .note-value-span.note-value-span {
         font-size: 100px;
         font-weight: bold;
-        color: var(--secondary-text-color);
+        color: var(--primary-text-color);
     }
 
     #string-span.treble-clef-enabled {
@@ -268,7 +268,7 @@
         color: var(--primary-text-color);
     }
 
-    #game-start-instruction {
+    #game-start-instruction, .game-instructions {
         width: 100%;
         justify-content: center;
         color: var(--primary-text-color);
@@ -278,11 +278,11 @@
         /*margin-top: 10px;*/
     }
 
-    #game-start-instruction p {
+    #game-start-instruction p, .game-instructions p {
         margin: 14px;
     }
 
-    #game-start-instruction details {
+    #game-start-instruction details, .game-instructions details {
         width: 100%;
         margin-top: 20px;
     }
@@ -527,6 +527,7 @@
         border: 2px dotted var(--accent-color);
         padding: 10px 20px;
         border-radius: 10px;
+        filter: brightness(2);
     }
 
     .btn-container button:hover, .btn:hover {

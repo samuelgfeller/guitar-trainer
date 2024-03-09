@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.2.2";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.3.0";
 
 export class NoteInKeyGameNoGuitar {
     static diatonicNotesOnStrings;
@@ -103,9 +103,9 @@ export class NoteInKeyGameNoGuitar {
 
                 // If the fret index is 3, 5, 7, or 9 and the string is the first string, add a circle to the fret
                 // Calculate the fret number from the right
-                let fretNumberFromRight = totalFrets - parseInt(index);
+                let fretPositionFromRight = totalFrets - parseInt(index);
                 // If the fret number from the right is 3, 5, 7, or 9 and the string is the first string, add a circle to the fret
-                if ([3, 5, 7, 9].includes(fretNumberFromRight) && stringIndex === 0) {
+                if ([3, 5, 7, 9].includes(fretPositionFromRight) && stringIndex === 0) {
                     let fretHelper = document.createElement('span');
                     fretHelper.className = 'fret-helper';
                     fretPosition.appendChild(fretHelper);

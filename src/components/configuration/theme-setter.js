@@ -1,8 +1,11 @@
-import {themes} from "./config-data.js?v=2.2.2";
+import {themes} from "./config-data.js?v=2.3.0";
 
 export class ThemeSetter {
     static setThemeFromLocalStorage() {
-        if (!localStorage.getItem('theme') || !localStorage.getItem('accent-color')) return;
+        if (!localStorage.getItem('theme') || !localStorage.getItem('accent-color')){
+            localStorage.setItem('theme', 'dark');
+            localStorage.setItem('accent-color', themes['dark']['accent-color']['saddlebrown']);
+        }
         this.setTheme(localStorage.getItem('theme'), localStorage.getItem('accent-color'));
     }
 

@@ -30,7 +30,8 @@ export class MetronomeOperator {
     }
 
     playClickSound() {
-        if (document.querySelector('#metronome-game-mode input').checked) {
+        // Play click sound only when metronome game mode is selected
+        if (document.querySelector('#metronome-game-mode').classList.contains('selected')) {
             const oscillator = this.audioContext.createOscillator();
             const gainNode = this.audioContext.createGain();
 

@@ -1,7 +1,7 @@
-import {DualRangeSlider} from "./dual-range-slider.js?v=2.2.2";
-import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.2.2";
-import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.2.2";
-import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.2.2";
+import {DualRangeSlider} from "./dual-range-slider.js?v=2.3.0";
+import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.3.0";
+import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.3.0";
+import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.3.0";
 
 export class FretPatternSelector {
 
@@ -126,7 +126,7 @@ export class FretPatternSelector {
             if (noteObject) {
                 this.addDiatonicNoteNumberColor(stringNameSpan, noteObject.number);
             }
-            stringNameDiv.dataset.fretNumber = '0';
+            stringNameDiv.dataset.fretPosition = '0';
             // Append the string name div to the string div
             stringNameDiv.appendChild(stringNameSpan);
             string.appendChild(stringNameDiv);
@@ -138,11 +138,11 @@ export class FretPatternSelector {
 
             for (const index in reversedNotes) {
                 // Calculate the fret number where 1 is on the right
-                let fretNumberFromRight = totalFrets - parseInt(index);
+                let fretPositionFromRight = totalFrets - parseInt(index);
 
                 let fretPosition = document.createElement('div');
                 fretPosition.classList.add('fret-position');
-                fretPosition.dataset.fretNumber = fretNumberFromRight.toString();
+                fretPosition.dataset.fretPosition = fretPositionFromRight.toString();
                 fretPosition.dataset.noteName = reversedNotes[index];
                 string.appendChild(fretPosition);
 
@@ -154,7 +154,7 @@ export class FretPatternSelector {
                     fretPosition.appendChild(diatonicNoteNumber);
                     if (noteObject.number === 1) {
                         // There can only be one key note on a string
-                        noteOnePositions[stringName] = fretNumberFromRight;
+                        noteOnePositions[stringName] = fretPositionFromRight;
                     }
                 }
             }

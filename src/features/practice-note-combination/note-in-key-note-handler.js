@@ -1,6 +1,6 @@
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=2.2.2";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=2.2.2";
-import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=2.2.2";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=2.3.0";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=2.3.0";
+import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=2.3.0";
 
 /**
  * Note displayer for "practice" mode, which means
@@ -57,7 +57,7 @@ export class NoteInKeyNoteHandler {
      */
     endGame() {
         document.removeEventListener('correct-note-played', this.displayNotesHandler);
-        document.addEventListener('correct-note-played', this.increaseCorrectNoteCountHandler);
+        document.removeEventListener('correct-note-played', this.increaseCorrectNoteCountHandler);
         document.removeEventListener('note-detected', this.checkIfNoteCorrectHandler);
         // rest-game-progress event listener is removed in destroy function
         // https://www.js-craft.io/blog/javascript-addeventlistener-will-not-duplicate-named-functions/

@@ -1,6 +1,6 @@
-import {DualRangeSlider} from "../note-in-key/roadmap-selector/dual-range-slider.js?v=2.2.2";
-import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.2.2";
-import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.2.2";
+import {DualRangeSlider} from "../note-in-key/pattern-selector/dual-range-slider.js?v=2.3.0";
+import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.3.0";
+import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.3.0";
 
 export class RangeSelector {
 
@@ -79,7 +79,7 @@ export class RangeSelector {
             // Set the text content to the string name (overwritten if diatonic note number)
             stringNameSpan.textContent = stringName;
 
-            stringNameDiv.dataset.fretNumber = '0';
+            stringNameDiv.dataset.fretPosition = '0';
             // Append the string name div to the string div
             stringNameDiv.appendChild(stringNameSpan);
             string.appendChild(stringNameDiv);
@@ -91,11 +91,11 @@ export class RangeSelector {
 
             for (const index in reversedNotes) {
                 // Calculate the fret number where 1 is on the right
-                let fretNumberFromRight = totalFrets - parseInt(index);
+                let fretPositionFromRight = totalFrets - parseInt(index);
 
                 let fretPosition = document.createElement('div');
                 fretPosition.classList.add('fret-position');
-                fretPosition.dataset.fretNumber = fretNumberFromRight.toString();
+                fretPosition.dataset.fretPosition = fretPositionFromRight.toString();
                 fretPosition.dataset.noteName = reversedNotes[index];
                 string.appendChild(fretPosition);
 

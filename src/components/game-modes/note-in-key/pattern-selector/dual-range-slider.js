@@ -66,20 +66,21 @@ export class DualRangeSlider {
                 const oneFretBeforeValue = parseInt(sliderOne.value) > 0
                     ? parseInt(sliderOne.value) - 1 : parseInt(sliderOne.value);
                 const oneFretBefore = document.querySelector(
-                    `.fretboard-for-patterns:not(.inactive-fretboard) [data-fret-number="${oneFretBeforeValue}"],
-            #fretboard-range-selection-virtual-fretboard [data-fret-number="${oneFretBeforeValue}"]`);
+                    `.fretboard-for-patterns:not(.inactive-fretboard) [data-fret-position="${oneFretBeforeValue}"],
+            #fretboard-range-selection-virtual-fretboard [data-fret-position="${oneFretBeforeValue}"]`);
                 oneFretBefore.scrollIntoView({behavior: 'smooth', block: 'center'});
             } else if (e && e.target.id === 'slider-2') {
                 const oneFretAfterValue = parseInt(sliderTwo.value) < totalFrets
                     ? parseInt(sliderTwo.value) + 1 : parseInt(sliderTwo.value);
                 const oneFretAfter = document.querySelector(
-                    `.fretboard-for-patterns:not(.inactive-fretboard) [data-fret-number="${oneFretAfterValue}"],
-                                #fretboard-range-selection-virtual-fretboard [data-fret-number="${oneFretAfterValue}`);
+                    `.fretboard-for-patterns:not(.inactive-fretboard) [data-fret-position="${oneFretAfterValue}"],
+                                #fretboard-range-selection-virtual-fretboard [data-fret-position="${oneFretAfterValue}`);
                 oneFretAfter.scrollIntoView({behavior: 'smooth', block: 'center'});
             }
         }
 
         function handleSliderChangeEvent(e = null) {
+            console.log('slider change event');
             let percent1 = (sliderOne.value / sliderMaxValue) * 100;
             let percent2 = (sliderTwo.value / sliderMaxValue) * 100;
             sliderTrack.style.background =
@@ -94,11 +95,11 @@ export class DualRangeSlider {
 
             // Loop over frets
             for (let i = 0; i <= totalFrets; i++) {
-                let fretPositions = document.querySelectorAll(`[data-fret-number="${i}"]`);
+                let fretPositions = document.querySelectorAll(`[data-fret-position="${i}"]`);
 
                 for (let fretPosition of fretPositions) {
                     if (i >= sliderOne.value && i <= sliderTwo.value) {
-                        fretPosition.style.backgroundColor = 'rgba(var(--r), var(--g), var(--b), 0.5)';
+                        fretPosition.style.backgroundColor = 'rgba(var(--r), var(--g), var(--b), 0.7)';
                         scrollFretIntoView(e, sliderOne, sliderTwo, totalFrets);
                     } else {
                         fretPosition.style.backgroundColor = '';
