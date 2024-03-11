@@ -2,8 +2,8 @@ import {
     availableNotesOnStrings,
     pattern1keyNote,
     pattern2keyNote
-} from "../../../components/configuration/config-data.js?v=2.3.0";
-import {NoteInKeyShuffler} from "../../../components/game-modes/note-in-key/shuffler/note-in-key-shuffler.js?v=2.3.0";
+} from "../../../components/configuration/config-data.js?v=2.3.1";
+import {NoteInKeyShuffler} from "../../../components/game-modes/note-in-key/shuffler/note-in-key-shuffler.js?v=2.3.1";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;
@@ -21,6 +21,7 @@ export class NoteInKeyGenerator {
 
     /**
      * Return random string and random key from that string
+     * @returns [string, keyNoteObject]
      */
     getNewStringAndKey() {
         console.debug(`All available strings and notes`, this.availableNotesOnStrings);
@@ -36,7 +37,10 @@ export class NoteInKeyGenerator {
         this.key = keys[Math.floor(Math.random() * keys.length)];
         // Fret number
         const keyNoteFretPosition = availableNotesOnStrings[this.string].indexOf(this.key);
-        return {keyString: this.string, keyNote: this.key, keyNoteFretPosition: keyNoteFretPosition};
+        return {
+            keyString: this.string,
+            keyNoteObject: {noteName: this.key, number: 1, fretPosition: keyNoteFretPosition}
+        };
     }
 
     /**
@@ -88,13 +92,12 @@ export class NoteInKeyGenerator {
      * Load the this.notesOnStrings attribute which is the possible notes that can be displayed.
      * Related to the given key and difficulty level.
      * @param keyString
-     * @param keyNote
-     * @param keyNoteFretPosition
+     * @param keyNoteObject containing name, number and fret position
      */
-    loadShuffledCombinations(keyString, keyNote, keyNoteFretPosition) {
+    loadShuffledCombinations(keyString, keyNoteObject) {
         // Convert the range of possibleKeysOnStrings to the diatonic scale of the given keyNote
         let diatonicNotesOnStrings = this.getAvailableNotesOnStringsInDiatonicScale(
-            keyNote, this.availableNotesOnStrings
+            keyNoteObject.noteName, this.availableNotesOnStrings
         );
 
         // const keyIndex = this.possibleKeysOnStrings[keyString].indexOf(keyNote);
@@ -102,7 +105,7 @@ export class NoteInKeyGenerator {
 
         // Get index of note that is key on string from freshly created diatonicNotesOnStrings
         // const keyIndex = diatonicNotesOnStrings[keyString].findIndex(noteObject => noteObject.noteName === keyNote);
-        console.debug(`String ${keyString} Key ${keyNote}`);
+        console.debug(`String ${keyString} Key ${keyNoteObject.noteName}`);
         // console.debug(`Diatonic notes`, diatonicNotesOnStrings);
 
         // Remove notes that are not nearby the key note, according to the difficulty level
@@ -121,8 +124,7 @@ export class NoteInKeyGenerator {
         // );
         // console.log('combinationsToBeShuffled', this.combinationsToBeShuffled);
         this.shuffledCombinations = NoteInKeyShuffler.shuffleArray(
-            this.combinationsToBeShuffled,
-            [keyString, {noteName: keyNote, fretPosition: keyNoteFretPosition}],
+            this.combinationsToBeShuffled, [keyString, keyNoteObject],
         );
         // console.log(this.shuffledCombinations);
     }
@@ -246,7 +248,7 @@ export class NoteInKeyGenerator {
 
         }
         // The note shuffler returns a string with the format 'string|note'
-        let [string, note] = this.shuffledCombinations[this.currentIndex];
+        let [string, noteObject] = this.shuffledCombinations[this.currentIndex];
 
         // If the current index is reached, re shuffle all the notes and reset it to 0
         if (this.currentIndex >= this.shuffledCombinations.length - 1 || !this.shuffledCombinations[this.currentIndex]) {
@@ -261,9 +263,7 @@ export class NoteInKeyGenerator {
 
         // Split the string into an array containing the string and the note
         // let [string, note] = combination.split('|');
-        // Get the note number from the note object
-        let noteNumber = this.diatonicNotesOnStrings[string].find(noteObject => noteObject.noteName === note).number;
-        return {stringName: string, noteName: {noteName: note, number: noteNumber}};
+        return {stringName: string, noteName: noteObject};
 
         const strings = Object.keys(this.diatonicNotesOnStrings);
         const stringToPlayNote = strings[Math.floor(Math.random() * strings.length)];

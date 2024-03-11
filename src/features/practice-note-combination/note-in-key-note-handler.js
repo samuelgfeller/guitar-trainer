@@ -1,6 +1,6 @@
-import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=2.3.0";
-import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=2.3.0";
-import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=2.3.0";
+import {DetectedNoteVerifier} from "../detected-note/detected-note-verifier.js?v=2.3.1";
+import {GameProgressVisualizer} from "../game-core/game-progress/game-progress-visualizer.js?v=2.3.1";
+import {NoteDisplayer} from "../../components/game-core/ui/note-displayer.js?v=2.3.1";
 
 /**
  * Note displayer for "practice" mode, which means
@@ -80,6 +80,12 @@ export class NoteInKeyNoteHandler {
         this.updateProgressBar();
     }
 
+    /**
+     * Display the next note combination.
+     * The solution for the given first note is not beautiful for type safety. It Should be changed.
+     * @param combination an object with stringName and noteName which is either a string (first note)
+     * or an object with noteName and number
+     */
     displayNotes(combination) {
         // Determine the string and note to display
         let stringName, noteName;

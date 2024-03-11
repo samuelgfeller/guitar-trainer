@@ -1,5 +1,5 @@
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.3.0";
-import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=2.3.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.3.1";
+import {NoteInKeyGameInitializer} from "./note-in-key-game-initializer.js?v=2.3.1";
 
 export class NoteInKeyGameCoordinator {
     string;
@@ -86,16 +86,16 @@ export class NoteInKeyGameCoordinator {
         // Reset selected fretboard pattern
         this.noteInKeyGenerator.selectedFretboardPattern = null;
 
-        // Get new string and key
-        if (newKey === true) {
-            const {keyString, keyNote, keyNoteFretPosition} = this.noteInKeyGenerator.getNewStringAndKey();
+        // Get new string and key if newKey is truthy (either false on level restart or event object on key change)
+        if (newKey !== false) {
+            const {keyString, keyNoteObject} = this.noteInKeyGenerator.getNewStringAndKey();
             this.keyString = keyString;
-            this.keyNote = keyNote;
-            this.keyNoteFretPosition = keyNoteFretPosition;
+            this.keyNote = keyNoteObject.noteName;
+            this.KeyNoteObject = keyNoteObject;
         }
 
         // Prepare the attribute containing the notes on strings that may be displayed (diatonic to key, difficulty)
-        this.noteInKeyGenerator.loadShuffledCombinations(this.keyString, this.keyNote, this.keyNoteFretPosition);
+        this.noteInKeyGenerator.loadShuffledCombinations(this.keyString, this.KeyNoteObject);
         console.log('key reloaded');
         // Display current key and string
         document.getElementById('current-key-and-string').innerHTML =

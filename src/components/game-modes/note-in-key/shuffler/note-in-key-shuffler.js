@@ -100,7 +100,8 @@ export class NoteInKeyShuffler {
                     let randomIndex = Math.floor(Math.random() * validElements.length);
                     let nextElement = validElements[randomIndex];
                     let gap = Math.abs(currentElement[1].fretPosition - nextElement[1].fretPosition)
-                    shuffledArray.push([nextElement[0], nextElement[1].noteName, nextElement[1].fretPosition, gap]);
+                    // Add the string name in position 1 and next element object with note name and fret position in 2
+                    shuffledArray.push([nextElement[0], nextElement[1], gap]);
                     remainingElements = remainingElements.filter(element => element !== nextElement);
                     currentElement = nextElement;
                 }
