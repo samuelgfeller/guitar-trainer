@@ -1,7 +1,10 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.3.1";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.3.2";
 
 export class GameConfigurationManager {
 
+    /**
+     * Toggles the visibility of the settings menu
+     */
     static toggleSettingsExpand() {
         if (document.getElementById('config-div').classList.contains('expanded')) {
             document.getElementById('settings-toggle-btn').src = 'src/assets/images/settings/bars-left-icon.svg';
@@ -16,7 +19,12 @@ export class GameConfigurationManager {
 
     static addSettingsCloseEventListenerOnOutsideClick() {
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('#config-div') && !e.target.closest('#settings-toggle-btn') && !e.target.closest('#modal')) {
+            if (!e.target.closest('#config-div')
+                && !e.target.closest('#settings-toggle-btn')
+                && !e.target.closest('#modal')
+                // If the start button is disabled, the settings menu should not close when clicking on it
+                && (!e.target.closest('#start-stop-btn') && document.querySelector('#start-stop-btn').disabled === true)
+            ) {
                 this.closeConfigCollapsible();
             }
         });
