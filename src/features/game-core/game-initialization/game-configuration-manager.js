@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.3.2";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.3.3";
 
 export class GameConfigurationManager {
 
@@ -8,7 +8,7 @@ export class GameConfigurationManager {
     static toggleSettingsExpand() {
         if (document.getElementById('config-div').classList.contains('expanded')) {
             document.getElementById('settings-toggle-btn').src = 'src/assets/images/settings/bars-left-icon.svg';
-        }else{
+        } else {
             document.getElementById('settings-toggle-btn').src = 'src/assets/images/settings/bars-right-icon.svg';
         }
 
@@ -23,13 +23,14 @@ export class GameConfigurationManager {
                 && !e.target.closest('#settings-toggle-btn')
                 && !e.target.closest('#modal')
                 // If the start button is disabled, the settings menu should not close when clicking on it
-                && (!e.target.closest('#start-stop-btn') && document.querySelector('#start-stop-btn').disabled === true)
+                && (!e.target.closest('#start-stop-btn') || document.querySelector('#start-stop-btn').disabled === false)
             ) {
                 this.closeConfigCollapsible();
             }
         });
     }
-    static closeConfigCollapsible(){
+
+    static closeConfigCollapsible() {
         document.getElementById('config-div').classList.remove('expanded');
         document.getElementById('settings-toggle-btn').src = 'src/assets/images/settings/bars-left-icon.svg';
     }
@@ -40,7 +41,7 @@ export class GameConfigurationManager {
         // Check the input of the game mode from local storage
         if (previouslySelectedGameModeId) {
             document.querySelector(`#${previouslySelectedGameModeId}`)?.classList.add('selected');
-        }else{
+        } else {
             // If there is no previously selected game mode, select settings mode
             document.querySelector('#settings-mode').classList.add('selected');
         }
