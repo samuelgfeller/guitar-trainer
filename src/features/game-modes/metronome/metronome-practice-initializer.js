@@ -1,6 +1,6 @@
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.3.3";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.3.3";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.3.3";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.4.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.4.0";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.4.0";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -11,6 +11,7 @@ export class MetronomePracticeInitializer {
     }
 
     initMetronomePractice() {
+        document.querySelector('#game-start-instruction').innerHTML = '';
         // Creating a separate div after game-start-instructions for the metronome exercises as #game-start-instruction
         // is hidden when the game is running, which shouldn't happen for the metronome.
         document.querySelector('#game-start-instruction').insertAdjacentHTML('beforebegin', `
@@ -20,7 +21,10 @@ export class MetronomePracticeInitializer {
                     <div>
                         <p>Click <img class="icon" src="src/assets/images/play-icon.svg" alt="play"> or double tap blank 
                         space to start the metronome.</p>
-                        <p>Select an exercise by clicking on the title. To start the timer, click on it.</p>
+                        <p>Select an exercise by clicking on the title.</p>
+                        <p>To track the practice time, you can set a timer below. The metronome pauses when the timer runs out.
+                         To start the timer for an exercise, select it and then click on the timer in the top right 
+                         corner of the exercise or press the play button.</p>
                         <p>Exercise timer: <input id="exercise-timer-input" type="number">min</p>
                     </div>
                 </details>
@@ -98,6 +102,7 @@ export class MetronomePracticeInitializer {
                     </div>
                     <video controls>
                         <source src="src/assets/videos/exercises/${fileName}" type="video/mp4">
+                        <source src="src/assets/videos/exercises/nonweboptimized/${fileName}" type="video/mp4">
                         Video not supported.
                     </video>
                 </div>`;

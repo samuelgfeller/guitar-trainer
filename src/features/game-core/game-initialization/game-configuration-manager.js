@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.3.3";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.4.0";
 
 export class GameConfigurationManager {
 
@@ -45,6 +45,10 @@ export class GameConfigurationManager {
             // If there is no previously selected game mode, select settings mode
             document.querySelector('#settings-mode').classList.add('selected');
         }
+        this.addGameModeSelectionEventListeners(gameModeSelection);
+    }
+
+    static addGameModeSelectionEventListeners(gameModeSelection) {
         // If one of the game mode radio buttons is checked, the other should be unchecked
         for (const gameMode of gameModeSelection.querySelectorAll('button')) {
             gameMode.addEventListener('click', () => {
@@ -53,7 +57,6 @@ export class GameConfigurationManager {
                 // Add selected class to the clicked game mode
                 gameMode.classList.add('selected');
                 localStorage.setItem('game-mode', gameMode.id);
-                // GameConfigurationOptionVisualHandler.updateModeOptions(gameMode.id);
                 // If there was a game running, stop it
                 document.dispatchEvent(new Event('game-stop'));
                 // Fire game mode change event to init new game mode

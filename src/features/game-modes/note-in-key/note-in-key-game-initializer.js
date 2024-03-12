@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.3.3";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.3.3";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.3.3";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.3.3";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.3.3";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.3.3";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.3.3";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.3.3";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.4.0";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.4.0";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.4.0";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.4.0";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.4.0";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.4.0";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.4.0";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.4.0";
 import {
     FretPatternSelector
-} from "../../../components/game-modes/note-in-key/pattern-selector/fret-pattern-selector.js?v=2.3.3";
+} from "../../../components/game-modes/note-in-key/pattern-selector/fret-pattern-selector.js?v=2.4.0";
 
 
 export class NoteInKeyGameInitializer {
@@ -300,9 +300,15 @@ export class NoteInKeyGameInitializer {
                   <p>Upon correctly playing the note, a new string and note number will be displayed.<p>
                   <p>After successfully playing 30 notes, a new key is suggested. The key can also be changed anytime
                   with the "reload" button.</p>
-                  <p>In the settings icon, you can select a range of frets to practice on. The "pattern" of the 
-                  note positions on the strings will be kept while playing, but it may be shifted up or down the 
-                  fretboard depending on the note 1 position. 
+                  <p>In the game options, you can select a range of frets with a specific pattern to practice on.<br>
+                  The key will always be a note number 1 in the same relative position to the other notes of the 
+                  selected pattern. The whole pattern may be shifted up or down the fretboard 
+                  depending on the randomly generated key.</p>
+                  <p>The "Max gap" option is the maximum number of frets (distance) to the next note that has to be 
+                  played. If the max gap is 2 and the note that currently must be played is on fret 5, the next note
+                  to be played will be on fret 3, 4, 5, 6 or 7. 
+                  If the max gap is 1, the next note will be on fret 4, 5 or 6.
+                  </p>
                   </p>
                   <p>Click <img class="icon" src="src/assets/images/play-icon.svg"> to start or resume the game 
                   or double-tap this instruction.</p>           
@@ -310,7 +316,7 @@ export class NoteInKeyGameInitializer {
                   <a href="https://www.youtube.com/watch?v=-YkiaALRb54&list=PLFT94I4UzgTMTeiGy4qn4bWzWAu6mHypz">
                   Music Theory episodes</a>.</p>
                   <p>And <a href="https://www.youtube.com/watch?v=kmAK4tRmLec">this video</a>
-                  on how to find the chords to any song on guitar from Andrew Clarke that motivated me
+                  on how to find the chords to any song on guitar from Andrew Clarke that initially motivated me
                   to create this tool.</p>
               </div>
         </details>`

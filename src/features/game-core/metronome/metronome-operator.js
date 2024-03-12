@@ -19,7 +19,7 @@ export class MetronomeOperator {
 
         this.timerId = setInterval(() => {
             document.dispatchEvent(metronomeBeatEvent);
-
+            console.log('metronome beat');
             this.playClickSound();
         }, interval); // Start the metronome
     }
@@ -32,6 +32,12 @@ export class MetronomeOperator {
     playClickSound() {
         // Play click sound only when metronome game mode is selected
         if (document.querySelector('#metronome-game-mode').classList.contains('selected')) {
+            // Resume the audio context
+            //  if (this.audioContext.state === 'suspended') {
+            //      this.audioContext.resume();
+            //  }
+            console.log(this.audioContext);
+
             const oscillator = this.audioContext.createOscillator();
             const gainNode = this.audioContext.createGain();
 
@@ -39,6 +45,7 @@ export class MetronomeOperator {
             gainNode.connect(this.audioContext.destination);
 
             // Set the oscillator type to 'square' for a sharper sound
+            oscillator.type = 'sawtooth';
             oscillator.type = 'square';
 
             // Set a lower frequency for a duller tone
@@ -54,6 +61,12 @@ export class MetronomeOperator {
             // Start the oscillator and stop after a short duration
             oscillator.start();
             oscillator.stop(this.audioContext.currentTime + releaseTime);
+
+            // Disconnect the oscillator and gainNode after the sound has played
+            oscillator.onended = () => {
+                oscillator.disconnect();
+                gainNode.disconnect();
+            };
         }
     }
 

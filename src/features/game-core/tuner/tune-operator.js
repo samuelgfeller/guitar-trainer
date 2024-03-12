@@ -28,6 +28,13 @@ export class TuneOperator {
      * getUserMedia can only be initialized after user action
      */
     initGetUserMedia() {
+        // Unfortunately, there is no way to check if the user has already been prompted to allow microphone access
+        // with firefox https://stackoverflow.com/a/59292351
+        if( localStorage.getItem('mic_prompt_showed') === null ){
+            alert('Please allow microphone access to detect the note you\'re playing.');
+            localStorage.setItem('mic_prompt_showed', 'yes');
+        }
+
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!window.AudioContext) {
             return alert("AudioContext not supported");

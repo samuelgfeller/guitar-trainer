@@ -1,4 +1,4 @@
-import {themes} from "./config-data.js?v=2.3.3";
+import {themes} from "./config-data.js?v=2.4.0";
 
 export class ThemeSetter {
     static setThemeFromLocalStorage() {

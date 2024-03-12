@@ -1,8 +1,8 @@
-import {BpmInput} from "../../../../components/configuration/bpm-input.js?v=2.3.3";
-import {GameConfigurationManager} from "../../../game-core/game-initialization/game-configuration-manager.js?v=2.3.3";
-import {availableNotesOnStrings} from "../../../../components/configuration/config-data.js?v=2.3.3";
-import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=2.3.3";
-import {NoteOnFretboardEventListenerAdder} from "./note-on-fretboard-event-listener-adder.js?v=2.3.3";
+import {BpmInput} from "../../../../components/configuration/bpm-input.js?v=2.4.0";
+import {GameConfigurationManager} from "../../../game-core/game-initialization/game-configuration-manager.js?v=2.4.0";
+import {availableNotesOnStrings} from "../../../../components/configuration/config-data.js?v=2.4.0";
+import {GameLevelTracker} from "../../../game-core/game-progress/game-level-tracker.js?v=2.4.0";
+import {NoteOnFretboardEventListenerAdder} from "./note-on-fretboard-event-listener-adder.js?v=2.4.0";
 
 export class NoteOnFretboardGameInitializer {
 
@@ -43,6 +43,7 @@ export class NoteOnFretboardGameInitializer {
         // Must be after the string options have been initialized
         this.setAvailableStringsAndShuffleNotes();
     }
+
     /**
      * When game mode is changed, the initialized event listeners should be removed
      */
@@ -84,18 +85,17 @@ export class NoteOnFretboardGameInitializer {
     }
 
 
-
     addHtmlComponents() {
         document.querySelector('#game-mode-options').innerHTML = `
                     <label class='checkbox-button option-for-game-mode' id="select-range-option">
                         <span class="normal-font-size">Select range</span>
                     </label>      
-                         <label class='checkbox-button option-for-game-mode' id="fretboard-note-game-treble-clef">
+                         <label class='checkbox-button option-for-game-mode treble-staff-option' id="fretboard-note-game-treble-clef">
                              <input type='checkbox'>
-                             <!--<span class="normal-font-size"></span>-->
                              <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
+                             <!--<span class="normal-font-size">staff</span>-->
                          </label>
-                         <label class='checkbox-button option-for-game-mode' id="fretboard-note-game-treble-clef-and-name">
+                         <label class='checkbox-button option-for-game-mode treble-staff-option' id="fretboard-note-game-treble-clef-and-name">
                              <input type='checkbox'>
                              <div style="display: flex; align-items: center">
                                  <img src="src/assets/images/treble-clef-icon.svg" class="button-icon">
@@ -106,6 +106,7 @@ export class NoteOnFretboardGameInitializer {
                              <input type="checkbox" alt="Preset challenging notes">
                              <img src="src/assets/images/challenging-icon.svg" class="button-icon">
                          </label>-->`;
+        this.addTrebleStaffOptionsSingleChoiceEventListener();
         // Game instructions
         document.querySelector('#game-start-instruction').innerHTML = `
         <details open>
@@ -164,6 +165,28 @@ export class NoteOnFretboardGameInitializer {
                             </label>
                             </div>
         `)
+    }
+
+    addTrebleStaffOptionsSingleChoiceEventListener() {
+        const trebleStaffOptions = document.querySelectorAll('.treble-staff-option');
+        // If one of the key options is checked, the other should be unchecked
+        for (const option of trebleStaffOptions) {
+            option.addEventListener('change', () => {
+                const input = option.querySelector('input');
+                // If the checkbox was not checked before
+                if (input.checked) {
+                    // When one option is selected, uncheck all others
+                    for (const disabledOption of trebleStaffOptions) {
+                        disabledOption.querySelector('input').checked = false;
+                        // Fire change event so that option value is stored in local storage
+                        disabledOption.querySelector('input').dispatchEvent(new Event('change'));
+                    }
+                    // The radio button that was clicked should be checked only if it was not checked before
+                    input.checked = true;
+                    input.dispatchEvent(new Event('change'));
+                }
+            });
+        }
     }
 
 }

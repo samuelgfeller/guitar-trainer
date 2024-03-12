@@ -1,5 +1,5 @@
-import {themes} from "../../../components/configuration/config-data.js?v=2.3.3";
-import {ThemeSetter} from "../../../components/configuration/theme-setter.js?v=2.3.3";
+import {themes} from "../../../components/configuration/config-data.js?v=2.4.0";
+import {ThemeSetter} from "../../../components/configuration/theme-setter.js?v=2.4.0";
 
 export class SettingsInitializer {
 
@@ -7,25 +7,46 @@ export class SettingsInitializer {
     addSettingsBodyHtml() {
         document.querySelector('#header-center-container').innerHTML = `<p>Guitar Trainer</p>`;
         document.querySelector('#game-start-instruction').innerHTML = `
-    <details open>
-                <summary><h3>Instructions</h3></summary>
-                <div id="game-instruction-text">
-                    <p>Click on the settings icon in the header to select a game mode.</p>
-                    <p><b>Available game modes: </b></p>
-                    <ol style="list-style-position: inside;">
-                        <li>Plain metronome with exercises
-                        <li>Play given note on fretboard
-                        <li>Play note number in the given key
-                    </ol>
-                    <p>You have to allow microphone access when it is asked so that the game can work.
-                        It will detect what note you're playing.</p>
+        <h3>Available game modes</h3>
+                <div id="landing-page-game-mode-choice">
+                     <!--All game mode buttons inside a div with a description and the id of the real button 
+                     as data attribute-->
+                     <div>
+                        <button class='stay-active-button' data-id="metronome-game-mode">
+                           <img src="src/assets/images/metronome-icon.svg" class="button-icon">
+                        </button>
+                        <span>Metronome and exercises</span>
+                     </div>
+                     <div>
+                        <button class='stay-active-button' data-id="fretboard-note-game-mode">
+                            <img src="src/assets/images/guitar-fretboard-icon.svg" class="button-icon">
+                        </button>
+                        <span>Play given note on fretboard</span>
+                     </div>
+                     <div>
+                        <button class='stay-active-button' data-id="note-in-key-game-mode">
+                            <img src="src/assets/images/key-icon.png" class="button-icon">
+                        </button>
+                        <span>Play given note position in key</span>
+                     </div>
                 </div>
-            </details>
             <div id="theme-selection"><h3>Theme selection</h3>
                 <div class="theme-selection-grid">
                     ${this.getThemeSelectionHtml()}
-    </div>
-    </div>`;
+            </div>
+            </div>
+                <p id="project-source-code">Project <a href="https://github.com/samuelgfeller/guitar-trainer" target="_blank">source code</a>.</p>
+        `;
+        this.addLandingPageGameModeChoiceEventListeners();
+    }
+
+    addLandingPageGameModeChoiceEventListeners() {
+        document.querySelectorAll('#landing-page-game-mode-choice .stay-active-button')
+            .forEach((gameModeButton) => {
+                gameModeButton.addEventListener('click', (e) => {
+                   document.getElementById(gameModeButton.dataset.id).click();
+                });
+            });
     }
 
     getThemeSelectionHtml() {
