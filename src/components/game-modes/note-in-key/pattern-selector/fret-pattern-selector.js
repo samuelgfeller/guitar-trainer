@@ -1,7 +1,7 @@
-import {DualRangeSlider} from "./dual-range-slider.js?v=2.4.0";
-import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.4.0";
-import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.4.0";
-import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.4.0";
+import {DualRangeSlider} from "./dual-range-slider.js?v=2.4.1";
+import {NoteInKeyGenerator} from "../../../../features/game-modes/note-in-key/note-in-key-generator.js?v=2.4.1";
+import {availableNotesOnStrings} from "../../../configuration/config-data.js?v=2.4.1";
+import {ModalHandler} from "../../../game-core/ui/modal-handler.js?v=2.4.1";
 
 export class FretPatternSelector {
 

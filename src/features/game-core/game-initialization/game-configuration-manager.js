@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.4.0";
+import {GameProgressVisualizer} from "../game-progress/game-progress-visualizer.js?v=2.4.1";
 
 export class GameConfigurationManager {
 
@@ -91,8 +91,9 @@ export class GameConfigurationManager {
     static setupGameModeOptionsStateAndValue(gameModeOptions) {
         // Loop over game mode options (children of #game-mode-options) that may contain inputs of different types
         for (const gameModeOption of gameModeOptions) {
-            // Get the inputs of type checkbox
-            const gameModeCheckboxInput = gameModeOption.querySelector('input[type=checkbox]');
+            // Get the inputs of type checkbox except the ones with class ignore-default-local-storage which have
+            // their own way of handling local storage
+            const gameModeCheckboxInput = gameModeOption.querySelector('input[type=checkbox]:not(.ignore-default-local-storage)');
             if (gameModeCheckboxInput) {
                 // Set the input checked state with the one from local storage
                 if ((localStorage.getItem(gameModeOption.id) ?? '0') === '1') {
@@ -104,7 +105,7 @@ export class GameConfigurationManager {
                 });
             }
             // Set the range slider value with the one from local storage
-            const gameModeRangeInput = gameModeOption.querySelector('input[type=range]');
+            const gameModeRangeInput = gameModeOption.querySelector('input[type=range]:not(.ignore-default-local-storage)');
             if (gameModeRangeInput) {
                 // Set the range input value to the one from local storage
                 if (localStorage.getItem(gameModeOption.id)) {

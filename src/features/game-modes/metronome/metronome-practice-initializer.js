@@ -1,6 +1,6 @@
-import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.4.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.4.0";
-import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.4.0";
+import {MetronomePracticeTimer} from "./metronome-practice-timer.js?v=2.4.1";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.4.1";
+import {BpmInput} from "../../../components/configuration/bpm-input.js?v=2.4.1";
 
 export class MetronomePracticeInitializer {
     // Changed in metronome-practice-coordinator
@@ -11,6 +11,7 @@ export class MetronomePracticeInitializer {
     }
 
     initMetronomePractice() {
+        this.addOptionsHtml();
         document.querySelector('#game-start-instruction').innerHTML = '';
         // Creating a separate div after game-start-instructions for the metronome exercises as #game-start-instruction
         // is hidden when the game is running, which shouldn't happen for the metronome.
@@ -31,7 +32,7 @@ export class MetronomePracticeInitializer {
                 </div>
         `);
         BpmInput.addBpmInput();
-        this.initBpmInputForMetronome();
+        this.initBpmAndBeatsPerParInputForMetronome();
         this.initTimerInputForExercises();
         this.addExercisesHtml();
         this.addExerciseEventListeners();
@@ -82,6 +83,29 @@ export class MetronomePracticeInitializer {
         });
     }
 
+    addOptionsHtml() {
+        // Add game mode options (have to be added before the other initializations as they might depend on options)
+        document.querySelector('#game-mode-options').innerHTML = `
+                                               <!-- For simplicity, the no-guitar option has the same id for all game modes and 
+                             the core-game-coordination-initializer sets the metronomeEnabled and noteDetectorEnabled values -->
+                            <div id="metronome-beat-range-slider-container" class="game-option-range-slider">
+                                                <span>Beats/4</span>
+                                                <div class="option-for-game-mode">
+                                                    <input type="range" min='1' max='8' value='1' step='1' class="ignore-default-local-storage"
+                                                           list="beat-level-options" id="beats-per-bar-range-slider"/>
+                                                    <datalist class="range-level-options" id="beat-level-options">
+                                                        <option value="1" label="1"></option>
+                                                        <option value="2" label="2"></option>
+                                                        <option value="3" label="3"></option>
+                                                        <option value="4" label="4"></option>
+                                                        <option value="5" label="5"></option>
+                                                        <option value="6" label="6"></option>
+                                                        <option value="7" label="7"></option>
+                                                        <option value="8" label="8"></option>
+                                                    </datalist>
+                                                </div> 
+                                                 </div>`;
+    }
 
     /**
      * Returns HTML for the exercise div
@@ -162,7 +186,8 @@ export class MetronomePracticeInitializer {
     }
 
     handleExerciseChangeEvent(exercise, e) {
-        let bpmInput = document.querySelector('#bpm-input');
+        const bpmInput = document.querySelector('#bpm-input');
+        const beatsPerBarRangeSlider = document.querySelector('#beats-per-bar-range-slider');
 
         if (e.target === exercise.querySelector('video') || e.target === exercise.querySelector('#exercise-timer')) {
             // If the user clicks on video tag, don't deselect exercise
@@ -188,16 +213,18 @@ export class MetronomePracticeInitializer {
             // clicked on new exercise (otherwise it should just stay unselected)
             exercise.classList.add('selected-exercise');
             // Load BPM value for clicked exercise from localStorage
-            let savedBpm = localStorage.getItem(exercise.id + '-bpm');
-            if (savedBpm) {
-                bpmInput.value = savedBpm;
+            let savedMetronomeValues = this.getExerciseBpmAndBeatsPerBarJson(exercise.id);
+            if (savedMetronomeValues) {
+                bpmInput.value = savedMetronomeValues['bpm'];
+                beatsPerBarRangeSlider.value = savedMetronomeValues['beatsPerBar'];
             }
             dispatchChangeEventAndPauseVideo();
             MetronomePracticeTimer.resetTimerForNewExercise(exercise, this.gameRunning);
         } else if (previouslySelected.id === exercise.id) {
             // If already selected exercise is clicked, the selected class should not be added
             // and the initial metronome bpm value loaded
-            bpmInput.value = localStorage.getItem('metronome-bpm') ?? '60';
+            this.setDefaultMetronomeBpmAndBeatsPerBar();
+
             // Dispatch game-stop event
             document.dispatchEvent(new Event('game-stop'));
             dispatchChangeEventAndPauseVideo();
@@ -205,19 +232,41 @@ export class MetronomePracticeInitializer {
         }
     }
 
-    initBpmInputForMetronome() {
+    getExerciseBpmAndBeatsPerBarJson(exerciseId) {
+        return JSON.parse(localStorage.getItem(exerciseId));
+    }
+
+    saveBpmAndBeatsPerBarInLocalstorage(exerciseId) {
+        const bpm = document.querySelector('#bpm-input').value;
+        const beatsPerBar = document.querySelector('#beats-per-bar-range-slider').value;
+        localStorage.setItem(exerciseId, JSON.stringify({'bpm': bpm, 'beatsPerBar': beatsPerBar}));
+    }
+
+    setDefaultMetronomeBpmAndBeatsPerBar() {
+        const bpmInput = document.querySelector('#bpm-input');
+        const beatsPerBarRangeSlider = document.querySelector('#beats-per-bar-range-slider');
+
+        let savedMetronomeValues = this.getExerciseBpmAndBeatsPerBarJson('metronome-bpm');
+        savedMetronomeValues = savedMetronomeValues ?? {bpm: 60, beatsPerBar: 4};
+        bpmInput.value = savedMetronomeValues['bpm'];
+        beatsPerBarRangeSlider.value = savedMetronomeValues['beatsPerBar'];
+    }
+
+    initBpmAndBeatsPerParInputForMetronome() {
         const bpmInput = document.querySelector('#bpm-input');
         // Set bpm input value to the one from local storage
-        bpmInput.value = localStorage.getItem('metronome-bpm') ?? '60';
+        this.setDefaultMetronomeBpmAndBeatsPerBar();
         // Store new value in localstorage
         bpmInput.addEventListener('change', (e) => {
             const selectedExercise = document.querySelector('.selected-exercise');
 
             if (selectedExercise) {
-                localStorage.setItem(`${selectedExercise.id}-bpm`, e.target.value);
+                // localStorage.setItem(`${selectedExercise.id}`, e.target.value);
+                this.saveBpmAndBeatsPerBarInLocalstorage(selectedExercise.id);
             } else {
-                // Save current BPM value to localStorage
-                localStorage.setItem('metronome-bpm', e.target.value);
+                // Save current BPM value to general metronome-bpm value localStorage
+                this.saveBpmAndBeatsPerBarInLocalstorage('metronome-bpm');
+                // localStorage.setItem('metronome-bpm', e.target.value);
             }
             if (this.gameRunning) {
                 // Update metronome bpm
@@ -225,5 +274,23 @@ export class MetronomePracticeInitializer {
                 document.dispatchEvent(new Event('game-start'));
             }
         });
+
+        const beatsPerBarRangeSlider = document.querySelector('#beats-per-bar-range-slider');
+        // Default values already set above
+        // Store new value for each exercise in localstorage when changed
+        beatsPerBarRangeSlider.addEventListener('change', (e) => {
+            const selectedExercise = document.querySelector('.selected-exercise');
+            if (selectedExercise) {
+                this.saveBpmAndBeatsPerBarInLocalstorage(selectedExercise.id);
+            } else {
+                this.saveBpmAndBeatsPerBarInLocalstorage('metronome-bpm');
+            }
+            if (this.gameRunning) {
+                // Update metronome bpm
+                document.dispatchEvent(new Event('game-stop'));
+                document.dispatchEvent(new Event('game-start'));
+            }
+        });
+
     }
 }

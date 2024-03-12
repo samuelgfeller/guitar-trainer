@@ -1,21 +1,30 @@
-#fret-gap-range-slider-container{
-    width: 140px;
+.game-option-range-slider{
     text-align: center;
 }
-#fret-gap-range-slider-container span{
+/*Double classname to increase specificity*/
+.game-option-range-slider.game-option-range-slider span{
     font-size: 13px;
 }
 
-#fret-gap-range-slider-container input{
+.game-option-range-slider input{
     width: 100%;
     margin: 0;
 }
-#level-options {
+.range-level-options {
   display: flex;
   justify-content: space-between;
-    /*margin: 0 2px 0 4px;*/
+    margin: 0 5px 0 5px;
 }
-#level-options option {
+/*Double classname to increase specificity*/
+.range-level-options.range-level-options option {
   font-size: 15px;
     font-weight: bold;
+}
+
+#fret-gap-range-slider-container{
+    width: 140px;
+}
+
+#metronome-beat-range-slider-container {
+    width: 250px;
 }

@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.4.0";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.4.0";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.4.0";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.4.0";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.4.0";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.4.0";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.4.0";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.4.0";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.4.1";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.4.1";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.4.1";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.4.1";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.4.1";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.4.1";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.4.1";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.4.1";
 import {
     FretPatternSelector
-} from "../../../components/game-modes/note-in-key/pattern-selector/fret-pattern-selector.js?v=2.4.0";
+} from "../../../components/game-modes/note-in-key/pattern-selector/fret-pattern-selector.js?v=2.4.1";
 
 
 export class NoteInKeyGameInitializer {
@@ -221,16 +221,16 @@ export class NoteInKeyGameInitializer {
                     <label class='checkbox-button option-for-game-mode' id="select-custom-pattern-option">
                         <span class="normal-font-size">Select range</span>
                     </label>      
-                    <div id="fret-gap-range-slider-container">
+                    <div id="fret-gap-range-slider-container" class="game-option-range-slider">
                     <span>Max gap</span>
                     <div  class="option-for-game-mode">
                         <input type="range" min='1' max='5' value='2' step='1'
-                               list="level-options" id="fret-gap-range-slider"/>
-                        <datalist id="level-options">
+                               list="gap-level-options" id="fret-gap-range-slider"/>
+                        <datalist id="gap-level-options" class="range-level-options">
                             <option value="1" label="1"></option>
                             <option value="2" label="2"></option>
                             <option value="3" label="3"></option>
-                            <option value="3" label="4"></option>
+                            <option value="4" label="4"></option>
                             <option value="5" label="5"></option>
                         </datalist>
                     </div> 

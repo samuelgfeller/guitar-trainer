@@ -5,6 +5,7 @@
         justify-content: center;
         gap: 20px;
         flex-wrap: wrap;
+        margin-top: 15px;
     }
     #landing-page-game-mode-choice > div{
         display: flex;

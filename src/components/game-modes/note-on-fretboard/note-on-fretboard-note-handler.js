@@ -1,8 +1,8 @@
-import {DetectedNoteVerifier} from "../../../features/detected-note/detected-note-verifier.js?v=2.4.0";
-import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=2.4.0";
-import {GameProgressVisualizer} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=2.4.0";
-import {NoteOnFretboardGenerator} from "./note-on-fretboard-generator.js?v=2.4.0";
-import {NoteOnFretboardProgressUpdater} from "./note-on-fretboard-progress-updater.js?v=2.4.0";
+import {DetectedNoteVerifier} from "../../../features/detected-note/detected-note-verifier.js?v=2.4.1";
+import {NoteDisplayer} from "../../game-core/ui/note-displayer.js?v=2.4.1";
+import {GameProgressVisualizer} from "../../../features/game-core/game-progress/game-progress-visualizer.js?v=2.4.1";
+import {NoteOnFretboardGenerator} from "./note-on-fretboard-generator.js?v=2.4.1";
+import {NoteOnFretboardProgressUpdater} from "./note-on-fretboard-progress-updater.js?v=2.4.1";
 
 /**
  * Note display coordinator when playing the "game" which
