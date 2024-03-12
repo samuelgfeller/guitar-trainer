@@ -1,14 +1,14 @@
-import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.3.2";
-import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.3.2";
-import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.3.2";
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.3.2";
-import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.3.2";
-import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.3.2";
-import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.3.2";
-import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.3.2";
+import {NoteInKeyGameCoordinator} from "./note-in-key-game-coordinator.js?v=2.3.3";
+import {LevelUpVisualizer} from "../../game-core/game-ui/level-up-visualizer.js?v=2.3.3";
+import {GameConfigurationManager} from "../../game-core/game-initialization/game-configuration-manager.js?v=2.3.3";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.3.3";
+import {NoteInKeyGenerator} from "./note-in-key-generator.js?v=2.3.3";
+import {NoteInKeyNoteHandler} from "../../practice-note-combination/note-in-key-note-handler.js?v=2.3.3";
+import {NoteInKeyGameNoGuitar} from "./note-in-key-game-no-guitar.js?v=2.3.3";
+import {GameElementsVisualizer} from "../../game-core/game-ui/game-elements-visualizer.js?v=2.3.3";
 import {
     FretPatternSelector
-} from "../../../components/game-modes/note-in-key/pattern-selector/fret-pattern-selector.js?v=2.3.2";
+} from "../../../components/game-modes/note-in-key/pattern-selector/fret-pattern-selector.js?v=2.3.3";
 
 
 export class NoteInKeyGameInitializer {

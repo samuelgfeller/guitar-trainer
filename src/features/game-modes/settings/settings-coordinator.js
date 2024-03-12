@@ -1,4 +1,4 @@
-import {SettingsInitializer} from "./settings-initializer.js?v=2.3.2";
+import {SettingsInitializer} from "./settings-initializer.js?v=2.3.3";
 
 export class SettingsCoordinator {
 
