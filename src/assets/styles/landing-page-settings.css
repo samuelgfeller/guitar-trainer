@@ -14,8 +14,12 @@
         justify-content: center;
         flex-wrap: nowrap;
         flex-direction: column;
-        width: 200px;
+        width: 150px;
         gap: 20px;
+        cursor: pointer;
+    }
+    #landing-page-game-mode-choice > div:hover .stay-active-button {
+        border-color: var(--accent-color);
     }
 
     #footer-text#footer-text {
@@ -42,5 +46,10 @@
 
     #clear-localstorage-button:hover{
         cursor: pointer;
+    }
+}
+@media (min-width: 640px) {
+    #landing-page-game-mode-choice > div {
+        width: 200px;
     }
 }

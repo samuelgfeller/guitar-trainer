@@ -1,5 +1,5 @@
-import {themes} from "../../../components/configuration/config-data.js?v=2.4.1";
-import {ThemeSetter} from "../../../components/configuration/theme-setter.js?v=2.4.1";
+import {themes} from "../../../components/configuration/config-data.js?v=2.4.2";
+import {ThemeSetter} from "../../../components/configuration/theme-setter.js?v=2.4.2";
 
 export class SettingsInitializer {
 
@@ -30,7 +30,7 @@ export class SettingsInitializer {
                         <span>Play given note position in key</span>
                      </div>
                 </div>
-            <div id="theme-selection"><h3>Theme selection</h3>
+            <div id="theme-selection"><h3>Theme</h3>
                 <div class="theme-selection-grid">
                     ${this.getThemeSelectionHtml()}
             </div>
@@ -40,7 +40,7 @@ export class SettingsInitializer {
         `;
         this.addLandingPageGameModeChoiceEventListeners();
         document.getElementById('clear-localstorage-button').addEventListener('click', () => {
-            if(confirm('Are you sure you want to clear local storage? All settings and selected options will be lost.')){
+            if (confirm('Are you sure you want to clear local storage? All settings and selected options will be lost.')) {
                 localStorage.clear();
                 location.reload();
             }
@@ -48,10 +48,10 @@ export class SettingsInitializer {
     }
 
     addLandingPageGameModeChoiceEventListeners() {
-        document.querySelectorAll('#landing-page-game-mode-choice .stay-active-button')
-            .forEach((gameModeButton) => {
-                gameModeButton.addEventListener('click', (e) => {
-                   document.getElementById(gameModeButton.dataset.id).click();
+        document.querySelectorAll('#landing-page-game-mode-choice > div')
+            .forEach((gameModeDiv) => {
+                gameModeDiv.addEventListener('click', (e) => {
+                    document.getElementById(gameModeDiv.querySelector('.stay-active-button').dataset.id).click();
                 });
             });
     }
