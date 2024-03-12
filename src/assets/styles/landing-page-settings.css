@@ -7,7 +7,8 @@
         flex-wrap: wrap;
         margin-top: 15px;
     }
-    #landing-page-game-mode-choice > div{
+
+    #landing-page-game-mode-choice > div {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -16,7 +17,8 @@
         width: 200px;
         gap: 20px;
     }
-    #project-source-code#project-source-code{
+
+    #footer-text#footer-text {
         position: fixed;
         left: 50%;
         transform: translateX(-50%);
@@ -29,7 +31,16 @@
         border-radius: 50% 50% 0 0;
         box-shadow: 0 0 10px 0 var(--background-color);
     }
-    #project-source-code#project-source-code a{
+
+    #footer-text#footer-text a {
         font-size: 16px;
+    }
+
+    #footer-text#footer-text span {
+        font-size: 15px;
+    }
+
+    #clear-localstorage-button:hover{
+        cursor: pointer;
     }
 }

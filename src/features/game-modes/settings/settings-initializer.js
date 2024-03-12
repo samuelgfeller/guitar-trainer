@@ -35,9 +35,16 @@ export class SettingsInitializer {
                     ${this.getThemeSelectionHtml()}
             </div>
             </div>
-                <p id="project-source-code">Project <a href="https://github.com/samuelgfeller/guitar-trainer" target="_blank">source code</a>.</p>
+                <p id="footer-text">Project <a href="https://github.com/samuelgfeller/guitar-trainer" target="_blank">source code</a> 
+                &nbsp|&nbsp <span id="clear-localstorage-button">Clear localstorage</span></p>
         `;
         this.addLandingPageGameModeChoiceEventListeners();
+        document.getElementById('clear-localstorage-button').addEventListener('click', () => {
+            if(confirm('Are you sure you want to clear local storage? All settings and selected options will be lost.')){
+                localStorage.clear();
+                location.reload();
+            }
+        });
     }
 
     addLandingPageGameModeChoiceEventListeners() {
