@@ -1,13 +1,9 @@
-import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=2.4.2";
+import {TrebleClefVisualizer} from "../../../features/treble-clef/treble-clef-visualizer.js?v=2.4.3";
 
 export class NoteDisplayer {
 
     constructor(frequencyBarsController) {
         this.frequencyBarsController = frequencyBarsController;
-    }
-
-    updateFrequencyBarsFillStyle(color) {
-        this.frequencyBarsController.updateFrequencyBarsFillStyle(color);
     }
 
     static displayCombinationWithNoteNumber(stringName, noteNumber, noteName = null){

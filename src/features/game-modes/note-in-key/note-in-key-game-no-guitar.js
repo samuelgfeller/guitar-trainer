@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.4.2";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.4.3";
 
 export class NoteInKeyGameNoGuitar {
     static diatonicNotesOnStrings;

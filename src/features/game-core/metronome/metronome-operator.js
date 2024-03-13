@@ -46,21 +46,22 @@ export class MetronomeOperator {
         osc.start(time);
         osc.stop(time + 0.03);
 
-        const metronomeBeatEvent = new Event('metronome-beat');
-        document.dispatchEvent(metronomeBeatEvent);
-        // Flash color of the dotted bottom border
-        const headerDiv = document.querySelector('header > div');
-        if (firstBeat) {
-            // Change the border color to a brighter color when the first beat of the bar is played
-            // headerDiv.style.borderColor = `rgb(calc(var(--r) * 1.2), calc(var(--g) * 1.2), calc(var(--b) * 1.2))`;
-            headerDiv.style.borderColor = `rgb(calc(var(--r) * 1), calc(var(--g) * 1.5), calc(var(--b) * 1))`;
-        } else {
-            headerDiv.style.borderColor = 'var(--accent-color)';
-        }
-        // Change the border color back to --background-light-accent-color after the sound has played
-        this.borderColorTimeout = setTimeout(() => {
-            document.querySelector('header > div').style.borderColor = `rgb(calc(var(--r) * 0.5), calc(var(--g) * 0.5), calc(var(--b) * 0.5)`;
-        }, 100); // 30 milliseconds is the duration of the sound
+        // The following below is not accurate at all, especially on mobile unfurtunately
+        // const metronomeBeatEvent = new Event('metronome-beat');
+        // document.dispatchEvent(metronomeBeatEvent);
+        // // Flash color of the dotted bottom border
+        // const headerDiv = document.querySelector('header > div');
+        // if (firstBeat) {
+        //     // Change the border color to a brighter color when the first beat of the bar is played
+        //     // headerDiv.style.borderColor = `rgb(calc(var(--r) * 1.2), calc(var(--g) * 1.2), calc(var(--b) * 1.2))`;
+        //     headerDiv.style.borderColor = `rgb(calc(var(--r) * 1), calc(var(--g) * 1.5), calc(var(--b) * 1))`;
+        // } else {
+        //     headerDiv.style.borderColor = 'var(--accent-color)';
+        // }
+        // // Change the border color back to --background-light-accent-color after the sound has played
+        // this.borderColorTimeout = setTimeout(() => {
+        //     document.querySelector('header > div').style.borderColor = `rgb(calc(var(--r) * 0.5), calc(var(--g) * 0.5), calc(var(--b) * 0.5)`;
+        // }, 100); // 30 milliseconds is the duration of the sound
 
     }
 
@@ -95,10 +96,10 @@ export class MetronomeOperator {
     stopMetronome() {
         this.isRunning = false;
         clearInterval(this.intervalID);
-        if (this.borderColorTimeout){
-            clearTimeout(this.borderColorTimeout);
-        }
-        document.querySelector('header > div').style.borderColor = null;
+        // if (this.borderColorTimeout){
+        //     clearTimeout(this.borderColorTimeout);
+        // }
+        // document.querySelector('header > div').style.borderColor = null;
     }
 
     /*
