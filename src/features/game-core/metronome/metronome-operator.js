@@ -1,4 +1,5 @@
 /**
+ * https://grantjam.es/creating-a-simple-metronome-using-javascript-and-the-web-audio-api/
  * Source: https://github.com/grantjames/metronome
  */
 export class MetronomeOperator {
