@@ -1,5 +1,5 @@
-import {themes} from "../../../components/configuration/config-data.js?v=2.4.3";
-import {ThemeSetter} from "../../../components/configuration/theme-setter.js?v=2.4.3";
+import {themes} from "../../../components/configuration/config-data.js?v=2.4.4";
+import {ThemeSetter} from "../../../components/configuration/theme-setter.js?v=2.4.4";
 
 export class SettingsInitializer {
 

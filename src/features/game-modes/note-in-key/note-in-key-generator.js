@@ -2,8 +2,8 @@ import {
     availableNotesOnStrings,
     pattern1keyNote,
     pattern2keyNote
-} from "../../../components/configuration/config-data.js?v=2.4.3";
-import {NoteInKeyShuffler} from "../../../components/game-modes/note-in-key/shuffler/note-in-key-shuffler.js?v=2.4.3";
+} from "../../../components/configuration/config-data.js?v=2.4.4";
+import {NoteInKeyShuffler} from "../../../components/game-modes/note-in-key/shuffler/note-in-key-shuffler.js?v=2.4.4";
 
 export class NoteInKeyGenerator {
     diatonicNotesOnStrings;

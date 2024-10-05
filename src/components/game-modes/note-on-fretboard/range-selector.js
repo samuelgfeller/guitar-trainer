@@ -1,6 +1,6 @@
-import {DualRangeSlider} from "../note-in-key/pattern-selector/dual-range-slider.js?v=2.4.3";
-import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.4.3";
-import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.4.3";
+import {DualRangeSlider} from "../note-in-key/pattern-selector/dual-range-slider.js?v=2.4.4";
+import {ModalHandler} from "../../game-core/ui/modal-handler.js?v=2.4.4";
+import {availableNotesOnStrings} from "../../configuration/config-data.js?v=2.4.4";
 
 export class RangeSelector {
 
@@ -74,7 +74,7 @@ export class RangeSelector {
             let stringNameSpan = document.createElement('span');
             stringNameDiv.className = 'string-name';
             // Set the noteName data attribute to the first note of the string
-            stringNameSpan.dataset.noteName = stringName;
+            stringNameSpan.dataset.noteName = stringName === 'E2' ? 'E' : stringName;
 
             // Set the text content to the string name (overwritten if diatonic note number)
             stringNameSpan.textContent = stringName;

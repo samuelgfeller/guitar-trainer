@@ -1,4 +1,4 @@
-import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.4.3";
+import {GameProgressVisualizer} from "../../game-core/game-progress/game-progress-visualizer.js?v=2.4.4";
 
 export class NoteInKeyGameNoGuitar {
     static diatonicNotesOnStrings;
@@ -75,7 +75,7 @@ export class NoteInKeyGameNoGuitar {
             // Set the text content to the string name
             stringNameSpan.textContent = stringName;
             // Set the noteName data attribute to the first note of the string
-            stringNameSpan.dataset.noteName = stringName;
+            stringNameSpan.dataset.noteName = stringName === 'E2' ? 'E' : stringName;
             // Append the string name div to the string div
             stringNameDiv.appendChild(stringNameSpan);
             string.appendChild(stringNameDiv);
@@ -142,8 +142,9 @@ export class NoteInKeyGameNoGuitar {
         // Clear the wrong color timeout
         clearTimeout(this.wrongColorTimeout);
 
+        console.log(event.target);
         // If event.target contains a data-attribute note name take that as fret (either normal fret or open string)
-        const fret = event.target.dataset.noteName ? event.target : event.target.closest('.fret-position');
+        const fret = event.target.dataset.noteName ? event.target : event.target.querySelector('span');
         // If fret indicator helper is clicked, get the note name from the parent fret
         const noteName = fret.dataset.noteName;
         const stringName = event.target.closest('.string').dataset.stringName;
